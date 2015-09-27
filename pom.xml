@@ -80,6 +80,7 @@
         <module>chapter10</module>
         <module>chapter11/c11-p1</module>
         <module>chapter11/c11-p2</module>
+        <module>chapter11/c11-p3</module>
     </modules>
 
     <properties>
