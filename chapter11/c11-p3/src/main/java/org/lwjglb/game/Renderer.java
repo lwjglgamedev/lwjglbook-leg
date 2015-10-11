@@ -112,7 +112,12 @@ public class Renderer {
         for (int i = 0; i < numLights; i++) {
             // Get a copy of the point light object and transform its position to view coordinates
             PointLight currPointLight = new PointLight(pointLightList[i]);
-            currPointLight.getPosition().mul(viewMatrix);
+            Vector3f lightPos = currPointLight.getPosition();
+            Vector4f aux = new Vector4f(lightPos, 1);
+            aux.mul(viewMatrix);
+            lightPos.x = aux.x;
+            lightPos.y = aux.y;
+            lightPos.z = aux.z;
             shaderProgram.setUniform("pointLights", currPointLight, i);
         }
 
@@ -124,7 +129,14 @@ public class Renderer {
             Vector4f dir = new Vector4f(currSpotLight.getConeDirection(), 0);
             dir.mul(viewMatrix);
             currSpotLight.setConeDirection(new Vector3f(dir.x, dir.y, dir.z));
-            currSpotLight.getPointLight().getPosition().mul(viewMatrix);
+            Vector3f lightPos = currSpotLight.getPointLight().getPosition();
+
+            Vector4f aux = new Vector4f(lightPos, 1);
+            aux.mul(viewMatrix);
+            lightPos.x = aux.x;
+            lightPos.y = aux.y;
+            lightPos.z = aux.z;
+
             shaderProgram.setUniform("spotLights", currSpotLight, i);
         }
 

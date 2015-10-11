@@ -81,6 +81,7 @@
         <module>chapter11/c11-p1</module>
         <module>chapter11/c11-p2</module>
         <module>chapter11/c11-p3</module>
+        <module>chapter12</module>
     </modules>
 
     <properties>
@@ -90,7 +91,7 @@
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
         <lwjgl.version>3.0.0a</lwjgl.version>
         <natives.version>0.0.6</natives.version>
-        <joml.version>1.5.0</joml.version>
+        <joml.version>1.6.5</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 </project>

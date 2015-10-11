@@ -81,7 +81,12 @@ public class Renderer {
         shaderProgram.setUniform("specularPower", specularPower);
         // Get a copy of the point light object and transform its position to view coordinates
         PointLight currPointLight = new PointLight(pointLight);
-        currPointLight.getPosition().mul(viewMatrix);
+        Vector3f lightPos = currPointLight.getPosition();
+        Vector4f aux = new Vector4f(lightPos, 1);
+        aux.mul(viewMatrix);
+        lightPos.x = aux.x;
+        lightPos.y = aux.y;
+        lightPos.z = aux.z;
         shaderProgram.setUniform("pointLight", currPointLight);
         
         // Get a copy of the directional light object and transform its position to view coordinates
