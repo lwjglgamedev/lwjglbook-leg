@@ -11,9 +11,9 @@ import org.lwjglb.engine.graph.OBJLoader;
 
 public class Hud implements IHud {
 
-    private static final int FONT_COLS = 15;
+    private static final int FONT_COLS = 16;
     
-    private static final int FONT_ROWS = 17;
+    private static final int FONT_ROWS = 16;
 
     private static final String FONT_TEXTURE = "/textures/font_texture.png";
 
@@ -55,7 +55,6 @@ public class Hud implements IHud {
     }
    
     public void updateSize(Window window) {
-        //this.compassItem.setRotation(0, 0, this.compassItem.getRotation().z + 1f );
         this.statusTextItem.setPosition(10f, window.getHeight() - 50f, 0);
         this.compassItem.setPosition(window.getWidth() - 40f, 50f, 0);
     }

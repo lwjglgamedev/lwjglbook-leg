@@ -8,9 +8,9 @@ import org.lwjglb.engine.Window;
 
 public class Hud implements IHud {
 
-    private static final int FONT_COLS = 15;
+    private static final int FONT_COLS = 16;
     
-    private static final int FONT_ROWS = 17;
+    private static final int FONT_ROWS = 16;
 
     private static final String FONT_TEXTURE = "/textures/font_texture.png";
 
