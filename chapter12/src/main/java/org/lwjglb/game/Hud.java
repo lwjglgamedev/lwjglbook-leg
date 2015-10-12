@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 import org.lwjglb.engine.GameItem;
 import org.lwjglb.engine.IHud;
 import org.lwjglb.engine.TextItem;
+import org.lwjglb.engine.Window;
 
 public class Hud implements IHud {
 
@@ -19,7 +20,6 @@ public class Hud implements IHud {
 
     public Hud(String statusText) throws Exception {
         this.statusTextItem = new TextItem(statusText, FONT_TEXTURE, FONT_COLS, FONT_ROWS);
-        this.statusTextItem.setPosition(10f, 400f, 0);
         this.statusTextItem.getMesh().getMaterial().setColour(new Vector3f(1, 1, 1));
         gameItems = new GameItem[]{statusTextItem};
     }
@@ -31,5 +31,9 @@ public class Hud implements IHud {
     @Override
     public GameItem[] getGameItems() {
         return gameItems;
+    }
+    
+    public void updateSize(Window window) {
+        this.statusTextItem.setPosition(10f, window.getHeight() - 50f, 0);
     }
 }
