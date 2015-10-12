@@ -41,7 +41,7 @@ public class DummyGame implements IGameLogic {
     private static final float CAMERA_POS_STEP = 0.05f;
 
     private float spotAngle = 0;
-    
+
     private float spotInc = 1;
 
     public DummyGame() {
@@ -81,18 +81,17 @@ public class DummyGame implements IGameLogic {
         PointLight pointLight = new PointLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity);
         PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
         pointLight.setAttenuation(att);
-        pointLightList = new PointLight[] {pointLight};
+        pointLightList = new PointLight[]{pointLight};
 
-        
         // Spot Light
         lightPosition = new Vector3f(0, 0.0f, 10f);
         pointLight = new PointLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity);
         att = new PointLight.Attenuation(0.0f, 0.0f, 0.02f);
         pointLight.setAttenuation(att);
         Vector3f coneDir = new Vector3f(0, 0, -1);
-        float cutoff = (float)Math.cos(Math.toRadians(140));
+        float cutoff = (float) Math.cos(Math.toRadians(140));
         SpotLight spotLight = new SpotLight(pointLight, coneDir, cutoff);
-        spotLightList = new SpotLight[] {spotLight, new SpotLight(spotLight)};
+        spotLightList = new SpotLight[]{spotLight, new SpotLight(spotLight)};
 
         lightPosition = new Vector3f(-1, 0, 0);
         directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity);
@@ -126,27 +125,26 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput) {
-        for (GameItem gameItem : gameItems) {
-            // Update camera position
-            camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
+        // Update camera position
+        camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
 
-            // Update camera based on mouse            
-            if (mouseInput.isRightButtonPressed()) {
-                Vector2f rotVec = mouseInput.getDisplVec();
-                camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-            }
+        // Update camera based on mouse            
+        if (mouseInput.isRightButtonPressed()) {
+            Vector2f rotVec = mouseInput.getDisplVec();
+            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
         }
+
         // Update spot light direction
-        spotAngle += spotInc*0.05f;
-        if ( spotAngle > 2 ) {
+        spotAngle += spotInc * 0.05f;
+        if (spotAngle > 2) {
             spotInc = -1;
-        } else if ( spotAngle < -2 ) {
+        } else if (spotAngle < -2) {
             spotInc = 1;
         }
         double spotAngleRad = Math.toRadians(spotAngle);
         Vector3f coneDir = spotLightList[0].getConeDirection();
-        coneDir.y = (float)Math.sin(spotAngleRad);
-        
+        coneDir.y = (float) Math.sin(spotAngleRad);
+
         // Update directional light direction, intensity and colour
         lightAngle += 1.1f;
         if (lightAngle > 90) {
@@ -155,7 +153,7 @@ public class DummyGame implements IGameLogic {
                 lightAngle = -90;
             }
         } else if (lightAngle <= -80 || lightAngle >= 80) {
-            float factor = 1 - (float)(Math.abs(lightAngle) - 80)/ 10.0f;
+            float factor = 1 - (float) (Math.abs(lightAngle) - 80) / 10.0f;
             directionalLight.setIntensity(factor);
             directionalLight.getColor().y = Math.max(factor, 0.9f);
             directionalLight.getColor().z = Math.max(factor, 0.5f);

@@ -25,9 +25,9 @@ public class DummyGame implements IGameLogic {
     private final Camera camera;
 
     private GameItem[] gameItems;
-    
+
     private Vector3f ambientLight;
-    
+
     private PointLight pointLight;
 
     private static final float CAMERA_POS_STEP = 0.05f;
@@ -35,19 +35,19 @@ public class DummyGame implements IGameLogic {
     public DummyGame() {
         renderer = new Renderer();
         camera = new Camera();
-        cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);        
+        cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);
     }
 
     @Override
     public void init(Window window) throws Exception {
         renderer.init(window);
-        
+
         float reflectance = 1f;
         //Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
         //Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
-        
+
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
-        Texture texture = new Texture("/textures/grassblock.png");        
+        Texture texture = new Texture("/textures/grassblock.png");
         Material material = new Material(texture, reflectance);
 
         mesh.setMaterial(material);
@@ -59,7 +59,7 @@ public class DummyGame implements IGameLogic {
         //gameItem.setPosition(0, 0, -2);
         //gameItem.setPosition(0, 0, -0.2f);
         gameItems = new GameItem[]{gameItem};
-        
+
         ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
         Vector3f lightColour = new Vector3f(1, 1, 1);
         Vector3f lightPosition = new Vector3f(0, 0, 1);
@@ -97,15 +97,13 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput) {
-        for (GameItem gameItem : gameItems) {
-            // Update camera position
-            camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
+        // Update camera position
+        camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
 
-            // Update camera based on mouse            
-            if (mouseInput.isRightButtonPressed()) {
-                Vector2f rotVec = mouseInput.getDisplVec();
-                camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-            }
+        // Update camera based on mouse            
+        if (mouseInput.isRightButtonPressed()) {
+            Vector2f rotVec = mouseInput.getDisplVec();
+            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
         }
     }
 
