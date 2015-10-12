@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjglb.engine.Utils;
+import org.lwjglb.engine.Window;
 import org.lwjglb.engine.graph.ShaderProgram;
 
 public class Renderer {
@@ -57,8 +58,13 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render() {
+    public void render(Window window) {
         clear();
+
+        if ( window.isResized() ) {
+            glViewport(0, 0, window.getWidth(), window.getHeight());
+            window.setResized(false);
+        }
 
         shaderProgram.bind();
 

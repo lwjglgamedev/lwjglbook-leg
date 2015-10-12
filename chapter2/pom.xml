@@ -8,7 +8,7 @@
         <version>1.0</version>
     </parent>
 	
-    <artifactId>game-c3</artifactId>
+    <artifactId>game-c2</artifactId>
     <version>1.0</version>
 
     <dependencies>

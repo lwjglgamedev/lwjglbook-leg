@@ -2,6 +2,7 @@ package org.lwjglb.game;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.opengl.GL11.glViewport;
 import org.lwjglb.engine.IGameLogic;
 import org.lwjglb.engine.Window;
 
@@ -45,6 +46,11 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void render(Window window) {
+        if ( window.isResized() ) {
+            glViewport(0, 0, window.getWidth(), window.getHeight());
+            window.setResized(false);
+        }
+
         window.setClearColor(color, color, color, 0.0f);
         renderer.clear();
     }

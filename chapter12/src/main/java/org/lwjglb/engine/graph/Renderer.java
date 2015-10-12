@@ -85,6 +85,11 @@ public class Renderer {
 
         clear();
 
+        if ( window.isResized() ) {
+            glViewport(0, 0, window.getWidth(), window.getHeight());
+            window.setResized(false);
+        }
+
         renderScene(window, camera, gameItems, sceneLight);
 
         renderHud(window, hud);

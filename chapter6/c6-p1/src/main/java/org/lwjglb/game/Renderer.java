@@ -44,8 +44,13 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Mesh mesh) {
+    public void render(Window window, Mesh mesh) {
         clear();
+
+        if ( window.isResized() ) {
+            glViewport(0, 0, window.getWidth(), window.getHeight());
+            window.setResized(false);
+        }
 
         shaderProgram.bind();
         shaderProgram.setUniform("projectionMatrix", projectionMatrix);

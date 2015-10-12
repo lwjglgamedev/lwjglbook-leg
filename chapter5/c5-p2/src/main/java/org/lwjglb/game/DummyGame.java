@@ -65,7 +65,7 @@ public class DummyGame implements IGameLogic {
     @Override
     public void render(Window window) {
         window.setClearColor(color, color, color, 0.0f);
-        renderer.render(mesh);
+        renderer.render(window, mesh);
     }
 
     @Override

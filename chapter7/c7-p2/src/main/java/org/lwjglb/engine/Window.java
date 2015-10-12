@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.*;
@@ -15,9 +16,9 @@ public class Window {
 
     private final String title;
 
-    private final int width;
+    private int width;
 
-    private final int height;
+    private int height;
     
     private long windowHandle;
     
@@ -25,10 +26,15 @@ public class Window {
 
     private GLFWKeyCallback keyCallback;
 
-    public Window(String title, int width, int height) {
+    private GLFWWindowSizeCallback windowSizeCallback;
+
+    private boolean resized;
+
+    Window(String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
+        this.resized = false;
     }
 
     public void init() {
@@ -51,6 +57,15 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
+        // Setup resize callback
+        glfwSetWindowSizeCallback(windowHandle, windowSizeCallback = new GLFWWindowSizeCallback() {
+            @Override
+            public void invoke(long window, int width, int height) {
+                Window.this.width = width;
+                Window.this.height = height;
+                Window.this.setResized(true);
+            }
+        });
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(windowHandle, keyCallback = new GLFWKeyCallback() {
             @Override
@@ -109,6 +124,14 @@ public class Window {
         return height;
     }
     
+    public boolean isResized() {
+        return resized;
+    }
+
+    public void setResized(boolean resized) {
+        this.resized = resized;
+    }
+
     public void update() {
         glfwSwapBuffers(windowHandle);
         glfwPollEvents();
