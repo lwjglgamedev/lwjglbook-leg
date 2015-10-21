@@ -26,13 +26,15 @@ public class Transformation {
     }
     
     public Matrix4f getViewMatrix(Camera camera) {
-        viewMatrix.identity();
         Vector3f cameraPos = camera.getPosition();
         Vector3f rotation = camera.getRotation();
-        viewMatrix.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z).
-                rotateX((float)Math.toRadians(rotation.x)).
-                rotateY((float)Math.toRadians(rotation.y)).
-                rotateZ((float)Math.toRadians(rotation.z));
+        
+        viewMatrix.identity();
+        // First do the rotation so camera rotates over its position
+        viewMatrix.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
+                .rotate((float)Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
+        // Then do the translation
+        viewMatrix.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         return viewMatrix;
     }
 
