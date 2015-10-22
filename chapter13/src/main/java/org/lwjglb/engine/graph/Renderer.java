@@ -58,7 +58,7 @@ public class Renderer {
         skyBoxShaderProgram.createUniform("projectionMatrix");
         skyBoxShaderProgram.createUniform("modelViewMatrix");
         skyBoxShaderProgram.createUniform("texture_sampler");
-        skyBoxShaderProgram.createUniform("colour");
+        skyBoxShaderProgram.createUniform("ambientLight");
     }
 
     private void setupSceneShader() throws Exception {
@@ -107,10 +107,10 @@ public class Renderer {
             window.setResized(false);
         }
 
-        renderSkyBox(window, camera, scene);
-
         renderScene(window, camera, scene);
         
+        renderSkyBox(window, camera, scene);
+
         renderHud(window, hud);
     }
 
@@ -129,7 +129,7 @@ public class Renderer {
         viewMatrix.m32 = 0;
         Matrix4f modelViewMatrix = transformation.getModelViewMatrix(skyBox, viewMatrix);
         skyBoxShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
-        skyBoxShaderProgram.setUniform("colour", skyBox.getColour());
+        skyBoxShaderProgram.setUniform("ambientLight", scene.getSceneLight().getAmbientLight());
                 
         scene.getSkyBox().getMesh().render();
 

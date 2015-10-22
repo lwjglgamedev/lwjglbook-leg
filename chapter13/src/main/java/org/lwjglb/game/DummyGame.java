@@ -87,11 +87,7 @@ public class DummyGame implements IGameLogic {
         scene.setGameItems(gameItems);
 
         // Setup  SkyBox
-        Mesh skyBoxMesh = OBJLoader.loadMesh("/models/skybox.obj");
-        Texture skyBoxtexture = new Texture("/textures/skybox.png");
-        skyBoxMesh.setMaterial(new Material(skyBoxtexture, 0.0f));
-        SkyBox skyBox = new SkyBox(new Vector3f(1, 1, 1), skyBoxMesh);
-        skyBox.setPosition(0, 0, 0);
+        SkyBox skyBox = new SkyBox("/models/skybox.obj", "/textures/skybox.png");
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
         
@@ -104,8 +100,6 @@ public class DummyGame implements IGameLogic {
         camera.getPosition().x = 0.65f;
         camera.getPosition().y = 1.15f;
         camera.getPosition().y = 4.34f;
-        //camera.getRotation().x = 59f;
-        //camera.getRotation().y = -63f;
     }
     
     private void setupLights() {
@@ -113,7 +107,7 @@ public class DummyGame implements IGameLogic {
         scene.setSceneLight(sceneLight);
 
         // Ambient Light
-        sceneLight.setAmbientLight(new Vector3f(0.7f, 0.7f, 0.7f));
+        sceneLight.setAmbientLight(new Vector3f(1.0f, 1.0f, 1.0f));
 
         // Directional Light
         float lightIntensity = 1.0f;
@@ -165,12 +159,15 @@ public class DummyGame implements IGameLogic {
             if (lightAngle >= 360) {
                 lightAngle = -90;
             }
+            sceneLight.getAmbientLight().set(0.3f, 0.3f, 0.4f);
         } else if (lightAngle <= -80 || lightAngle >= 80) {
             float factor = 1 - (float) (Math.abs(lightAngle) - 80) / 10.0f;
+            sceneLight.getAmbientLight().set(factor, factor, factor);
             directionalLight.setIntensity(factor);
             directionalLight.getColor().y = Math.max(factor, 0.9f);
             directionalLight.getColor().z = Math.max(factor, 0.5f);
         } else {
+            sceneLight.getAmbientLight().set(1, 1, 1);
             directionalLight.setIntensity(1);
             directionalLight.getColor().x = 1;
             directionalLight.getColor().y = 1;
