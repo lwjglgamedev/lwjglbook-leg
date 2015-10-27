@@ -83,7 +83,8 @@
         <module>chapter11/c11-p3</module>
         <module>chapter12/c12-p1</module>
         <module>chapter12/c12-p2</module>
-        <module>chapter13</module>
+        <module>chapter13/c13-p1</module>
+        <module>chapter13/c13-p2</module>
     </modules>
 
     <properties>
