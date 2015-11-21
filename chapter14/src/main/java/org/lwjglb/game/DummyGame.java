@@ -70,8 +70,10 @@ public class DummyGame implements IGameLogic {
         // Create HUD
         hud = new Hud("DEMO");
 
-        camera.getPosition().x = 0.65f;
-        camera.getPosition().y = -0.0099f;
+        camera.getPosition().x = 0.0f;
+        camera.getPosition().z = 0.0f;
+        camera.getPosition().y = -0.2f;
+        camera.getRotation().x = 10.f;
     }
 
     private void setupLights() {

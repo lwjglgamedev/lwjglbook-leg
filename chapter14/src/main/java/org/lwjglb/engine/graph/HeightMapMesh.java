@@ -31,8 +31,8 @@ public class HeightMapMesh {
 
         Texture texture = new Texture(textureFile);
 
-        float incx = Math.abs(STARTX * 2) / (width - 1);
-        float incz = Math.abs(STARTZ * 2) / (height - 1);
+        float incx = getWidth() / (width - 1);
+        float incz = getHeight() / (height - 1);
 
         List<Float> positions = new ArrayList();
         List<Float> textCoords = new ArrayList();
@@ -78,7 +78,15 @@ public class HeightMapMesh {
     public Mesh getMesh() {
         return mesh;
     }
+
+    public static float getWidth() {
+        return Math.abs(-STARTX*2);
+    }
     
+    public static float getHeight() {
+        return Math.abs(-STARTZ*2);
+    }
+
     private float[] calcNormals(float[] posArr, int width, int height) {
         Vector3f v0 = new Vector3f();
         Vector3f v1 = new Vector3f();

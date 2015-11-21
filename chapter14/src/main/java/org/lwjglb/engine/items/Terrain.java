@@ -6,18 +6,18 @@ public class Terrain {
 
     private final GameItem[] gameItems;
 
-    public Terrain(int size, float scale, float minY, float maxY, String heightMap, String textureFile, int textInc) throws Exception {
-        gameItems = new GameItem[size * size];
+    public Terrain(int blocksPerRow, float scale, float minY, float maxY, String heightMap, String textureFile, int textInc) throws Exception {
+        gameItems = new GameItem[blocksPerRow * blocksPerRow];
         HeightMapMesh heightMapMesh = new HeightMapMesh(minY, maxY, heightMap, textureFile, textInc);
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                float x = -scale + col * scale;
-                float z = scale - row * scale;
+        for (int row = 0; row < blocksPerRow; row++) {
+            for (int col = 0; col < blocksPerRow; col++) {
+                float xDisplacement = (col - ((float) blocksPerRow - 1) / (float) 2) * scale * HeightMapMesh.getWidth();
+                float zDisplacement = (row - ((float) blocksPerRow - 1) / (float) 2) * scale * HeightMapMesh.getHeight();
 
                 GameItem terrainBlock = new GameItem(heightMapMesh.getMesh());
                 terrainBlock.setScale(scale);
-                terrainBlock.setPosition(x, 0, z);
-                gameItems[row * size + col] = terrainBlock;
+                terrainBlock.setPosition(xDisplacement, 0, zDisplacement);
+                gameItems[row * blocksPerRow + col] = terrainBlock;
             }
         }
     }
