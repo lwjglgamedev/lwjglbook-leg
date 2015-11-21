@@ -11,13 +11,13 @@ import static org.lwjgl.opengl.GL30.*;
 public class Mesh {
 
     private final int vaoId;
-    
+
     private final int posVboId;
 
     private final int idxVboId;
 
     private final int vertexCount;
-    
+
     public Mesh(float[] positions, int[] indices) {
         vertexCount = indices.length;
 
@@ -31,7 +31,7 @@ public class Mesh {
         glBindBuffer(GL_ARRAY_BUFFER, posVboId);
         glBufferData(GL_ARRAY_BUFFER, posBuffer, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-        
+
         // Index VBO
         idxVboId = glGenBuffers();
         IntBuffer indicesBuffer = BufferUtils.createIntBuffer(indices.length);
@@ -42,7 +42,7 @@ public class Mesh {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
-    
+
     public int getVaoId() {
         return vaoId;
     }

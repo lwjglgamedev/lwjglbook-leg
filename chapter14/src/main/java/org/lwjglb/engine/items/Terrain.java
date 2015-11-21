@@ -15,7 +15,7 @@ public class Terrain {
                 float z = scale - row * scale;
 
                 GameItem terrainBlock = new GameItem(heightMapMesh.getMesh());
-                terrainBlock.setScale(10);
+                terrainBlock.setScale(scale);
                 terrainBlock.setPosition(x, 0, z);
                 gameItems[row * size + col] = terrainBlock;
             }

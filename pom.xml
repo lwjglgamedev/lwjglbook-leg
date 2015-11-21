@@ -87,6 +87,7 @@
         <module>chapter13/c13-p1</module>
         <module>chapter13/c13-p2</module>
         <module>chapter14</module>
+        <!--<module>chapter15</module>-->
     </modules>
 
     <properties>
@@ -94,7 +95,7 @@
 		<!-- Versions -->
         <java.version>1.8</java.version>
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
-        <lwjgl.version>3.0.0a</lwjgl.version>
+        <lwjgl.version>3.0.0b</lwjgl.version>
         <natives.version>0.0.6</natives.version>
         <joml.version>1.6.5</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>

@@ -29,7 +29,7 @@ public class Renderer {
     public void render(Window window, Mesh mesh) {
         clear();
 
-        if ( window.isResized() ) {
+        if (window.isResized()) {
             glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResized(false);
         }
