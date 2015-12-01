@@ -31,8 +31,8 @@ public class HeightMapMesh {
 
         Texture texture = new Texture(textureFile);
 
-        float incx = getWidth() / (width - 1);
-        float incz = getHeight() / (height - 1);
+        float incx = getXLength() / (width - 1);
+        float incz = getZLength() / (height - 1);
 
         List<Float> positions = new ArrayList();
         List<Float> textCoords = new ArrayList();
@@ -79,11 +79,11 @@ public class HeightMapMesh {
         return mesh;
     }
 
-    public static float getWidth() {
+    public static float getXLength() {
         return Math.abs(-STARTX*2);
     }
     
-    public static float getHeight() {
+    public static float getZLength() {
         return Math.abs(-STARTZ*2);
     }
 
