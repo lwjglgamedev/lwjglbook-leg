@@ -88,6 +88,7 @@
         <module>chapter13/c13-p2</module>
         <module>chapter14</module>
         <module>chapter15</module>
+        <module>chapter16</module>
     </modules>
 
     <properties>
