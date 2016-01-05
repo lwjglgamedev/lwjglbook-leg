@@ -89,6 +89,7 @@
         <module>chapter14</module>
         <module>chapter15</module>
         <module>chapter16</module>
+        <module>chapter17</module>
     </modules>
 
     <properties>
@@ -98,7 +99,7 @@
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
         <lwjgl.version>3.0.0b</lwjgl.version>
         <natives.version>0.0.6</natives.version>
-        <joml.version>1.6.5</joml.version>
+        <joml.version>1.6.6</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 </project>
