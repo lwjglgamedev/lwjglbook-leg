@@ -140,7 +140,7 @@ public class DummyGame implements IGameLogic {
         camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
         // Check if there has been a collision. If true, set the y position to
         // the maximum height
-        float height = terrain != null ? terrain.getHeight(camera.getPosition()) : Float.MIN_VALUE;
+        float height = terrain != null ? terrain.getHeight(camera.getPosition()) : -Float.MAX_VALUE;
         if (camera.getPosition().y <= height) {
             camera.setPosition(prevPos.x, prevPos.y, prevPos.z);
         }
