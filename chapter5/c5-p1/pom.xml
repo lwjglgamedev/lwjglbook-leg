@@ -22,7 +22,7 @@
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-platform</artifactId>
             <version>${lwjgl.version}</version>
-            <classifier>natives-windows</classifier>
+            <classifier>${native.target}</classifier>
         </dependency>
     </dependencies>	
 </project>

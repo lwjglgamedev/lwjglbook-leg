@@ -91,6 +91,7 @@
         <module>chapter16</module>
         <module>chapter17</module>
         <module>chapter18/c18-p1</module>
+        <module>chapter18/c18-p2</module>
     </modules>
 
     <properties>
@@ -103,4 +104,29 @@
         <joml.version>1.6.7</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
+	
+	<profiles>
+		<profile>
+			<id>windows-profile</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<native.target>natives-windows</native.target>
+			</properties>				
+		</profile>
+		<profile>
+			<id>linux-profile</id>
+			<activation>
+				<os>
+					<family>Linux</family>
+				</os>
+			</activation>
+			<properties>
+				<native.target>natives-linux</native.target>
+			</properties>				
+		</profile>
+	</profiles>
 </project>
