@@ -17,9 +17,9 @@ public class Window {
     private int width;
 
     private int height;
-    
+
     private long windowHandle;
-    
+
     private GLFWErrorCallback errorCallback;
 
     private GLFWKeyCallback keyCallback;
@@ -28,10 +28,13 @@ public class Window {
 
     private boolean resized;
 
-    Window(String title, int width, int height) {
+    private boolean vSync;
+
+    public Window(String title, int width, int height, boolean vSync) {
         this.title = title;
         this.width = width;
         this.height = height;
+        this.vSync = vSync;
         this.resized = false;
     }
 
@@ -85,31 +88,34 @@ public class Window {
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(windowHandle);
-        // Enable v-sync
-        glfwSwapInterval(1);
+
+        if (isvSync()) {
+            // Enable v-sync
+            glfwSwapInterval(1);
+        }
 
         // Make the window visible
         glfwShowWindow(windowHandle);
-        
+
         GL.createCapabilities();
 
         // Set the clear color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glEnable(GL_DEPTH_TEST);
     }
-    
+
     public void setClearColor(float r, float g, float b, float alpha) {
         glClearColor(r, g, b, alpha);
     }
-    
+
     public boolean isKeyPressed(int keyCode) {
         return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
     }
-    
+
     public boolean windowShouldClose() {
         return glfwWindowShouldClose(windowHandle) == GL_TRUE;
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -121,13 +127,21 @@ public class Window {
     public int getHeight() {
         return height;
     }
-    
+
     public boolean isResized() {
         return resized;
     }
 
     public void setResized(boolean resized) {
         this.resized = resized;
+    }
+
+    public boolean isvSync() {
+        return vSync;
+    }
+
+    public void setvSync(boolean vSync) {
+        this.vSync = vSync;
     }
 
     public void update() {

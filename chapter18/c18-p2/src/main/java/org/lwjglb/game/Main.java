@@ -9,9 +9,10 @@ public class Main {
  
     public static void main(String[] args) {
         try {
+            boolean vSync = true;
             IGameLogic gameLogic = new DummyGame();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            GameEngine gameEng = new GameEngine("GAME", (int)dim.getWidth() - 70, (int)dim.getHeight() -70, gameLogic);
+            GameEngine gameEng = new GameEngine("GAME", (int)dim.getWidth() - 70, (int)dim.getHeight() -70, vSync, gameLogic);
             gameEng.start();
         } catch (Exception excp) {
             excp.printStackTrace();

@@ -16,9 +16,9 @@ public class GameEngine implements Runnable {
 
     private final MouseInput mouseInput;
 
-    public GameEngine(String windowTitle, int width, int height, IGameLogic gameLogic) throws Exception {
+    public GameEngine(String windowTitle, int width, int height, boolean vSync, IGameLogic gameLogic) throws Exception {
         gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
-        window = new Window(windowTitle, width, height);
+        window = new Window(windowTitle, width, height, vSync);
         mouseInput = new MouseInput();
         this.gameLogic = gameLogic;
         timer = new Timer();
@@ -66,7 +66,9 @@ public class GameEngine implements Runnable {
 
             render();
 
-            sync();
+            if ( !window.isvSync() ) {
+                sync();
+            }
         }
     }
 

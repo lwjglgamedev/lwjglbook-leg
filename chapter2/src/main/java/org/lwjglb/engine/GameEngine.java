@@ -1,7 +1,5 @@
 package org.lwjglb.engine;
 
-import org.lwjglb.game.Renderer;
-
 public class GameEngine implements Runnable {
 
     public static final int TARGET_FPS = 75;
@@ -15,10 +13,10 @@ public class GameEngine implements Runnable {
     private final Timer timer;
 
     private final IGameLogic gameLogic;
-    
-    public GameEngine(String windowTitle, int width, int height, IGameLogic gameLogic) throws Exception {
+
+    public GameEngine(String windowTitle, int width, int height, boolean vSync, IGameLogic gameLogic) throws Exception {
         gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
-        window = new Window(windowTitle, width, height);
+        window = new Window(windowTitle, width, height, vSync);
         this.gameLogic = gameLogic;
         timer = new Timer();
     }
@@ -62,7 +60,9 @@ public class GameEngine implements Runnable {
 
             render();
 
-            sync();
+            if (!window.isvSync()) {
+                sync();
+            }
         }
     }
 
