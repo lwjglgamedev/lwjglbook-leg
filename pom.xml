@@ -92,6 +92,9 @@
         <module>chapter17</module>
         <module>chapter18/c18-p1</module>
         <module>chapter18/c18-p2</module>
+        <module>chapter19/c19-p1</module>
+        <module>chapter19/c19-p2</module>
+        <module>chapter19/c19-p3</module>
     </modules>
 
     <properties>
@@ -101,7 +104,7 @@
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
         <lwjgl.version>3.0.0b</lwjgl.version>
         <natives.version>0.0.6</natives.version>
-        <joml.version>1.6.7</joml.version>
+        <joml.version>1.7.0</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 	
