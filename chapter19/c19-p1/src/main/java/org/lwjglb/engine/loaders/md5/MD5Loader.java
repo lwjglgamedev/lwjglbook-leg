@@ -12,6 +12,8 @@ import org.lwjglb.engine.items.GameItem;
 
 public class MD5Loader {
 
+    private static final String NORMAL_FILE_SUFFIX = "_normal";
+    
     public static GameItem process(MD5Model md5Model, Vector3f defaultColour) throws Exception {
         List<MD5Mesh> md5MeshList = md5Model.getMeshes();
         int numMeshes = md5MeshList.size();
@@ -98,7 +100,7 @@ public class MD5Loader {
             if (pos > 0) {
                 String basePath = texturePath.substring(0, pos);
                 String extension = texturePath.substring(pos, texturePath.length());
-                String normalMapFileName = basePath + "_local" + extension;
+                String normalMapFileName = basePath + NORMAL_FILE_SUFFIX + extension;
                 if (Utils.existsResourceFile(normalMapFileName)) {
                     Texture normalMap = new Texture(normalMapFileName);
                     material.setNormalMap(normalMap);
