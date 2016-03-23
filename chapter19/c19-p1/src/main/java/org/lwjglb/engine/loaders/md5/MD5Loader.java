@@ -13,17 +13,20 @@ import org.lwjglb.engine.items.GameItem;
 public class MD5Loader {
 
     private static final String NORMAL_FILE_SUFFIX = "_normal";
-    
+
     public static GameItem process(MD5Model md5Model, Vector3f defaultColour) throws Exception {
         List<MD5Mesh> md5MeshList = md5Model.getMeshes();
-        int numMeshes = md5MeshList.size();
-        Mesh[] meshes = new Mesh[numMeshes];
-        for (int i = 0; i < numMeshes; i++) {
-            Mesh mesh = generateMesh(md5Model, md5MeshList.get(i), defaultColour);
-            meshes[i] = mesh;
+
+        List<Mesh> list = new ArrayList<>();
+        for (MD5Mesh md5Mesh : md5Model.getMeshes()) {
+            Mesh mesh = generateMesh(md5Model, md5Mesh, defaultColour);
+            handleTexture(mesh, md5Mesh, defaultColour);
+            list.add(mesh);
         }
-        GameItem gameItem = new GameItem(meshes);            
-        
+        Mesh[] meshes = new Mesh[list.size()];
+        meshes = list.toArray(meshes);
+        GameItem gameItem = new GameItem(meshes);
+
         return gameItem;
     }
 
@@ -83,8 +86,6 @@ public class MD5Loader {
         float[] normalsArr = VertexInfo.toNormalArr(vertexInfoList);
         int[] indicesArr = indices.stream().mapToInt(i -> i).toArray();
         Mesh mesh = new Mesh(positionsArr, textCoordsArr, normalsArr, indicesArr);
-
-        handleTexture(mesh, md5Mesh, defaultColour);
 
         return mesh;
     }

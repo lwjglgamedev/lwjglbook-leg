@@ -30,9 +30,9 @@ public class AnimatedFrame {
     }
 
     public void setMatrix(int pos, Matrix4f localJointMatrix, Matrix4f invJointMatrix) {
+        localJointMatrices[pos] = localJointMatrix;
         Matrix4f mat = new Matrix4f(localJointMatrix);
         mat.mul(invJointMatrix);
-        localJointMatrices[pos] = localJointMatrix;
         jointMatrices[pos] = mat;
     }
 }

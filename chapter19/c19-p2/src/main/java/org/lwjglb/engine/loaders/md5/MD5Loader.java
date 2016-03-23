@@ -91,8 +91,6 @@ public class MD5Loader {
             }
         }
 
-        String str = "";
-        
         for (MD5Mesh.MD5Triangle tri : md5Mesh.getTriangles()) {
             indices.add(tri.getVertex0());
             indices.add(tri.getVertex1());
