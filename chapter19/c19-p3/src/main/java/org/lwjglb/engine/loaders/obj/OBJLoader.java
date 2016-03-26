@@ -1,7 +1,5 @@
 package org.lwjglb.engine.loaders.obj;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
@@ -12,7 +10,7 @@ import org.lwjglb.engine.graph.Mesh;
 public class OBJLoader {
 
     public static Mesh loadMesh(String fileName) throws Exception {
-        List<String> lines = Files.readAllLines(Paths.get(OBJLoader.class.getResource(fileName).toURI()));
+        List<String> lines = Utils.readAllLines(fileName);
         
         List<Vector3f> vertices = new ArrayList<>();
         List<Vector2f> textures = new ArrayList<>();

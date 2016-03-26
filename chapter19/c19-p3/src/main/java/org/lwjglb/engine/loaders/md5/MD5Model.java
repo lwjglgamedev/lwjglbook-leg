@@ -1,9 +1,8 @@
 package org.lwjglb.engine.loaders.md5;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjglb.engine.Utils;
 
 public class MD5Model {
 
@@ -54,7 +53,7 @@ public class MD5Model {
     }
 
     public static MD5Model parse(String meshModelFile) throws Exception {
-        List<String> lines = Files.readAllLines(Paths.get(MD5Model.class.getResource(meshModelFile).toURI()));
+        List<String> lines = Utils.readAllLines(meshModelFile);
 
         MD5Model result = new MD5Model();
 
