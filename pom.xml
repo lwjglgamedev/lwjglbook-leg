@@ -68,7 +68,7 @@
 				<version>${mvn.jarplug.version}</version>
 				<configuration>
 					<archive>
-						<manifest>						
+						<manifest>
 							<addClasspath>true</addClasspath>
 							<mainClass>${main.class}</mainClass>
 							<classpathPrefix>lib/</classpathPrefix>
@@ -127,7 +127,7 @@
         <joml.version>1.7.1</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
-	
+
 	<profiles>
 		<profile>
 			<id>windows-profile</id>
@@ -138,7 +138,7 @@
 			</activation>
 			<properties>
 				<native.target>natives-windows</native.target>
-			</properties>				
+			</properties>
 		</profile>
 		<profile>
 			<id>linux-profile</id>
@@ -149,7 +149,18 @@
 			</activation>
 			<properties>
 				<native.target>natives-linux</native.target>
-			</properties>				
+			</properties>
+		</profile>
+		<profile>
+			<id>OSX-profile</id>
+			<activation>
+				<os>
+					<family>OSX</family>
+				</os>
+			</activation>
+			<properties>
+				<native.target>natives-osx</native.target>
+			</properties>
 		</profile>
 	</profiles>
 </project>
