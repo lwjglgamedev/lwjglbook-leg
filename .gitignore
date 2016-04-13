@@ -38,3 +38,9 @@
 
 .idea/
 *.iml
+/chapter4.1/target/
+/chapter5.1/target/
+/chapter13.1/target/
+/chapter18.1/target/
+/c19-p3/target/
+/c20/target/

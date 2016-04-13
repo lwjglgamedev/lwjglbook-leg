@@ -54,10 +54,6 @@ public class DummyGame implements IGameLogic {
         GameItem gameItem = new GameItem(mesh);
         gameItem.setScale(0.5f);
         gameItem.setPosition(0, 0, -2);
-        //gameItem.setPosition(0, 0, -2);
-        //gameItem.setScale(0.1f);
-        //gameItem.setPosition(0, 0, -2);
-        //gameItem.setPosition(0, 0, -0.2f);
         gameItems = new GameItem[]{gameItem};
 
         ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);

@@ -27,11 +27,11 @@ public class Main {
 
             // Release window and window callbacks
             glfwDestroyWindow(window);
-            keyCallback.release();
+            keyCallback.free();
         } finally {
             // Terminate GLFW and release the GLFWerrorfun
             glfwTerminate();
-            errorCallback.release();
+            errorCallback.free();
         }
     }
 
