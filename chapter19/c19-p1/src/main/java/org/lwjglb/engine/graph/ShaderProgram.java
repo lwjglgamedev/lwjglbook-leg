@@ -222,7 +222,7 @@ public class ShaderProgram {
 
         glValidateProgram(programId);
         if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
-            throw new Exception("Error validating Shader code: " + glGetShaderInfoLog(programId, 1024));
+            System.out.println("Warning validating Shader code: " + glGetShaderInfoLog(programId, 1024));
         }
 
     }
