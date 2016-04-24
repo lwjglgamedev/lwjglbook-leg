@@ -163,7 +163,7 @@
 			<id>OSX-profile</id>
 			<activation>
 				<os>
-					<family>OSX</family>
+					<family>mac</family>
 				</os>
 			</activation>
 			<properties>
