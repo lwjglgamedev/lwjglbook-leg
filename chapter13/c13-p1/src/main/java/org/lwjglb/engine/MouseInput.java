@@ -43,8 +43,8 @@ public class MouseInput {
         });
         glfwSetCursorEnterCallback(window.getWindowHandle(), cursorEnterCallback = new GLFWCursorEnterCallback() {
             @Override
-            public void invoke(long window, int entered) {
-                inWindow = entered == 1;
+            public void invoke(long window, boolean entered) {
+                inWindow = entered;
             }
         });
         glfwSetMouseButtonCallback(window.getWindowHandle(), mouseButtonCallback = new GLFWMouseButtonCallback() {

@@ -44,7 +44,7 @@ public class Window {
         glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if (glfwInit() != GL11.GL_TRUE) {
+        if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
@@ -77,7 +77,7 @@ public class Window {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                    glfwSetWindowShouldClose(window, GL_TRUE);
+                    glfwSetWindowShouldClose(window, true);
                 }
             }
         });
@@ -127,7 +127,7 @@ public class Window {
     }
 
     public boolean windowShouldClose() {
-        return glfwWindowShouldClose(windowHandle) == GL_TRUE;
+        return glfwWindowShouldClose(windowHandle);
     }
 
     public String getTitle() {
