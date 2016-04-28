@@ -43,9 +43,7 @@ struct DirectionalLight
 struct Material
 {
     vec3 colour;
-    sampler2D texture_sampler;
     int hasTexture;
-    sampler2D normalMap;
     int hasNormalMap;
     float reflectance;
 };
@@ -57,6 +55,8 @@ struct Fog
     float density;
 };
 
+uniform sampler2D texture_sampler;
+uniform sampler2D normalMap;
 uniform vec3 ambientLight;
 uniform float specularPower;
 uniform Material material;
@@ -137,7 +137,7 @@ vec4 calcBaseColour(Material material, vec2 text_coord)
     vec4 baseColour;
     if ( material.hasTexture == 1 )
     {
-        baseColour = texture(material.texture_sampler, text_coord);
+        baseColour = texture(texture_sampler, text_coord);
     }
     else
     {
@@ -151,7 +151,7 @@ vec3 calcNormal(Material material, vec3 normal, vec2 text_coord, mat4 modelViewM
     vec3 newNormal = normal;
     if ( material.hasNormalMap == 1 )
     {
-        newNormal = texture(material.normalMap, text_coord).rgb;
+        newNormal = texture(normalMap, text_coord).rgb;
         newNormal = normalize(newNormal * 2 - 1);
         newNormal = normalize(modelViewMatrix * vec4(newNormal, 0.0)).xyz;
     }

@@ -73,9 +73,7 @@ public class ShaderProgram {
 
     public void createMaterialUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
-        createUniform(uniformName + ".texture_sampler");
         createUniform(uniformName + ".hasTexture");
-        createUniform(uniformName + ".normalMap");
         createUniform(uniformName + ".hasNormalMap");
         createUniform(uniformName + ".reflectance");
     }
@@ -172,9 +170,7 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, Material material) {
         setUniform(uniformName + ".colour", material.getColour());
-        setUniform(uniformName + ".texture_sampler", 0);
         setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
-        setUniform(uniformName + ".normalMap", 1);
         setUniform(uniformName + ".hasNormalMap", material.hasNormalMap() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }

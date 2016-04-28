@@ -76,6 +76,8 @@ public class Renderer {
         // Create uniforms for modelView and projection matrices
         sceneShaderProgram.createUniform("projectionMatrix");
         sceneShaderProgram.createUniform("modelViewMatrix");
+        sceneShaderProgram.createUniform("texture_sampler");
+        sceneShaderProgram.createUniform("normalMap");
         // Create uniform for material
         sceneShaderProgram.createMaterialUniform("material");
         // Create lighting related uniforms
@@ -160,6 +162,8 @@ public class Renderer {
         renderLights(viewMatrix, sceneLight);
 
         sceneShaderProgram.setUniform("fog", scene.getFog());
+        sceneShaderProgram.setUniform("texture_sampler", 0);
+        sceneShaderProgram.setUniform("normalMap", 1);
         // Render each mesh with the associated game Items
         Map<Mesh, List<GameItem>> mapMeshes = scene.getGameMeshes();
         for (Mesh mesh : mapMeshes.keySet()) {
