@@ -10,8 +10,6 @@ public class Scene {
 
     private Map<Mesh, List<GameItem>> meshMap;
     
-    private GameItem[] gameItems;
-    
     private SkyBox skyBox;
     
     private SceneLight sceneLight;
