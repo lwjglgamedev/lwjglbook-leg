@@ -121,6 +121,7 @@
         <module>chapter19/c19-p2</module>
         <module>chapter19/c19-p3</module>
         <module>chapter20/c20-p1</module>
+        <module>chapter20/c20-p2</module>
     </modules>
 
     <properties>
