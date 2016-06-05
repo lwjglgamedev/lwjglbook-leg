@@ -18,45 +18,49 @@ public class MD5Loader {
 
     /**
      * Constructs and AnimGameItem instace based on a MD5 Model an MD5 Animation
-     * 
+     *
      * @param md5Model The MD5 Model
      * @param animModel The MD5 Animation
      * @param defaultColour Default colour to use if there are no textures
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public static AnimGameItem process(MD5Model md5Model, MD5AnimModel animModel, Vector3f defaultColour) throws Exception {
         List<Matrix4f> invJointMatrices = calcInJointMatrices(md5Model);
         List<AnimatedFrame> animatedFrames = processAnimationFrames(md5Model, animModel, invJointMatrices);
-        
+
         List<Mesh> list = new ArrayList<>();
         for (MD5Mesh md5Mesh : md5Model.getMeshes()) {
             Mesh mesh = generateMesh(md5Model, md5Mesh);
             handleTexture(mesh, md5Mesh, defaultColour);
             list.add(mesh);
         }
-        
+
         Mesh[] meshes = new Mesh[list.size()];
         meshes = list.toArray(meshes);
-        
+
         AnimGameItem result = new AnimGameItem(meshes, animatedFrames, invJointMatrices);
         return result;
     }
 
     private static List<Matrix4f> calcInJointMatrices(MD5Model md5Model) {
         List<Matrix4f> result = new ArrayList<>();
-        
+
         List<MD5JointInfo.MD5JointData> joints = md5Model.getJointInfo().getJoints();
-        for(MD5JointInfo.MD5JointData joint : joints) {
-            Matrix4f translateMat = new Matrix4f().translate(joint.getPosition());
-            Matrix4f rotationMat = new Matrix4f().rotate(joint.getOrientation());
-            Matrix4f mat = translateMat.mul(rotationMat);
-            mat.invert();
+        for (MD5JointInfo.MD5JointData joint : joints) {
+            // Calculate translation matrix using joint position
+            // Calculates rotation matrix using joint orientation
+            // Gets transformation matrix bu multiplying translation matrix by rotation matrix
+            // Instead of multiplying we can apply rotation which is optimized internally
+            Matrix4f mat = new Matrix4f()
+                    .translate(joint.getPosition())
+                    .rotate(joint.getOrientation())
+                    .invert();
             result.add(mat);
-        } 
+        }
         return result;
     }
-    
+
     private static Mesh generateMesh(MD5Model md5Model, MD5Mesh md5Mesh) {
         List<AnimVertex> vertices = new ArrayList<>();
         List<Integer> indices = new ArrayList<>();
@@ -109,7 +113,7 @@ public class MD5Loader {
 
             v0.normal.add(normal).normalize();
             v1.normal.add(normal).normalize();
-            v2.normal.add(normal).normalize();            
+            v2.normal.add(normal).normalize();
         }
 
         Mesh mesh = createMesh(vertices, indices);
@@ -119,7 +123,7 @@ public class MD5Loader {
     private static List<AnimatedFrame> processAnimationFrames(MD5Model md5Model, MD5AnimModel animModel, List<Matrix4f> invJointMatrices) {
         List<AnimatedFrame> animatedFrames = new ArrayList<>();
         List<MD5Frame> frames = animModel.getFrames();
-        for(MD5Frame frame : frames) {
+        for (MD5Frame frame : frames) {
             AnimatedFrame data = processAnimationFrame(md5Model, animModel, frame, invJointMatrices);
             animatedFrames.add(data);
         }
@@ -128,7 +132,7 @@ public class MD5Loader {
 
     private static AnimatedFrame processAnimationFrame(MD5Model md5Model, MD5AnimModel animModel, MD5Frame frame, List<Matrix4f> invJointMatrices) {
         AnimatedFrame result = new AnimatedFrame();
-        
+
         MD5BaseFrame baseFrame = animModel.getBaseFrame();
         List<MD5Hierarchy.MD5HierarchyData> hierarchyList = animModel.getHierarchy().getHierarchyDataList();
 
@@ -144,42 +148,42 @@ public class MD5Loader {
             int flags = hierarchyList.get(i).getFlags();
             int startIndex = hierarchyList.get(i).getStartIndex();
 
-            if ( (flags & 1 ) > 0) {
+            if ((flags & 1) > 0) {
                 position.x = frameData[startIndex++];
             }
-            if ( (flags & 2) > 0) {
+            if ((flags & 2) > 0) {
                 position.y = frameData[startIndex++];
             }
-            if ( (flags & 4) > 0) {
+            if ((flags & 4) > 0) {
                 position.z = frameData[startIndex++];
             }
-            if ( (flags & 8) > 0) {
+            if ((flags & 8) > 0) {
                 orientation.x = frameData[startIndex++];
             }
-            if ( (flags & 16) > 0) {
+            if ((flags & 16) > 0) {
                 orientation.y = frameData[startIndex++];
             }
-            if ( (flags & 32) > 0) {
+            if ((flags & 32) > 0) {
                 orientation.z = frameData[startIndex++];
             }
             // Update Quaternion's w component
             orientation = MD5Utils.calculateQuaternion(orientation.x, orientation.y, orientation.z);
-            
+
             // Calculate translation and rotation matrices for this joint
             Matrix4f translateMat = new Matrix4f().translate(position);
             Matrix4f rotationMat = new Matrix4f().rotate(orientation);
             Matrix4f jointMat = translateMat.mul(rotationMat);
-            
+
             // Joint position is relative to joint's parent index position. Use parent matrices
             // to transform it to model space
-            if ( joint.getParentIndex() > -1 ) {
+            if (joint.getParentIndex() > -1) {
                 Matrix4f parentMatrix = result.getLocalJointMatrices()[joint.getParentIndex()];
                 jointMat = new Matrix4f(parentMatrix).mul(jointMat);
             }
 
             result.setMatrix(i, jointMat, invJointMatrices.get(i));
         }
-        
+
         return result;
     }
 
@@ -220,7 +224,7 @@ public class MD5Loader {
         int[] indicesArr = Utils.listIntToArray(indices);
         int[] jointIndicesArr = Utils.listIntToArray(jointIndices);
         float[] weightsArr = Utils.listToArray(weights);
-        
+
         Mesh result = new Mesh(positionsArr, textCoordsArr, normalsArr, indicesArr, jointIndicesArr, weightsArr);
 
         return result;

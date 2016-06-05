@@ -132,8 +132,8 @@
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
 		<mvn.jarplug.version>2.6</mvn.jarplug.version>
         <lwjgl.version>3.0.0-SNAPSHOT</lwjgl.version>
-        <natives.version>0.0.6</natives.version>
-        <joml.version>1.7.1</joml.version>
+        <natives.version>0.0.7</natives.version>
+        <joml.version>1.8.0</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 
