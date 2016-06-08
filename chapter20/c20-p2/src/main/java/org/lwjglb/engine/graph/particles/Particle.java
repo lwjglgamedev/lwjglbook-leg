@@ -7,7 +7,7 @@ import org.lwjglb.engine.items.GameItem;
 
 public class Particle extends GameItem {
 
-    private long updateTextureMills;
+    private long updateTextureMillis;
     
     private long currentAnimTimeMillis;
     
@@ -20,11 +20,11 @@ public class Particle extends GameItem {
 
     private int animFrames;
     
-    public Particle(Mesh mesh, Vector3f speed, long ttl, long updateTextureMills) {
+    public Particle(Mesh mesh, Vector3f speed, long ttl, long updateTextureMillis) {
         super(mesh);
         this.speed = new Vector3f(speed);
         this.ttl = ttl;
-        this.updateTextureMills = updateTextureMills;
+        this.updateTextureMillis = updateTextureMillis;
         this.currentAnimTimeMillis = 0;
         Texture texture = this.getMesh().getMaterial().getTexture();
         this.animFrames = texture.getNumCols() * texture.getNumRows();
@@ -39,7 +39,7 @@ public class Particle extends GameItem {
         setScale(baseParticle.getScale());
         this.speed = new Vector3f(baseParticle.speed);
         this.ttl = baseParticle.geTtl();
-        this.updateTextureMills = baseParticle.getUpdateTextureMills();
+        this.updateTextureMillis = baseParticle.getUpdateTextureMillis();
         this.currentAnimTimeMillis = 0;
         this.animFrames = baseParticle.getAnimFrames();
     }
@@ -52,8 +52,8 @@ public class Particle extends GameItem {
         return speed;
     }
 
-    public long getUpdateTextureMills() {
-        return updateTextureMills;
+    public long getUpdateTextureMillis() {
+        return updateTextureMillis;
     }
 
     public void setSpeed(Vector3f speed) {
@@ -68,8 +68,8 @@ public class Particle extends GameItem {
         this.ttl = ttl;
     }
 
-    public void setUpdateTextureMills(long updateTextureMills) {
-        this.updateTextureMills = updateTextureMills;
+    public void setUpdateTextureMills(long updateTextureMillis) {
+        this.updateTextureMillis = updateTextureMillis;
     }
     
     /**
@@ -80,7 +80,7 @@ public class Particle extends GameItem {
     public long updateTtl(long elapsedTime) {
         this.ttl -= elapsedTime;
         this.currentAnimTimeMillis += elapsedTime;
-        if ( this.currentAnimTimeMillis >= this.getUpdateTextureMills() && this.animFrames > 0 ) {
+        if ( this.currentAnimTimeMillis >= this.getUpdateTextureMillis() && this.animFrames > 0 ) {
             this.currentAnimTimeMillis = 0;
             int pos = this.getTextPos();
             pos++;
