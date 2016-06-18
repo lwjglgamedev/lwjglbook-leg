@@ -91,17 +91,17 @@
     </build>
 
     <modules>
-        <module>chapter1</module>
-        <module>chapter2</module>
-        <module>chapter4</module>
-        <module>chapter5/c5-p1</module>
-        <module>chapter5/c5-p2</module>
-        <module>chapter6/c6-p1</module>
-        <module>chapter6/c6-p2</module>
-        <module>chapter7/c7-p1</module>
-        <module>chapter7/c7-p2</module>
-        <module>chapter8</module>
-        <module>chapter9</module>
+        <module>chapter01</module>
+        <module>chapter02</module>
+        <module>chapter04</module>
+        <module>chapter05/c05-p1</module>
+        <module>chapter05/c05-p2</module>
+        <module>chapter06/c06-p1</module>
+        <module>chapter06/c06-p2</module>
+        <module>chapter07/c07-p1</module>
+        <module>chapter07/c07-p2</module>
+        <module>chapter08</module>
+        <module>chapter09</module>
         <module>chapter10</module>
         <module>chapter11/c11-p1</module>
         <module>chapter11/c11-p2</module>

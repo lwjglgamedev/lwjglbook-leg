@@ -6,10 +6,9 @@
         <groupId>org.lwjglb</groupId>
         <artifactId>book</artifactId>
         <version>1.0</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 	
-    <artifactId>game-c7-p2</artifactId>
+    <artifactId>game-c09</artifactId>
     <version>1.0</version>
 
     <dependencies>

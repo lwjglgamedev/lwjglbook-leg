@@ -49,7 +49,6 @@ public class Renderer {
         // Create uniform for material
         shaderProgram.createMaterialUniform("material");
         // Create lighting related uniforms
-        shaderProgram.createUniform("camera_pos");
         shaderProgram.createUniform("specularPower");
         shaderProgram.createUniform("ambientLight");
         shaderProgram.createPointLightUniform("pointLight");
@@ -79,7 +78,6 @@ public class Renderer {
         Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 
         // Update Light Uniforms
-        shaderProgram.setUniform("camera_pos", camera.getPosition());
         shaderProgram.setUniform("ambientLight", ambientLight);
         shaderProgram.setUniform("specularPower", specularPower);
         // Get a copy of the light object and transform its position to view coordinates

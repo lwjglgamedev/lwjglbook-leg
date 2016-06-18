@@ -34,7 +34,6 @@ uniform vec3 ambientLight;
 uniform float specularPower;
 uniform Material material;
 uniform PointLight pointLight;
-uniform vec3 camera_pos;
 
 vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
 {
@@ -48,7 +47,7 @@ vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
     diffuseColour = vec4(light.colour, 1.0) * light.intensity * diffuseFactor;
 
     // Specular Light
-    vec3 camera_direction = normalize(camera_pos - position);
+    vec3 camera_direction = normalize(-position);
     vec3 from_light_source = -to_light_source;
     vec3 reflected_light = normalize(reflect(from_light_source, normal));
     float specularFactor = max( dot(camera_direction, reflected_light), 0.0);

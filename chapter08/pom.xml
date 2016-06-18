@@ -6,10 +6,9 @@
         <groupId>org.lwjglb</groupId>
         <artifactId>book</artifactId>
         <version>1.0</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 	
-    <artifactId>game-c5-p1</artifactId>
+    <artifactId>game-c08</artifactId>
     <version>1.0</version>
 
     <dependencies>
@@ -23,6 +22,16 @@
             <artifactId>lwjgl-platform</artifactId>
             <version>${lwjgl.version}</version>
             <classifier>${native.target}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.joml</groupId>
+            <artifactId>joml</artifactId>
+            <version>${joml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.l33tlabs.twl</groupId>
+            <artifactId>pngdecoder</artifactId>
+            <version>${pngdecoder.version}</version>
         </dependency>
     </dependencies>	
 </project>

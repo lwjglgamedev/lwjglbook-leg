@@ -57,7 +57,6 @@ public class Renderer {
         // Create uniform for material
         sceneShaderProgram.createMaterialUniform("material");
         // Create lighting related uniforms
-        sceneShaderProgram.createUniform("camera_pos");
         sceneShaderProgram.createUniform("specularPower");
         sceneShaderProgram.createUniform("ambientLight");
         sceneShaderProgram.createPointLightListUniform("pointLights", MAX_POINT_LIGHTS);
@@ -106,8 +105,6 @@ public class Renderer {
 
         // Update view Matrix
         Matrix4f viewMatrix = transformation.getViewMatrix(camera);
-
-        sceneShaderProgram.setUniform("camera_pos", camera.getPosition());
 
         renderLights(viewMatrix, sceneLight);
 

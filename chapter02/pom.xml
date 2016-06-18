@@ -8,7 +8,7 @@
         <version>1.0</version>
     </parent>
 	
-    <artifactId>game-c8</artifactId>
+    <artifactId>game-c02</artifactId>
     <version>1.0</version>
 
     <dependencies>
@@ -22,16 +22,6 @@
             <artifactId>lwjgl-platform</artifactId>
             <version>${lwjgl.version}</version>
             <classifier>${native.target}</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.joml</groupId>
-            <artifactId>joml</artifactId>
-            <version>${joml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.l33tlabs.twl</groupId>
-            <artifactId>pngdecoder</artifactId>
-            <version>${pngdecoder.version}</version>
         </dependency>
     </dependencies>	
 </project>
