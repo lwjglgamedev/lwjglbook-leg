@@ -64,9 +64,6 @@ public class Mesh {
         glBufferData(GL_ARRAY_BUFFER, vecNormalsBuffer, GL_STATIC_DRAW);
         glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
 
-        if ( false ){
-            
-        }
         // Weights
         vboId = glGenBuffers();
         vboIdList.add(vboId);

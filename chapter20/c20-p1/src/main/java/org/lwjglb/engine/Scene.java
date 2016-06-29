@@ -42,8 +42,8 @@ public class Scene {
                 if (list == null) {
                     list = new ArrayList<>();
                     meshMap.put(mesh, list);
-                    list.add(gameItem);
                 }
+                list.add(gameItem);
             }
         }
     }

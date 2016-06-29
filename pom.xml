@@ -17,14 +17,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>SonatypeNexus</id>
-            <name>LWJGL Snapshot releases</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
 	</repositories>
 
     <build>
@@ -122,6 +114,7 @@
         <module>chapter19/c19-p3</module>
         <module>chapter20/c20-p1</module>
         <module>chapter20/c20-p2</module>
+        <module>chapter21/c21-p1</module>
     </modules>
 
     <properties>
@@ -132,7 +125,7 @@
         <java.version>1.8</java.version>
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
 		<mvn.jarplug.version>2.6</mvn.jarplug.version>
-        <lwjgl.version>3.0.0-SNAPSHOT</lwjgl.version>
+        <lwjgl.version>3.0.0</lwjgl.version>
         <natives.version>0.0.7</natives.version>
         <joml.version>1.8.0</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
