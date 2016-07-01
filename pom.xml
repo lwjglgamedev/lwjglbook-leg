@@ -8,17 +8,6 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <repositories>
-        <repository>
-            <id>mavenNatives</id>
-            <name>Maven Natives Repository</name>
-            <url>http://mavennatives.googlecode.com/svn/repo</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-	</repositories>
-
     <build>
         <plugins>
             <plugin>
@@ -45,20 +34,6 @@
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.googlecode.mavennatives</groupId>
-                <artifactId>maven-nativedependencies-plugin</artifactId>
-                <version>${natives.version}</version>
-                <executions>
-                    <execution>
-                        <id>unpacknatives</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -126,7 +101,6 @@
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
 		<mvn.jarplug.version>2.6</mvn.jarplug.version>
         <lwjgl.version>3.0.0</lwjgl.version>
-        <natives.version>0.0.7</natives.version>
         <joml.version>1.8.0</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>

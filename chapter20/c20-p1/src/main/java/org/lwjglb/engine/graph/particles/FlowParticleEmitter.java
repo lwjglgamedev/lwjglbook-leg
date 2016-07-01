@@ -93,7 +93,7 @@ public class FlowParticleEmitter implements IParticleEmitter {
         this.speedRndRange = speedRndRange;
     }
 
-    public void update(long ellapsedTime) {
+    public void update(long elapsedTime) {
         long now = System.currentTimeMillis();
         if (lastCreationTime == 0) {
             lastCreationTime = now;
@@ -101,10 +101,10 @@ public class FlowParticleEmitter implements IParticleEmitter {
         Iterator<? extends GameItem> it = particles.iterator();
         while (it.hasNext()) {
             Particle particle = (Particle) it.next();
-            if (particle.updateTtl(ellapsedTime) < 0) {
+            if (particle.updateTtl(elapsedTime) < 0) {
                 it.remove();
             } else {
-                updatePosition(particle, ellapsedTime);
+                updatePosition(particle, elapsedTime);
             }
         }
 

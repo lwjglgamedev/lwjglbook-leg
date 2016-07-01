@@ -15,11 +15,11 @@ public class Timer {
         return System.nanoTime() / 1000_000_000.0;
     }
 
-    public float getEllapsedTime() {
+    public float getElapsedTime() {
         double time = getTime();
-        float ellapsedTime = (float) (time - lastLoopTime);
+        float elapsedTime = (float) (time - lastLoopTime);
         lastLoopTime = time;
-        return ellapsedTime;
+        return elapsedTime;
     }
 
     public double getLastLoopTime() {
