@@ -81,7 +81,7 @@ public class ShaderProgram {
     }
 
     public void createFogUniform(String uniformName) throws Exception {
-        createUniform(uniformName + ".active");
+        createUniform(uniformName + ".activeFog");
         createUniform(uniformName + ".colour");
         createUniform(uniformName + ".density");
     }
@@ -196,7 +196,7 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Fog fog) {
-        setUniform(uniformName + ".active", fog.isActive() ? 1 : 0);
+        setUniform(uniformName + ".activeFog", fog.isActive() ? 1 : 0);
         setUniform(uniformName + ".colour", fog.getColour());
         setUniform(uniformName + ".density", fog.getDensity());
     }

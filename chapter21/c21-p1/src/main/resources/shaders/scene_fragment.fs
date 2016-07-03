@@ -51,7 +51,7 @@ struct Material
 
 struct Fog
 {
-    int active;
+    int activeFog;
     vec3 colour;
     float density;
 };
@@ -218,7 +218,7 @@ void main()
     float shadow = calcShadow(mlightviewVertexPos); 
     fragColor = baseColour * ( vec4(ambientLight, 1.0) + totalLight * shadow );
 
-    if ( fog.active == 1 ) 
+    if ( fog.activeFog == 1 ) 
     {
         fragColor = calcFog(mvVertexPos, fragColor, fog, ambientLight, directionalLight);
     }
