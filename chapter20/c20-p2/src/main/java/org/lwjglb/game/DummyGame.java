@@ -43,8 +43,6 @@ public class DummyGame implements IGameLogic {
 
     private float lightAngle;
 
-    private AnimGameItem monster;
-    
     private FlowParticleEmitter particleEmitter;
     
     public DummyGame() {
@@ -146,9 +144,6 @@ public class DummyGame implements IGameLogic {
             angleInc += 0.05f;
         } else {
             angleInc = 0;
-        }
-        if (window.isKeyPressed(GLFW_KEY_SPACE) ) {
-            monster.nextFrame();            
         }
     }
 
