@@ -1,5 +1,6 @@
 package org.lwjglb.engine.items;
 
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjglb.engine.graph.Mesh;
 
@@ -11,14 +12,14 @@ public class GameItem {
 
     private float scale;
 
-    private final Vector3f rotation;
+    private final Quaternionf rotation;
 
     private int textPos;
             
     public GameItem() {
         position = new Vector3f(0, 0, 0);
         scale = 1;
-        rotation = new Vector3f(0, 0, 0);
+        rotation = new Quaternionf();
         textPos = 0;
     }
 
@@ -54,14 +55,12 @@ public class GameItem {
         this.scale = scale;
     }
 
-    public Vector3f getRotation() {
+    public Quaternionf getRotation() {
         return rotation;
     }
 
-    public final void setRotation(float x, float y, float z) {
-        this.rotation.x = x;
-        this.rotation.y = y;
-        this.rotation.z = z;
+    public final void setRotation(Quaternionf q) {
+        this.rotation.set(q);
     }
 
     public Mesh getMesh() {

@@ -34,8 +34,7 @@ public class Particle extends GameItem {
         super(baseParticle.getMesh());
         Vector3f aux = baseParticle.getPosition();
         setPosition(aux.x, aux.y, aux.z);
-        aux = baseParticle.getRotation();
-        setRotation(aux.x, aux.y, aux.z);
+        setRotation(baseParticle.getRotation());
         setScale(baseParticle.getScale());
         this.speed = new Vector3f(baseParticle.speed);
         this.ttl = baseParticle.geTtl();
