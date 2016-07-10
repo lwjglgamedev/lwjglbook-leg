@@ -13,7 +13,6 @@ import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.Renderer;
 import org.lwjglb.engine.graph.Texture;
-import org.lwjglb.engine.graph.anim.AnimGameItem;
 import org.lwjglb.engine.graph.lights.DirectionalLight;
 import org.lwjglb.engine.graph.weather.Fog;
 import org.lwjglb.engine.items.GameItem;

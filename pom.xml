@@ -90,6 +90,7 @@
         <module>chapter20/c20-p1</module>
         <module>chapter20/c20-p2</module>
         <module>chapter21/c21-p1</module>
+        <module>chapter21/c21-p2</module>
     </modules>
 
     <properties>
