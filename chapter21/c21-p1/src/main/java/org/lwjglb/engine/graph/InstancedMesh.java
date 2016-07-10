@@ -14,9 +14,11 @@ import org.lwjglb.engine.items.GameItem;
 
 public class InstancedMesh extends Mesh {
 
-    private static final int VECTOR4F_SIZE = 4 * 4;
+    private static final int VECTOR4F_SIZE_BYTES = 4 * 4;
 
-    private static final int MATRIX_SIZE = 4 * VECTOR4F_SIZE;
+    private static final int MATRIX_SIZE_BYTES = 4 * VECTOR4F_SIZE_BYTES;
+
+    private static final int MATRIX_SIZE_FLOATS = 4 * 4;
 
     private int numInstances;
 
@@ -42,11 +44,11 @@ public class InstancedMesh extends Mesh {
         // Model View Matrix
         modelViewVBO = glGenBuffers();
         vboIdList.add(modelViewVBO);
-        this.modelViewBuffer = BufferUtils.createFloatBuffer(numInstances * MATRIX_SIZE);
+        this.modelViewBuffer = BufferUtils.createFloatBuffer(numInstances * MATRIX_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, modelViewVBO);
         int start = 5;
         for (int i = 0; i < 4; i++) {
-            glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE, i * VECTOR4F_SIZE);
+            glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE_BYTES, i * VECTOR4F_SIZE_BYTES);
             glVertexAttribDivisor(start, 1);
             start++;
         }
@@ -54,10 +56,10 @@ public class InstancedMesh extends Mesh {
         // Light view matrix
         modelLightViewVBO = glGenBuffers();
         vboIdList.add(modelLightViewVBO);
-        this.modelLightViewBuffer = BufferUtils.createFloatBuffer(numInstances * MATRIX_SIZE);
+        this.modelLightViewBuffer = BufferUtils.createFloatBuffer(numInstances * MATRIX_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, modelLightViewVBO);
         for (int i = 0; i < 4; i++) {
-            glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE, i * VECTOR4F_SIZE);
+            glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE_BYTES, i * VECTOR4F_SIZE_BYTES);
             glVertexAttribDivisor(start, 1);
             start++;
         }
@@ -112,10 +114,10 @@ public class InstancedMesh extends Mesh {
             Matrix4f modelMatrix = transformation.buildModelMatrix(gameItem);
             if (!depthMap) {
                 Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(modelMatrix, viewMatrix);
-                modelViewMatrix.get(16 * i, modelViewBuffer);
+                modelViewMatrix.get(MATRIX_SIZE_FLOATS * i, modelViewBuffer);
             }
             Matrix4f modelLightViewMatrix = transformation.buildModelLightViewMatrix(modelMatrix, lightViewMatrix);
-            modelLightViewMatrix.get(16 * i, this.modelLightViewBuffer);
+            modelLightViewMatrix.get(MATRIX_SIZE_FLOATS * i, this.modelLightViewBuffer);
             i++;
         }
 
