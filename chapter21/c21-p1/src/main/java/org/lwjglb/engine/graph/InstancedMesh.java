@@ -20,22 +20,18 @@ public class InstancedMesh extends Mesh {
 
     private static final int MATRIX_SIZE_FLOATS = 4 * 4;
 
-    private int numInstances;
+    private final int numInstances;
 
-    private int modelViewVBO;
+    private final int modelViewVBO;
 
-    private int modelLightViewVBO;
+    private final int modelLightViewVBO;
 
-    private FloatBuffer modelViewBuffer;
+    private final FloatBuffer modelViewBuffer;
 
-    private FloatBuffer modelLightViewBuffer;
+    private final FloatBuffer modelLightViewBuffer;
 
-    public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int instances) {
-        this(positions, textCoords, normals, indices, createEmptyIntArray(MAX_WEIGHTS * positions.length / 3, 0), createEmptyFloatArray(MAX_WEIGHTS * positions.length / 3, 0), instances);
-    }
-
-    public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int[] jointIndices, float[] weights, int numInstances) {
-        super(positions, textCoords, normals, indices, jointIndices, weights);
+    public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int numInstances) {
+        super(positions, textCoords, normals, indices, createEmptyIntArray(MAX_WEIGHTS * positions.length / 3, 0), createEmptyFloatArray(MAX_WEIGHTS * positions.length / 3, 0));
 
         this.numInstances = numInstances;
 
