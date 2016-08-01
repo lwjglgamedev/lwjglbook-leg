@@ -1,0 +1,6 @@
+Sounds have been downloaded from Freesound.org
+
+FILES
+=====
+- background.ogg: Provided by Kurk (https://www.freesound.org/people/Kurck/)
+- beep.ogg: Provided by argos22(https://www.freesound.org/people/argos22/)

@@ -92,6 +92,7 @@
         <module>chapter21/c21-p1</module>
         <module>chapter21/c21-p2</module>
         <module>chapter21/c21-p3</module>
+        <module>chapter22</module>
     </modules>
 
     <properties>
