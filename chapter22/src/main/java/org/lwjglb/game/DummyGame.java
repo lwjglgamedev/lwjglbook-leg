@@ -24,6 +24,7 @@ import org.lwjglb.engine.items.SkyBox;
 import org.lwjglb.engine.items.Terrain;
 import org.lwjglb.engine.loaders.obj.OBJLoader;
 import org.lwjglb.engine.sound.SoundBuffer;
+import org.lwjglb.engine.sound.SoundListener;
 import org.lwjglb.engine.sound.SoundManager;
 import org.lwjglb.engine.sound.SoundSource;
 
@@ -53,7 +54,7 @@ public class DummyGame implements IGameLogic {
 
     private FlowParticleEmitter particleEmitter;
 
-    private enum Sounds { MUSIC, BEEP };
+    private enum Sounds { MUSIC, BEEP, FIRE };
     
     public DummyGame() {
         renderer = new Renderer();
@@ -175,6 +176,17 @@ public class DummyGame implements IGameLogic {
         sourceBeep.setBuffer(buffBeep.getBufferId());
         soundMgr.addSoundSource(Sounds.BEEP.toString(), sourceBeep);
         
+        SoundBuffer buffFire = new SoundBuffer("/sounds/fire.ogg");
+        soundMgr.addSoundBuffer(buffFire);
+        SoundSource sourceFire = new SoundSource(true);
+        Vector3f pos = particleEmitter.getBaseParticle().getPosition();
+        sourceFire.setPosition(pos);
+        sourceFire.setBuffer(buffFire.getBufferId());
+        soundMgr.addSoundSource(Sounds.FIRE.toString(), sourceFire);
+        sourceFire.play();
+        
+        soundMgr.setListener(new SoundListener(new Vector3f(0, 0, 0)));
+
         sourceBack.play();        
     }
     private void setupLights() {
@@ -221,6 +233,7 @@ public class DummyGame implements IGameLogic {
         } else {
             angleInc = 0;
         }
+
     }
 
     @Override
@@ -256,6 +269,9 @@ public class DummyGame implements IGameLogic {
         lightDirection.normalize();
 
         particleEmitter.update((long) (interval * 1000));
+        
+        // Update sound listener position;
+        soundMgr.updateListenerPosition(camera);
     }
 
     @Override

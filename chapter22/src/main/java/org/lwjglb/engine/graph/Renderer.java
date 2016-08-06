@@ -198,7 +198,7 @@ public class Renderer {
         Matrix3f aux = new Matrix3f();
         for (int i = 0; i < numEmitters; i++) {
             IParticleEmitter emitter = emitters[i];
-            InstancedMesh mesh = (InstancedMesh)emitter.getBaseParticle().getMesh();
+            InstancedMesh mesh = (InstancedMesh) emitter.getBaseParticle().getMesh();
 
             Texture text = mesh.getMaterial().getTexture();
             particlesShaderProgram.setUniform("numCols", text.getNumCols());

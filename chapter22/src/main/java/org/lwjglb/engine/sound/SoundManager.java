@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import static org.lwjgl.openal.ALC10.*;
 import org.lwjgl.openal.ALCCapabilities;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import org.lwjglb.engine.graph.Camera;
+import org.lwjglb.engine.graph.Transformation;
 
 public class SoundManager {
 
@@ -24,9 +28,12 @@ public class SoundManager {
 
     private final Map<String, SoundSource> soundSourceMap;
 
+    private final Matrix4f cameraMatrix;
+
     public SoundManager() {
         soundBufferList = new ArrayList<>();
         soundSourceMap = new HashMap<>();
+        cameraMatrix = new Matrix4f();
     }
 
     public void init() throws Exception {
@@ -72,6 +79,18 @@ public class SoundManager {
 
     public void setListener(SoundListener listener) {
         this.listener = listener;
+    }
+
+    public void updateListenerPosition(Camera camera) {
+        // Update camera matrix with camera data
+        Transformation.updateGenericViewMatrix(camera.getPosition(), camera.getRotation(), cameraMatrix);
+        
+        listener.setPosition(camera.getPosition());
+        Vector3f at = new Vector3f();
+        cameraMatrix.positiveZ(at).negate();
+        Vector3f up = new Vector3f();
+        cameraMatrix.positiveY(up);
+        listener.setOrientation(at, up);
     }
 
     public void cleanup() {
