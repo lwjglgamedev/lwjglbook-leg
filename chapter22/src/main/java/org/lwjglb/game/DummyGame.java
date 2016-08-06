@@ -166,19 +166,19 @@ public class DummyGame implements IGameLogic {
     private void setupSounds() throws Exception {
         SoundBuffer buffBack = new SoundBuffer("/sounds/background.ogg");
         soundMgr.addSoundBuffer(buffBack);
-        SoundSource sourceBack = new SoundSource(true);
+        SoundSource sourceBack = new SoundSource(true, true);
         sourceBack.setBuffer(buffBack.getBufferId());
         soundMgr.addSoundSource(Sounds.MUSIC.toString(), sourceBack);
         
         SoundBuffer buffBeep = new SoundBuffer("/sounds/beep.ogg");
         soundMgr.addSoundBuffer(buffBeep);
-        SoundSource sourceBeep = new SoundSource(false);
+        SoundSource sourceBeep = new SoundSource(false, true);
         sourceBeep.setBuffer(buffBeep.getBufferId());
         soundMgr.addSoundSource(Sounds.BEEP.toString(), sourceBeep);
         
         SoundBuffer buffFire = new SoundBuffer("/sounds/fire.ogg");
         soundMgr.addSoundBuffer(buffFire);
-        SoundSource sourceFire = new SoundSource(true);
+        SoundSource sourceFire = new SoundSource(true, false);
         Vector3f pos = particleEmitter.getBaseParticle().getPosition();
         sourceFire.setPosition(pos);
         sourceFire.setBuffer(buffFire.getBufferId());

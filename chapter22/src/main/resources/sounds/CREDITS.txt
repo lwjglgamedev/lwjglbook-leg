@@ -1,5 +1,7 @@
 Sounds have been downloaded from Freesound.org
 
+They have been processed to convert them to mono
+
 FILES
 =====
 - background.ogg: Provided by Kurk (https://www.freesound.org/people/Kurck/)
