@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
+import org.lwjgl.openal.AL11;
 import org.lwjglb.engine.IGameLogic;
 import org.lwjglb.engine.MouseInput;
 import org.lwjglb.engine.Scene;
@@ -160,6 +161,7 @@ public class DummyGame implements IGameLogic {
         
         // Sounds
         this.soundMgr.init();
+        this.soundMgr.setAttenuationModel(AL11.AL_EXPONENT_DISTANCE);
         setupSounds();
     }
 
