@@ -164,7 +164,7 @@ float calcShadow(vec4 position)
 {
     if ( renderShadow == 0 )
     {
-        return 1;
+        return 1.0;
     }
 
     vec3 projCoords = position.xyz;
