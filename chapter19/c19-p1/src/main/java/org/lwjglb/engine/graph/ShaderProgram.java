@@ -212,12 +212,11 @@ public class ShaderProgram {
     public void link() throws Exception {
         glLinkProgram(programId);
         if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {
-            throw new Exception("Error linking Shader code: " + glGetShaderInfoLog(programId, 1024));
-        }
+            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));        }
 
         glValidateProgram(programId);
         if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
-            System.err.println("Warning validating Shader code: " + glGetShaderInfoLog(programId, 1024));
+            System.err.println("Warning validating Shader code: " + glGetProgramInfoLog(programId, 1024));
         }
 
     }
