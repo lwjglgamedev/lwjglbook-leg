@@ -223,8 +223,8 @@ void main()
     {
         fragColor = calcFog(mvVertexPos, fragColor, fog, ambientLight, directionalLight);
     }
-	
-	if ( outSelected > 0 ) {
-		fragColor = vec4(fragColor.x, fragColor.y, 1, 1);
-	}
+
+    if ( outSelected > 0 ) {
+        fragColor = vec4(fragColor.x, fragColor.y, 1, 1);
+    }
 }

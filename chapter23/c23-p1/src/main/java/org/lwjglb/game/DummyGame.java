@@ -94,7 +94,7 @@ public class DummyGame implements IGameLogic {
         float posz = startz;
         float incy = 0.0f;
 
-        selectDetector = new BoxSelectionDetector(inc, inc);
+        selectDetector = new BoxSelectionDetector();
 
         BufferedImage heightMapImage = ImageIO.read(getClass().getResourceAsStream("/textures/heightmap.png"));
         int height = heightMapImage.getHeight();

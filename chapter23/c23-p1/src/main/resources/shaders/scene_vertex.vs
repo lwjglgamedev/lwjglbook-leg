@@ -38,7 +38,7 @@ void main()
     mat4 lightViewMatrix;
     if ( isInstanced > 0 )
     {
-		outSelected = selectedInstanced;
+        outSelected = selectedInstanced;
         modelViewMatrix = modelViewInstancedMatrix;
         lightViewMatrix = modelLightViewInstancedMatrix;
 
@@ -47,7 +47,7 @@ void main()
     }
     else
     {
-		outSelected = selectedNonInstanced;
+        outSelected = selectedNonInstanced;
         modelViewMatrix = modelViewNonInstancedMatrix;
         lightViewMatrix = modelLightViewNonInstancedMatrix;
 

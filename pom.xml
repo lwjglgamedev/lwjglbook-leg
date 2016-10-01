@@ -105,7 +105,7 @@
         <mvn.complilerplug.version>3.3</mvn.complilerplug.version>
 		<mvn.jarplug.version>2.6</mvn.jarplug.version>
         <lwjgl.version>3.0.0</lwjgl.version>
-        <joml.version>1.8.1</joml.version>
+        <joml.version>1.8.4</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 

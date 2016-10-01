@@ -8,10 +8,6 @@ import org.lwjglb.engine.items.GameItem;
 
 public class BoxSelectionDetector {
 
-    private final float incx;
-
-    private final float incy;
-
     private final Vector3f max;
 
     private final Vector3f min;
@@ -20,9 +16,7 @@ public class BoxSelectionDetector {
 
     private Vector3f dir;
 
-    public BoxSelectionDetector(float boxWidth, float boxHeight) {
-        incx = boxWidth / 2;
-        incy = boxHeight / 2;
+    public BoxSelectionDetector() {
         dir = new Vector3f();
         min = new Vector3f();
         max = new Vector3f();
@@ -40,11 +34,9 @@ public class BoxSelectionDetector {
             max.set(gameItem.getPosition());
             min.add(-gameItem.getScale(), -gameItem.getScale(), -gameItem.getScale());
             max.add(gameItem.getScale(), gameItem.getScale(), gameItem.getScale());
-            if (Intersectionf.intersectRayAab(camera.getPosition(), dir, min, max, nearFar)) {
-                if (nearFar.x < closestDistance) {
-                    closestDistance = nearFar.x;
-                    selectedGameItem = gameItem;
-                }
+            if (Intersectionf.intersectRayAab(camera.getPosition(), dir, min, max, nearFar) && nearFar.x < closestDistance) {
+                closestDistance = nearFar.x;
+                selectedGameItem = gameItem;
             }
         }
 
