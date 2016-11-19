@@ -55,7 +55,7 @@ public class DummyGame implements IGameLogic {
 
     private FlowParticleEmitter particleEmitter;
 
-    private BoxSelectionDetector selectDetector;
+    private CameraBoxSelectionDetector selectDetector;
 
     private enum Sounds {
         MUSIC, BEEP, FIRE
@@ -94,7 +94,7 @@ public class DummyGame implements IGameLogic {
         float posz = startz;
         float incy = 0.0f;
 
-        selectDetector = new BoxSelectionDetector();
+        selectDetector = new CameraBoxSelectionDetector();
 
         BufferedImage heightMapImage = ImageIO.read(getClass().getResourceAsStream("/textures/heightmap.png"));
         int height = heightMapImage.getHeight();
