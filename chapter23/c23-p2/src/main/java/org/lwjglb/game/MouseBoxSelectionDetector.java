@@ -51,7 +51,6 @@ public class MouseBoxSelectionDetector extends CameraBoxSelectionDetector {
         tmpVec.mul(invViewMatrix);
         
         mouseDir.set(tmpVec.x, tmpVec.y, tmpVec.z);
-        mouseDir.normalize();
 
         selectGameItem(gameItems, camera.getPosition(), mouseDir);
     }
