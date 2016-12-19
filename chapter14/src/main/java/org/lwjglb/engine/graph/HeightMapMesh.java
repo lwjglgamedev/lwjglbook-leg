@@ -164,7 +164,6 @@ public class HeightMapMesh {
     }
 
     private float getHeight(int x, int z, int width, ByteBuffer buffer) {
-        float result = 0;
         byte r = buffer.get(x * 4 + 0 + z * 4 * width);
         byte g = buffer.get(x * 4 + 1 + z * 4 * width);
         byte b = buffer.get(x * 4 + 2 + z * 4 * width);

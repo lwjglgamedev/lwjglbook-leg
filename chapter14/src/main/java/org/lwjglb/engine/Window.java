@@ -70,7 +70,7 @@ public class Window {
             maximized = true;
         }
 
-        windowHandle = glfwCreateWindow(width, width, title, NULL, NULL);
+        windowHandle = glfwCreateWindow(width, height, title, NULL, NULL);
         // Create the window
         if (windowHandle == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
