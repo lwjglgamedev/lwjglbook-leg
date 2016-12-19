@@ -1,6 +1,6 @@
 package org.lwjglb.engine.graph;
 
-import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector3f;
@@ -22,13 +22,10 @@ public class HeightMapMesh {
     
     private final float[][] heightArray;
     
-    public HeightMapMesh(float minY, float maxY, BufferedImage heightMapImage, String textureFile, int textInc) throws Exception {
+    public HeightMapMesh(float minY, float maxY, ByteBuffer heightMapImage, int width, int height, String textureFile, int textInc) throws Exception {
         this.minY = minY;
         this.maxY = maxY;
         
-        int height = heightMapImage.getHeight();
-        int width = heightMapImage.getWidth();
-
         heightArray = new float[height][width];
         
         Texture texture = new Texture(textureFile);
@@ -44,7 +41,7 @@ public class HeightMapMesh {
             for (int col = 0; col < width; col++) {
                 // Create vertex for current position
                 positions.add(STARTX + col * incx); // x
-                float currentHeight = getHeight(col, row, heightMapImage);
+                float currentHeight = getHeight(col, row, width, heightMapImage);
                 heightArray[row][col] = currentHeight;
                 positions.add(currentHeight); //y
                 positions.add(STARTZ + row * incz); //z
@@ -173,13 +170,14 @@ public class HeightMapMesh {
         return Utils.listToArray(normals);
     }
 
-    private float getHeight(int x, int z, BufferedImage buffImage) {
-        float result = 0;
-        if (x >= 0 && x < buffImage.getWidth() && z >= 0 && z < buffImage.getHeight()) {
-            int rgb = buffImage.getRGB(x, z);
-            result = this.minY + Math.abs(this.maxY - this.minY) * ((float) rgb / (float) MAX_COLOUR);
-        }
-        return result;
+    private float getHeight(int x, int z, int width, ByteBuffer buffer) {
+        byte r = buffer.get(x * 4 + 0 + z * 4 * width);
+        byte g = buffer.get(x * 4 + 1 + z * 4 * width);
+        byte b = buffer.get(x * 4 + 2 + z * 4 * width);
+        byte a = buffer.get(x * 4 + 3 + z * 4 * width);
+        int argb = ((0xFF & a) << 24) | ((0xFF & r) << 16)
+                | ((0xFF & g) << 8) | (0xFF & b);
+        return this.minY + Math.abs(this.maxY - this.minY) * ((float) argb / (float) MAX_COLOUR);
     }
 
 }

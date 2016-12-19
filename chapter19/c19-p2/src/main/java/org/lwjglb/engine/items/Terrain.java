@@ -1,8 +1,7 @@
 package org.lwjglb.engine.items;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import de.matthiasmann.twl.utils.PNGDecoder;
+import java.nio.ByteBuffer;
 import org.joml.Vector3f;
 import org.lwjglb.engine.graph.HeightMapMesh;
 
@@ -21,7 +20,7 @@ public class Terrain {
     /**
      * It will hold the bounding box for each terrain block
      */
-    private final Rectangle2D.Float[][] boundingBoxes;
+    private final Box2D[][] boundingBoxes;
 
     /**
      * A Terrain is composed by blocks, each block is a GameItem constructed
@@ -40,13 +39,20 @@ public class Terrain {
         this.terrainSize = terrainSize;
         gameItems = new GameItem[terrainSize * terrainSize];
 
-        BufferedImage heightMapImage = ImageIO.read(getClass().getResourceAsStream(heightMapFile));
-        // The number of vertices per column and row
-        verticesPerCol = heightMapImage.getWidth() - 1;
-        verticesPerRow = heightMapImage.getHeight() - 1;
+        PNGDecoder decoder = new PNGDecoder(getClass().getResourceAsStream(heightMapFile));
+        int height = decoder.getHeight();
+        int width = decoder.getWidth();
+        ByteBuffer buf = ByteBuffer.allocateDirect(
+                4 * decoder.getWidth() * decoder.getHeight());
+        decoder.decode(buf, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
+        buf.flip();
 
-        heightMapMesh = new HeightMapMesh(minY, maxY, heightMapImage, textureFile, textInc);
-        boundingBoxes = new Rectangle2D.Float[terrainSize][terrainSize];
+        // The number of vertices per column and row
+        verticesPerCol = width - 1;
+        verticesPerRow = height - 1;
+
+        heightMapMesh = new HeightMapMesh(minY, maxY, buf, width, height, textureFile, textInc);
+        boundingBoxes = new Box2D[terrainSize][terrainSize];
         for (int row = 0; row < terrainSize; row++) {
             for (int col = 0; col < terrainSize; col++) {
                 float xDisplacement = (col - ((float) terrainSize - 1) / (float) 2) * scale * HeightMapMesh.getXLength();
@@ -66,7 +72,7 @@ public class Terrain {
         float result = Float.MIN_VALUE;
         // For each terrain block we get the bounding box, translate it to view coodinates
         // and check if the position is contained in that bounding box
-        Rectangle2D.Float boundingBox = null;
+        Box2D boundingBox = null;
         boolean found = false;
         GameItem terrainBlock = null;
         for (int row = 0; row < terrainSize && !found; row++) {
@@ -87,7 +93,7 @@ public class Terrain {
         return result;
     }
 
-    protected Vector3f[] getTriangle(Vector3f position, Rectangle2D.Float boundingBox, GameItem terrainBlock) {
+    protected Vector3f[] getTriangle(Vector3f position, Box2D boundingBox, GameItem terrainBlock) {
         // Get the column and row of the heightmap associated to the current position
         float cellWidth = boundingBox.width / (float) verticesPerCol;
         float cellHeight = boundingBox.height / (float) verticesPerRow;
@@ -145,7 +151,7 @@ public class Terrain {
      * @param terrainBlock A GameItem instance that defines the terrain block
      * @return The boundingg box of the terrain block
      */
-    private Rectangle2D.Float getBoundingBox(GameItem terrainBlock) {
+    private Box2D getBoundingBox(GameItem terrainBlock) {
         float scale = terrainBlock.getScale();
         Vector3f position = terrainBlock.getPosition();
 
@@ -153,11 +159,36 @@ public class Terrain {
         float topLeftZ = HeightMapMesh.STARTZ * scale + position.z;
         float width = Math.abs(HeightMapMesh.STARTX * 2) * scale;
         float height = Math.abs(HeightMapMesh.STARTZ * 2) * scale;
-        Rectangle2D.Float boundingBox = new Rectangle2D.Float(topLeftX, topLeftZ, width, height);
+        Box2D boundingBox = new Box2D(topLeftX, topLeftZ, width, height);
         return boundingBox;
     }
 
     public GameItem[] getGameItems() {
         return gameItems;
+    }
+
+    static class Box2D {
+
+        public float x;
+
+        public float y;
+
+        public float width;
+
+        public float height;
+
+        public Box2D(float x, float y, float width, float height) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        }
+
+        public boolean contains(float x2, float y2) {
+            return x2 >= x
+                    && y2 >= y
+                    && x2 < x + width
+                    && y2 < y + height;
+        }
     }
 }

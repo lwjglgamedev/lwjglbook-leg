@@ -1,7 +1,5 @@
 package org.lwjglb.game;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import org.lwjglb.engine.GameEngine;
 import org.lwjglb.engine.IGameLogic;
  
@@ -11,8 +9,7 @@ public class Main {
         try {
             boolean vSync = true;
             IGameLogic gameLogic = new DummyGame();
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            GameEngine gameEng = new GameEngine("GAME", (int)dim.getWidth() - 70, (int)dim.getHeight() -70, vSync, gameLogic);
+            GameEngine gameEng = new GameEngine("GAME", vSync, gameLogic);
             gameEng.start();
         } catch (Exception excp) {
             excp.printStackTrace();
