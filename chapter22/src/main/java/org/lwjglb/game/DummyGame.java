@@ -1,7 +1,7 @@
 package org.lwjglb.game;
 
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import de.matthiasmann.twl.utils.PNGDecoder;
+import java.nio.ByteBuffer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
@@ -12,6 +12,7 @@ import org.lwjglb.engine.Scene;
 import org.lwjglb.engine.SceneLight;
 import org.lwjglb.engine.Window;
 import org.lwjglb.engine.graph.Camera;
+import org.lwjglb.engine.graph.HeightMapMesh;
 import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.Renderer;
@@ -88,9 +89,13 @@ public class DummyGame implements IGameLogic {
         float posz = startz;
         float incy = 0.0f;
 
-        BufferedImage heightMapImage = ImageIO.read(getClass().getResourceAsStream("/textures/heightmap.png"));
-        int height = heightMapImage.getHeight();
-        int width = heightMapImage.getWidth();
+        PNGDecoder decoder = new PNGDecoder(getClass().getResourceAsStream("/textures/heightmap.png"));
+        int height = decoder.getHeight();
+        int width = decoder.getWidth();
+        ByteBuffer buf = ByteBuffer.allocateDirect(4 * width * height);
+        decoder.decode(buf, width * 4, PNGDecoder.Format.RGBA);
+        buf.flip();
+
         int instances = height * width;
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj", instances);
         Texture texture = new Texture("/textures/terrain_textures.png", 2, 1);
@@ -101,7 +106,7 @@ public class DummyGame implements IGameLogic {
             for (int j = 0; j < width; j++) {
                 GameItem gameItem = new GameItem(mesh);
                 gameItem.setScale(blockScale);
-                int rgb = heightMapImage.getRGB(j, i);
+                int rgb = HeightMapMesh.getRGB(i, j, width, buf);
                 incy = rgb / (10 * 255 * 255);
                 gameItem.setPosition(posx, starty + incy, posz);
                 int textPos = Math.random() > 0.5f ? 0 : 1;
