@@ -95,6 +95,7 @@
         <module>chapter22</module>
         <module>chapter23/c23-p1</module>
         <module>chapter23/c23-p2</module>
+        <module>chapter24</module>
     </modules>
 
     <properties>
