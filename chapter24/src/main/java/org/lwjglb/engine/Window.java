@@ -42,7 +42,7 @@ public class Window {
     private WindowOptions opts;
 
     private Matrix4f projectionMatrix;
-    
+
     public Window(String title, int width, int height, boolean vSync, WindowOptions opts) {
         this.title = title;
         this.width = width;
@@ -151,6 +151,11 @@ public class Window {
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
         }
+
+        // Antialiasing
+        if (opts.antialiasing) {
+            glfwWindowHint(GLFW_SAMPLES, 4);
+        }
     }
 
     public long getWindowHandle() {
@@ -172,9 +177,9 @@ public class Window {
     public Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
-    
+
     public Matrix4f updateProjectionMatrix() {
-        float aspectRatio = (float)width / (float)height;        
+        float aspectRatio = (float) width / (float) height;
         return projectionMatrix.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
     }
 
@@ -223,6 +228,10 @@ public class Window {
         glfwPollEvents();
     }
 
+    public WindowOptions getOptions() {
+        return opts;
+    }
+    
     public static class WindowOptions {
 
         public boolean cullFace;
@@ -232,5 +241,7 @@ public class Window {
         public boolean showFps;
 
         public boolean compatibleProfile;
+
+        public boolean antialiasing;
     }
 }

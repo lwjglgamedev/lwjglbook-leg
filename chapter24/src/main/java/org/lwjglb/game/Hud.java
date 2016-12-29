@@ -30,12 +30,11 @@ public class Hud {
     private DoubleBuffer posx;
 
     private DoubleBuffer posy;
-    
-    private int counter;
-    
 
-    public void init() throws Exception {
-        this.vg = nvgCreate(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+    private int counter;
+
+    public void init(Window window) throws Exception {
+        this.vg = window.getOptions().antialiasing ? nvgCreate(NVG_ANTIALIAS | NVG_STENCIL_STROKES) : nvgCreate(NVG_STENCIL_STROKES);
         if (this.vg == NULL) {
             throw new Exception("Could not init nanovg");
         }
@@ -49,7 +48,7 @@ public class Hud {
 
         posx = BufferUtils.createDoubleBuffer(1);
         posy = BufferUtils.createDoubleBuffer(1);
-        
+
         counter = 0;
     }
 
@@ -94,7 +93,6 @@ public class Hud {
         }
         nvgText(vg, 50, window.getHeight() - 87, String.format("%02d", counter));
 
-
         // Render hour text
         nvgFontSize(vg, 40.0f);
         nvgFontFace(vg, FONT_NAME);
@@ -112,10 +110,11 @@ public class Hud {
 
     public void incCounter() {
         counter++;
-        if ( counter > 99 ) {
+        if (counter > 99) {
             counter = 0;
         }
     }
+
     private NVGColor rgba(int r, int g, int b, int a, NVGColor colour) {
         colour.r(r / 255.0f);
         colour.g(g / 255.0f);

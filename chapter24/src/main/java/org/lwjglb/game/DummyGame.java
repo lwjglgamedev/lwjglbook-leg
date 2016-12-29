@@ -78,7 +78,7 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void init(Window window) throws Exception {
-        hud.init();
+        hud.init(window);
         renderer.init(window);
         soundMgr.init();
         
