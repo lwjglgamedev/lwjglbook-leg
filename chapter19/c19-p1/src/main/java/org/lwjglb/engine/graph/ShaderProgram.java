@@ -179,7 +179,7 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, Fog fog) {
         setUniform(uniformName + ".activeFog", fog.isActive() ? 1 : 0);
-        setUniform(uniformName + ".colour", fog.getColour() );
+        setUniform(uniformName + ".colour", fog.getColour());
         setUniform(uniformName + ".density", fog.getDensity());
     }
 
@@ -212,7 +212,18 @@ public class ShaderProgram {
     public void link() throws Exception {
         glLinkProgram(programId);
         if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {
-            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));        }
+            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));
+        }
+
+        if (vertexShaderId != 0) {
+            glDetachShader(programId, vertexShaderId);
+        }
+        if (geometryShaderId != 0) {
+            glDetachShader(programId, geometryShaderId);
+        }
+        if (fragmentShaderId != 0) {
+            glDetachShader(programId, fragmentShaderId);
+        }
 
         glValidateProgram(programId);
         if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
@@ -232,15 +243,6 @@ public class ShaderProgram {
     public void cleanup() {
         unbind();
         if (programId != 0) {
-            if (vertexShaderId != 0) {
-                glDetachShader(programId, vertexShaderId);
-            }
-            if ( geometryShaderId != 0) {
-                glDetachShader(programId, geometryShaderId);
-            }
-            if (fragmentShaderId != 0) {
-                glDetachShader(programId, fragmentShaderId);
-            }
             glDeleteProgram(programId);
         }
     }

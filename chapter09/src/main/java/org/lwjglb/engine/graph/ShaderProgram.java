@@ -29,11 +29,11 @@ public class ShaderProgram {
     public void createUniform(String uniformName) throws Exception {
         int uniformLocation = glGetUniformLocation(programId, uniformName);
         if (uniformLocation < 0) {
-            throw new Exception ("Could not find uniform:" + uniformName);
+            throw new Exception("Could not find uniform:" + uniformName);
         }
         uniforms.put(uniformName, uniformLocation);
     }
-    
+
     public void setUniform(String uniformName, Matrix4f value) {
         // Dump the matrix into a float buffer
         FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -46,7 +46,7 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Vector3f value) {
-        glUniform3f(uniforms.get(uniformName), value.x, value.y, value.z );
+        glUniform3f(uniforms.get(uniformName), value.x, value.y, value.z);
     }
 
     public void createVertexShader(String shaderCode) throws Exception {
@@ -78,13 +78,20 @@ public class ShaderProgram {
     public void link() throws Exception {
         glLinkProgram(programId);
         if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {
-            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));        }
+            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));
+        }
+
+        if (vertexShaderId != 0) {
+            glDetachShader(programId, vertexShaderId);
+        }
+        if (fragmentShaderId != 0) {
+            glDetachShader(programId, fragmentShaderId);
+        }
 
         glValidateProgram(programId);
         if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
             System.err.println("Warning validating Shader code: " + glGetProgramInfoLog(programId, 1024));
         }
-
     }
 
     public void bind() {
@@ -98,12 +105,6 @@ public class ShaderProgram {
     public void cleanup() {
         unbind();
         if (programId != 0) {
-            if (vertexShaderId != 0) {
-                glDetachShader(programId, vertexShaderId);
-            }
-            if (fragmentShaderId != 0) {
-                glDetachShader(programId, fragmentShaderId);
-            }
             glDeleteProgram(programId);
         }
     }

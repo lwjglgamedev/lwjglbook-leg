@@ -44,7 +44,7 @@ public class ShaderProgram {
     }
 
     public void createSpotLightUniform(String uniformName) throws Exception {
-        createPointLightUniform(uniformName  + ".pl");
+        createPointLightUniform(uniformName + ".pl");
         createUniform(uniformName + ".conedir");
         createUniform(uniformName + ".cutoff");
     }
@@ -81,7 +81,7 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, PointLight pointLight) {
-        setUniform(uniformName + ".colour", pointLight.getColor() );
+        setUniform(uniformName + ".colour", pointLight.getColor());
         setUniform(uniformName + ".position", pointLight.getPosition());
         setUniform(uniformName + ".intensity", pointLight.getIntensity());
         PointLight.Attenuation att = pointLight.getAttenuation();
@@ -91,19 +91,19 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, SpotLight spotLight) {
-        setUniform(uniformName + ".pl", spotLight.getPointLight() );
+        setUniform(uniformName + ".pl", spotLight.getPointLight());
         setUniform(uniformName + ".conedir", spotLight.getConeDirection());
         setUniform(uniformName + ".cutoff", spotLight.getCutOff());
     }
 
     public void setUniform(String uniformName, DirectionalLight dirLight) {
-        setUniform(uniformName + ".colour", dirLight.getColor() );
+        setUniform(uniformName + ".colour", dirLight.getColor());
         setUniform(uniformName + ".direction", dirLight.getDirection());
         setUniform(uniformName + ".intensity", dirLight.getIntensity());
     }
 
     public void setUniform(String uniformName, Material material) {
-        setUniform(uniformName + ".colour", material.getColour() );
+        setUniform(uniformName + ".colour", material.getColour());
         setUniform(uniformName + ".useColour", material.isTextured() ? 0 : 1);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }
@@ -137,13 +137,20 @@ public class ShaderProgram {
     public void link() throws Exception {
         glLinkProgram(programId);
         if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {
-            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));        }
+            throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));
+        }
+
+        if (vertexShaderId != 0) {
+            glDetachShader(programId, vertexShaderId);
+        }
+        if (fragmentShaderId != 0) {
+            glDetachShader(programId, fragmentShaderId);
+        }
 
         glValidateProgram(programId);
         if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
             System.err.println("Warning validating Shader code: " + glGetProgramInfoLog(programId, 1024));
         }
-
     }
 
     public void bind() {
@@ -157,12 +164,6 @@ public class ShaderProgram {
     public void cleanup() {
         unbind();
         if (programId != 0) {
-            if (vertexShaderId != 0) {
-                glDetachShader(programId, vertexShaderId);
-            }
-            if (fragmentShaderId != 0) {
-                glDetachShader(programId, fragmentShaderId);
-            }
             glDeleteProgram(programId);
         }
     }
