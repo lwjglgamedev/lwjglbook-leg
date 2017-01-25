@@ -1,7 +1,7 @@
 package org.lwjglb.game;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
+import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -33,7 +33,8 @@ public class Renderer {
             0.5f,  -0.5f, 0.0f
         };
 
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
+        // Allocate some off-heap memory for the verticiesBuffer
+        FloatBuffer verticesBuffer = memAllocFloat(vertices.length);
         verticesBuffer.put(vertices).flip();
 
         // Create the VAO and bind to it
@@ -44,6 +45,10 @@ public class Renderer {
         vboId = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+        
+        // Free the memory allocated for the verticiesBuffer
+        memFree(verticiesBuffer);
+        
         // Define structure of the data
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
