@@ -4,8 +4,8 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
+import org.lwjgl.system.MemoryStack;
 
 public class ShaderProgram {
 
@@ -35,9 +35,11 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, Matrix4f value) {
         // Dump the matrix into a float buffer
-        FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-        value.get(fb);
-        glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(16);
+            value.get(fb);
+            glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+        }
     }
 
     public void createVertexShader(String shaderCode) throws Exception {

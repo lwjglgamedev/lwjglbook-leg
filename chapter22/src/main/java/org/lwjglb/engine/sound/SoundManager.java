@@ -10,7 +10,6 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL;
 import static org.lwjgl.openal.AL10.*;
-import org.lwjgl.openal.AL11;
 import org.lwjgl.openal.ALC;
 import static org.lwjgl.openal.ALC10.*;
 import org.lwjgl.openal.ALCCapabilities;
@@ -100,14 +99,14 @@ public class SoundManager {
     }
     
     public void cleanup() {
-        for (SoundBuffer soundBuffer : soundBufferList) {
-            soundBuffer.cleanup();
-        }
-        soundBufferList.clear();
         for (SoundSource soundSource : soundSourceMap.values()) {
             soundSource.cleanup();
         }
         soundSourceMap.clear();
+        for (SoundBuffer soundBuffer : soundBufferList) {
+            soundBuffer.cleanup();
+        }
+        soundBufferList.clear();
         if (context != NULL) {
             alcDestroyContext(context);
         }

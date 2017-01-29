@@ -5,12 +5,12 @@ import java.nio.DoubleBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import org.lwjgl.nanovg.NVGColor;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
 import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import org.lwjglb.engine.Utils;
 import org.lwjglb.engine.Window;
@@ -46,8 +46,8 @@ public class Hud {
         }
         colour = NVGColor.create();
 
-        posx = BufferUtils.createDoubleBuffer(1);
-        posy = BufferUtils.createDoubleBuffer(1);
+        posx = MemoryUtil.memAllocDouble(1);
+        posy = MemoryUtil.memAllocDouble(1);
 
         counter = 0;
     }
@@ -126,5 +126,11 @@ public class Hud {
 
     public void cleanup() {
         nvgDelete(vg);
+        if (posx != null) {
+            MemoryUtil.memFree(posx);
+        }
+        if (posy != null) {
+            MemoryUtil.memFree(posy);
+        }
     }
 }

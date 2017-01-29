@@ -3,13 +3,13 @@ package org.lwjglb.engine.graph;
 import java.nio.FloatBuffer;
 import java.util.List;
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL33.*;
+import org.lwjgl.system.MemoryUtil;
 import org.lwjglb.engine.items.GameItem;
 
 public class InstancedMesh extends Mesh {
@@ -26,9 +26,9 @@ public class InstancedMesh extends Mesh {
 
     private final int modelLightViewVBO;
 
-    private final FloatBuffer modelViewBuffer;
+    private FloatBuffer modelViewBuffer;
 
-    private final FloatBuffer modelLightViewBuffer;
+    private FloatBuffer modelLightViewBuffer;
 
     public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int numInstances) {
         super(positions, textCoords, normals, indices, createEmptyIntArray(MAX_WEIGHTS * positions.length / 3, 0), createEmptyFloatArray(MAX_WEIGHTS * positions.length / 3, 0));
@@ -40,7 +40,7 @@ public class InstancedMesh extends Mesh {
         // Model View Matrix
         modelViewVBO = glGenBuffers();
         vboIdList.add(modelViewVBO);
-        this.modelViewBuffer = BufferUtils.createFloatBuffer(numInstances * MATRIX_SIZE_FLOATS);
+        this.modelViewBuffer = MemoryUtil.memAllocFloat(numInstances * MATRIX_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, modelViewVBO);
         int start = 5;
         for (int i = 0; i < 4; i++) {
@@ -52,7 +52,7 @@ public class InstancedMesh extends Mesh {
         // Light view matrix
         modelLightViewVBO = glGenBuffers();
         vboIdList.add(modelLightViewVBO);
-        this.modelLightViewBuffer = BufferUtils.createFloatBuffer(numInstances * MATRIX_SIZE_FLOATS);
+        this.modelLightViewBuffer = MemoryUtil.memAllocFloat(numInstances * MATRIX_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, modelLightViewVBO);
         for (int i = 0; i < 4; i++) {
             glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE_BYTES, i * VECTOR4F_SIZE_BYTES);
@@ -62,6 +62,19 @@ public class InstancedMesh extends Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
+    }
+
+    @Override
+    public void cleanUp() {
+        super.cleanUp();
+        if (this.modelViewBuffer != null) {
+            MemoryUtil.memFree(this.modelViewBuffer);
+            this.modelViewBuffer = null;
+        }
+        if (this.modelLightViewBuffer != null) {
+            MemoryUtil.memFree(this.modelLightViewBuffer);
+            this.modelLightViewBuffer = null;
+        }
     }
 
     @Override

@@ -1,7 +1,5 @@
 package org.lwjglb.engine;
 
-import org.lwjglb.engine.sound.SoundManager;
-
 public class GameEngine implements Runnable {
 
     public static final int TARGET_FPS = 75;

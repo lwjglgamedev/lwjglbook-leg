@@ -2,11 +2,11 @@ package org.lwjglb.engine.graph;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import org.lwjgl.system.MemoryUtil;
 
 public class Mesh {
 
@@ -19,28 +19,39 @@ public class Mesh {
     private final int vertexCount;
 
     public Mesh(float[] positions, int[] indices) {
-        vertexCount = indices.length;
+        FloatBuffer posBuffer = null;
+        IntBuffer indicesBuffer = null;
+        try {
+            vertexCount = indices.length;
 
-        vaoId = glGenVertexArrays();
-        glBindVertexArray(vaoId);
+            vaoId = glGenVertexArrays();
+            glBindVertexArray(vaoId);
 
-        // Position VBO
-        posVboId = glGenBuffers();
-        FloatBuffer posBuffer = BufferUtils.createFloatBuffer(positions.length);
-        posBuffer.put(positions).flip();
-        glBindBuffer(GL_ARRAY_BUFFER, posVboId);
-        glBufferData(GL_ARRAY_BUFFER, posBuffer, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+            // Position VBO
+            posVboId = glGenBuffers();
+            posBuffer = MemoryUtil.memAllocFloat(positions.length);
+            posBuffer.put(positions).flip();
+            glBindBuffer(GL_ARRAY_BUFFER, posVboId);
+            glBufferData(GL_ARRAY_BUFFER, posBuffer, GL_STATIC_DRAW);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-        // Index VBO
-        idxVboId = glGenBuffers();
-        IntBuffer indicesBuffer = BufferUtils.createIntBuffer(indices.length);
-        indicesBuffer.put(indices).flip();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
+            // Index VBO
+            idxVboId = glGenBuffers();
+            indicesBuffer = MemoryUtil.memAllocInt(indices.length);
+            indicesBuffer.put(indices).flip();
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
+        } finally {
+            if (posBuffer != null) {
+                MemoryUtil.memFree(posBuffer);
+            }
+            if (indicesBuffer != null) {
+                MemoryUtil.memFree(indicesBuffer);
+            }
+        }
     }
 
     public int getVaoId() {

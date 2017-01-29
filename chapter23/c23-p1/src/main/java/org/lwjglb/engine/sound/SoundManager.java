@@ -15,6 +15,7 @@ import static org.lwjgl.openal.ALC10.*;
 import org.lwjgl.openal.ALCCapabilities;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import org.lwjglb.engine.graph.Camera;
+import org.lwjglb.engine.graph.Transformation;
 
 public class SoundManager {
 
@@ -28,9 +29,12 @@ public class SoundManager {
 
     private final Map<String, SoundSource> soundSourceMap;
 
+    private final Matrix4f cameraMatrix;
+
     public SoundManager() {
         soundBufferList = new ArrayList<>();
         soundSourceMap = new HashMap<>();
+        cameraMatrix = new Matrix4f();
     }
 
     public void init() throws Exception {
@@ -79,7 +83,9 @@ public class SoundManager {
     }
 
     public void updateListenerPosition(Camera camera) {
-        Matrix4f cameraMatrix = camera.getViewMatrix();
+        // Update camera matrix with camera data
+        Transformation.updateGenericViewMatrix(camera.getPosition(), camera.getRotation(), cameraMatrix);
+        
         listener.setPosition(camera.getPosition());
         Vector3f at = new Vector3f();
         cameraMatrix.positiveZ(at).negate();
@@ -93,14 +99,14 @@ public class SoundManager {
     }
     
     public void cleanup() {
-        for (SoundBuffer soundBuffer : soundBufferList) {
-            soundBuffer.cleanup();
-        }
-        soundBufferList.clear();
         for (SoundSource soundSource : soundSourceMap.values()) {
             soundSource.cleanup();
         }
         soundSourceMap.clear();
+        for (SoundBuffer soundBuffer : soundBufferList) {
+            soundBuffer.cleanup();
+        }
+        soundBufferList.clear();
         if (context != NULL) {
             alcDestroyContext(context);
         }

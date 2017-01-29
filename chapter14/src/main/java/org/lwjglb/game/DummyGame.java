@@ -50,7 +50,7 @@ public class DummyGame implements IGameLogic {
 
         scene = new Scene();
 
-        float skyBoxScale = 50.0f;        
+        float skyBoxScale = 50.0f;
         float terrainScale = 10;
         int terrainSize = 3;
         float minY = -0.1f;
@@ -162,7 +162,9 @@ public class DummyGame implements IGameLogic {
     public void cleanup() {
         renderer.cleanup();
         scene.cleanup();
-        hud.cleanup();
+        if (hud != null) {
+            hud.cleanup();
+        }
     }
 
 }

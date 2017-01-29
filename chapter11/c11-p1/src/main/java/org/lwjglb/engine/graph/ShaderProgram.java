@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
+import org.lwjgl.system.MemoryStack;
 
 public class ShaderProgram {
 
@@ -56,10 +56,12 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Matrix4f value) {
-        // Dump the matrix into a float buffer
-        FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-        value.get(fb);
-        glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            // Dump the matrix into a float buffer
+            FloatBuffer fb = stack.mallocFloat(16);
+            value.get(fb);
+            glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+        }
     }
 
     public void setUniform(String uniformName, int value) {

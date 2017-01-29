@@ -3,13 +3,13 @@ package org.lwjglb.engine.graph;
 import java.nio.FloatBuffer;
 import java.util.List;
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL33.*;
+import org.lwjgl.system.MemoryUtil;
 import org.lwjglb.engine.items.GameItem;
 
 public class InstancedMesh extends Mesh {
@@ -30,7 +30,7 @@ public class InstancedMesh extends Mesh {
 
     private final int instanceDataVBO;
 
-    private final FloatBuffer instanceDataBuffer;
+    private FloatBuffer instanceDataBuffer;
 
     public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int numInstances) {
         super(positions, textCoords, normals, indices, createEmptyIntArray(MAX_WEIGHTS * positions.length / 3, 0), createEmptyFloatArray(MAX_WEIGHTS * positions.length / 3, 0));
@@ -42,7 +42,7 @@ public class InstancedMesh extends Mesh {
         // Model View Matrix
         instanceDataVBO = glGenBuffers();
         vboIdList.add(instanceDataVBO);
-        this.instanceDataBuffer = BufferUtils.createFloatBuffer(numInstances * INSTANCE_SIZE_FLOATS);
+        instanceDataBuffer = MemoryUtil.memAllocFloat(numInstances * INSTANCE_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, instanceDataVBO);
         int start = 5;
         int strideStart = 0;
@@ -67,6 +67,15 @@ public class InstancedMesh extends Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
+    }
+
+    @Override
+    public void cleanUp() {
+        super.cleanUp();
+        if (this.instanceDataBuffer != null) {
+            MemoryUtil.memFree(this.instanceDataBuffer);
+            this.instanceDataBuffer = null;
+        }
     }
 
     @Override
