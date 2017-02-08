@@ -101,12 +101,12 @@ public class Renderer {
         dir.mul(viewMatrix);
         currSpotLight.setConeDirection(new Vector3f(dir.x, dir.y, dir.z));
 
-        Vector3f sPotLightPos = currSpotLight.getPointLight().getPosition();
+        Vector3f spotLightPos = currSpotLight.getPointLight().getPosition();
         Vector4f auxSpot = new Vector4f(sPotLightPos, 1);
-        aux.mul(viewMatrix);
-        sPotLightPos.x = auxSpot.x;
-        sPotLightPos.y = auxSpot.y;
-        sPotLightPos.z = auxSpot.z;
+        auxSpot.mul(viewMatrix);
+        spotLightPos.x = auxSpot.x;
+        spotLightPos.y = auxSpot.y;
+        spotLightPos.z = auxSpot.z;
 
         shaderProgram.setUniform("spotLight", currSpotLight);
 
