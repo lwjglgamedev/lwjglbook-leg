@@ -102,7 +102,7 @@ public class Renderer {
         currSpotLight.setConeDirection(new Vector3f(dir.x, dir.y, dir.z));
 
         Vector3f spotLightPos = currSpotLight.getPointLight().getPosition();
-        Vector4f auxSpot = new Vector4f(sPotLightPos, 1);
+        Vector4f auxSpot = new Vector4f(spotLightPos, 1);
         auxSpot.mul(viewMatrix);
         spotLightPos.x = auxSpot.x;
         spotLightPos.y = auxSpot.y;

@@ -19,12 +19,12 @@ public class InstancedMesh extends Mesh {
     private static final int VECTOR4F_SIZE_BYTES = 4 * FLOAT_SIZE_BYTES;
 
     private static final int MATRIX_SIZE_FLOATS = 4 * 4;
-    
+
     private static final int MATRIX_SIZE_BYTES = MATRIX_SIZE_FLOATS * FLOAT_SIZE_BYTES;
 
-    private static final int INSTANCE_SIZE_BYTES = MATRIX_SIZE_BYTES * 2 + FLOAT_SIZE_BYTES * 2;
-    
-    private static final int INSTANCE_SIZE_FLOATS = MATRIX_SIZE_FLOATS * 2 + 2;
+    private static final int INSTANCE_SIZE_BYTES = MATRIX_SIZE_BYTES * 2 + FLOAT_SIZE_BYTES * 2 + FLOAT_SIZE_BYTES;
+
+    private static final int INSTANCE_SIZE_FLOATS = MATRIX_SIZE_FLOATS * 2 + 3;
 
     private final int numInstances;
 
@@ -64,6 +64,13 @@ public class InstancedMesh extends Mesh {
         // Texture offsets
         glVertexAttribPointer(start, 2, GL_FLOAT, false, INSTANCE_SIZE_BYTES, strideStart);
         glVertexAttribDivisor(start, 1);
+        strideStart += FLOAT_SIZE_BYTES * 2;
+        start++;
+
+        // Selected
+        glVertexAttribPointer(start, 1, GL_FLOAT, false, INSTANCE_SIZE_BYTES, strideStart);
+        glVertexAttribDivisor(start, 1);
+        start++;
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
@@ -83,7 +90,7 @@ public class InstancedMesh extends Mesh {
         super.initRender();
 
         int start = 5;
-        int numElements = 4 * 2 + 1;
+        int numElements = 4 * 2 + 2;
         for (int i = 0; i < numElements; i++) {
             glEnableVertexAttribArray(start + i);
         }
@@ -92,7 +99,7 @@ public class InstancedMesh extends Mesh {
     @Override
     protected void endRender() {
         int start = 5;
-        int numElements = 4 * 2 + 1;
+        int numElements = 4 * 2 + 2;
         for (int i = 0; i < numElements; i++) {
             glDisableVertexAttribArray(start + i);
         }
@@ -146,6 +153,10 @@ public class InstancedMesh extends Mesh {
                 this.instanceDataBuffer.put(buffPos, textXOffset);
                 this.instanceDataBuffer.put(buffPos + 1, textYOffset);
             }
+
+            // Selected data
+            int buffPos = INSTANCE_SIZE_FLOATS * i + MATRIX_SIZE_FLOATS * 2 + 2;
+            this.instanceDataBuffer.put(buffPos, gameItem.isSelected() ? 1 : 0);
 
             i++;
         }
