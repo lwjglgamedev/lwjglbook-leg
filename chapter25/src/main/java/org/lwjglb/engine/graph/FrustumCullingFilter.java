@@ -34,26 +34,27 @@ public class FrustumCullingFilter {
     }
 
     public void filter(Map<? extends Mesh, List<GameItem>> mapMesh) {
-        for(Map.Entry<? extends Mesh, List<GameItem>> entry : mapMesh.entrySet()) {
-            List<GameItem> gameItems = entry.getValue();     
+        for (Map.Entry<? extends Mesh, List<GameItem>> entry : mapMesh.entrySet()) {
+            List<GameItem> gameItems = entry.getValue();
             filter(gameItems, entry.getKey().getBoundingRadius());
         }
     }
-    
-    public void filter(List<GameItem> gameItems, float meshBoundingRadious) {
-        float boundingRadious;
-        for(GameItem gameItem : gameItems) {
-            boundingRadious = gameItem.getScale() * meshBoundingRadious;
-            gameItem.setInsideFrustum(insideFrustum(gameItem, boundingRadious));
+
+    public void filter(List<GameItem> gameItems, float meshBoundingRadius) {
+        float boundingRadius;
+        Vector3f pos;
+        for (GameItem gameItem : gameItems) {
+            boundingRadius = gameItem.getScale() * meshBoundingRadius;
+            pos = gameItem.getPosition();
+            gameItem.setInsideFrustum(insideFrustum(pos.x, pos.y, pos.z, boundingRadius));
         }
     }
-    
-    public boolean insideFrustum(GameItem gameItem, float boundingRadious) {
+
+    public boolean insideFrustum(float x0, float y0, float z0, float boundingRadius) {
         boolean result = true;
-        for(int i=0; i<NUM_PLANES; i++) {
-            Vector3f pos = gameItem.getPosition();
+        for (int i = 0; i < NUM_PLANES; i++) {
             Vector4f plane = frustumPlanes[i];
-            if( plane.x * pos.x + plane.y * pos.y + plane.z * pos.z + plane.w <= -boundingRadious ) {
+            if (plane.x * x0 + plane.y * y0 + plane.z * x0 + plane.w <= -boundingRadius) {
                 result = false;
                 return result;
             }
