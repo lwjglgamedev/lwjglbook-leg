@@ -109,11 +109,15 @@ public class MD5Loader {
             Vector3f pos2 = v2.position;
 
             Vector3f normal = (new Vector3f(pos2).sub(pos0)).cross(new Vector3f(pos1).sub(pos0));
-            normal.normalize();
 
-            v0.normal.add(normal).normalize();
-            v1.normal.add(normal).normalize();
-            v2.normal.add(normal).normalize();
+            v0.normal.add(normal);
+            v1.normal.add(normal);
+            v2.normal.add(normal);
+        }
+
+        // Once the contributions have been added, normalize the result
+        for(AnimVertex v : vertices) {
+            v.normal.normalize();
         }
 
         Mesh mesh = createMesh(vertices, indices);
