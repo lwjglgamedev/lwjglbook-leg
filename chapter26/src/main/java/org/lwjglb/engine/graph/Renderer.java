@@ -63,9 +63,11 @@ public class Renderer {
     public void render(Window window, Camera camera, Scene scene, boolean sceneChanged) {
         clear();
 
-        frustumFilter.updateFrustum(window.getProjectionMatrix(), camera.getViewMatrix());
-        frustumFilter.filter(scene.getGameMeshes());
-        frustumFilter.filter(scene.getGameInstancedMeshes());
+        if (window.getOptions().frustumCulling) {
+            frustumFilter.updateFrustum(window.getProjectionMatrix(), camera.getViewMatrix());
+            frustumFilter.filter(scene.getGameMeshes());
+            frustumFilter.filter(scene.getGameInstancedMeshes());
+        }
 
         // Render depth map before view ports has been set up
         if (scene.isRenderShadows() && sceneChanged) {

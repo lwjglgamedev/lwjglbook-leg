@@ -42,11 +42,11 @@ public class Renderer {
     private ShaderProgram particlesShaderProgram;
 
     private final float specularPower;
-    
+
     private final FrustumCullingFilter frustumFilter;
 
     private final List<GameItem> filteredItems;
-    
+
     public Renderer() {
         transformation = new Transformation();
         specularPower = 10f;
@@ -66,10 +66,12 @@ public class Renderer {
     public void render(Window window, Camera camera, Scene scene) {
         clear();
 
-        frustumFilter.updateFrustum(window.getProjectionMatrix(), camera.getViewMatrix());
-        frustumFilter.filter(scene.getGameMeshes());
-        frustumFilter.filter(scene.getGameInstancedMeshes());
-        
+        if (window.getOptions().frustumCulling) {
+            frustumFilter.updateFrustum(window.getProjectionMatrix(), camera.getViewMatrix());
+            frustumFilter.filter(scene.getGameMeshes());
+            frustumFilter.filter(scene.getGameInstancedMeshes());
+        }
+
         // Render depth map before view ports has been set up
         renderDepthMap(window, camera, scene);
 
@@ -345,10 +347,10 @@ public class Renderer {
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMapTexture().getId());
             }
-            
+
             filteredItems.clear();
-            for(GameItem gameItem : mapMeshes.get(mesh)) {
-                if ( gameItem.isInsideFrustum() ) {
+            for (GameItem gameItem : mapMeshes.get(mesh)) {
+                if (gameItem.isInsideFrustum()) {
                     filteredItems.add(gameItem);
                 }
             }

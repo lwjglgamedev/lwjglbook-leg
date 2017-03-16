@@ -12,7 +12,7 @@ public class FrustumCullingFilter {
     private final Matrix4f prjViewMatrix;
 
     private final FrustumIntersection frustumInt;
-    
+
     public FrustumCullingFilter() {
         prjViewMatrix = new Matrix4f();
         frustumInt = new FrustumIntersection();
@@ -37,9 +37,11 @@ public class FrustumCullingFilter {
         float boundingRadius;
         Vector3f pos;
         for (GameItem gameItem : gameItems) {
-            boundingRadius = gameItem.getScale() * meshBoundingRadius;
-            pos = gameItem.getPosition();
-            gameItem.setInsideFrustum(insideFrustum(pos.x, pos.y, pos.z, boundingRadius));
+            if (!gameItem.isDisableFrustumCulling()) {
+                boundingRadius = gameItem.getScale() * meshBoundingRadius;
+                pos = gameItem.getPosition();
+                gameItem.setInsideFrustum(insideFrustum(pos.x, pos.y, pos.z, boundingRadius));
+            }
         }
     }
 

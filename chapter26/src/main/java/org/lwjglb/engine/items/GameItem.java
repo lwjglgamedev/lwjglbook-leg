@@ -18,6 +18,8 @@ public class GameItem {
 
     private int textPos;
     
+    private boolean disableFrustumCulling;
+
     private boolean insideFrustum;
 
     public GameItem() {
@@ -27,6 +29,7 @@ public class GameItem {
         rotation = new Quaternionf();
         textPos = 0;
         insideFrustum = true;
+        disableFrustumCulling = false;
     }
 
     public GameItem(Mesh mesh) {
@@ -111,4 +114,12 @@ public class GameItem {
     public void setInsideFrustum(boolean insideFrustum) {
         this.insideFrustum = insideFrustum;
     }
+    
+    public boolean isDisableFrustumCulling() {
+        return disableFrustumCulling;
+    }
+
+    public void setDisableFrustumCulling(boolean disableFrustumCulling) {
+        this.disableFrustumCulling = disableFrustumCulling;
+    }    
 }

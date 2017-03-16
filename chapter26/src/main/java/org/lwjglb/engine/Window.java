@@ -254,5 +254,7 @@ public class Window {
         public boolean compatibleProfile;
 
         public boolean antialiasing;
+
+        public boolean frustumCulling;        
     }
 }
