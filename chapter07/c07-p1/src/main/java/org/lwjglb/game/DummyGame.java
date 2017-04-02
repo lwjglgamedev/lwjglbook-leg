@@ -65,11 +65,11 @@ public class DummyGame implements IGameLogic {
             // Right face
             3, 2, 7, 5, 3, 7,
             // Left face
-            0, 1, 6, 4, 0, 6,
+            6, 1, 0, 6, 0, 4,
             // Bottom face
-            6, 1, 2, 7, 6, 2,
+            2, 1, 6, 2, 6, 7,
             // Back face
-            4, 6, 7, 5, 4, 7,
+            7, 6, 4, 7, 4, 5,
         };
         Mesh mesh = new Mesh(positions, colours, indices);
         GameItem gameItem = new GameItem(mesh);
