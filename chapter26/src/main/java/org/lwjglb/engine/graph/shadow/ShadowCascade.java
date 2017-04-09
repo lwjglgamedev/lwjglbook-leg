@@ -94,12 +94,12 @@ public class ShadowCascade {
 
     private void updateLightProjectionMatrix() {
         // Now calculate frustum dimensions in light space
-        float minX = Float.MAX_VALUE;
-        float maxX = Float.MIN_VALUE;
-        float minY = Float.MAX_VALUE;
-        float maxY = Float.MIN_VALUE;
-        float minZ = Float.MAX_VALUE;
-        float maxZ = Float.MIN_VALUE;
+        float minX =  Float.MAX_VALUE;
+        float maxX = -Float.MIN_VALUE;
+        float minY =  Float.MAX_VALUE;
+        float maxY = -Float.MIN_VALUE;
+        float minZ =  Float.MAX_VALUE;
+        float maxZ = -Float.MIN_VALUE;
         for (int i = 0; i < FRUSTUM_CORNERS; i++) {
             Vector3f corner = frustumCorners[i];
             tmpVec.set(corner, 1);
