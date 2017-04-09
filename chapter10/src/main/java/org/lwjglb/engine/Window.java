@@ -19,12 +19,6 @@ public class Window {
 
     private long windowHandle;
 
-    private GLFWErrorCallback errorCallback;
-
-    private GLFWKeyCallback keyCallback;
-
-    private GLFWWindowSizeCallback windowSizeCallback;
-
     private boolean resized;
 
     private boolean vSync;
@@ -41,7 +35,7 @@ public class Window {
     public void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
-        glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
+        GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if (!glfwInit()) {
@@ -63,22 +57,16 @@ public class Window {
         }
 
         // Setup resize callback
-        glfwSetWindowSizeCallback(windowHandle, windowSizeCallback = new GLFWWindowSizeCallback() {
-            @Override
-            public void invoke(long window, int width, int height) {
-                Window.this.width = width;
-                Window.this.height = height;
-                Window.this.setResized(true);
-            }
+        glfwSetWindowSizeCallback(windowHandle, (window, width, height) -> {
+            this.width = width;
+            this.height = height;
+            this.setResized(true);
         });
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(windowHandle, keyCallback = new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                    glfwSetWindowShouldClose(window, true);
-                }
+        glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
             }
         });
 

@@ -4,16 +4,13 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 
 import org.lwjgl.Version;
+import static org.lwjgl.glfw.Callbacks.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Main {
-
-    // We need to strongly reference callback instances.
-    private GLFWErrorCallback errorCallback;
-    private GLFWKeyCallback keyCallback;
 
     // The window handle
     private long window;
@@ -26,19 +23,19 @@ public class Main {
             loop();
 
             // Release window and window callbacks
+            glfwFreeCallbacks(window);
             glfwDestroyWindow(window);
-            keyCallback.free();
         } finally {
             // Terminate GLFW and release the GLFWerrorfun
             glfwTerminate();
-            errorCallback.free();
+            glfwSetErrorCallback(null).free();
         }
     }
 
     private void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
-        glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
+        GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if (!glfwInit()) {
@@ -60,12 +57,9 @@ public class Main {
         }
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                    glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
-                }
+        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
             }
         });
 
@@ -100,7 +94,7 @@ public class Main {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while ( !glfwWindowShouldClose(window)) {
+        while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             glfwSwapBuffers(window); // swap the color buffers

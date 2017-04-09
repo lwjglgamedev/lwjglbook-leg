@@ -21,12 +21,6 @@ public class MouseInput {
 
     private boolean rightButtonPressed = false;
 
-    private GLFWCursorPosCallback cursorPosCallback;
-    
-    private GLFWCursorEnterCallback cursorEnterCallback;
-    
-    private GLFWMouseButtonCallback mouseButtonCallback;
-
     public MouseInput() {
         previousPos = new Vector2d(-1, -1);
         currentPos = new Vector2d(0, 0);
@@ -34,25 +28,16 @@ public class MouseInput {
     }
 
     public void init(Window window) {
-        glfwSetCursorPosCallback(window.getWindowHandle(), cursorPosCallback = new GLFWCursorPosCallback() {
-            @Override
-            public void invoke(long window, double xpos, double ypos) {
-                currentPos.x = xpos;
-                currentPos.y = ypos;
-            }
+        glfwSetCursorPosCallback(window.getWindowHandle(), (windowHandle, xpos, ypos) -> {
+            currentPos.x = xpos;
+            currentPos.y = ypos;
         });
-        glfwSetCursorEnterCallback(window.getWindowHandle(), cursorEnterCallback = new GLFWCursorEnterCallback() {
-            @Override
-            public void invoke(long window, boolean entered) {
-                inWindow = entered;
-            }
+        glfwSetCursorEnterCallback(window.getWindowHandle(), (windowHandle, entered) -> {
+            inWindow = entered;
         });
-        glfwSetMouseButtonCallback(window.getWindowHandle(), mouseButtonCallback = new GLFWMouseButtonCallback() {
-            @Override
-            public void invoke(long window, int button, int action, int mods) {
-                leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
-                rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
-            }
+        glfwSetMouseButtonCallback(window.getWindowHandle(), (windowHandle, button, action, mode) -> {
+            leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
+            rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
         });
     }
 
