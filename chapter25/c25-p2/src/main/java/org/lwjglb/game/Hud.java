@@ -9,7 +9,6 @@ import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import org.lwjgl.nanovg.NVGColor;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
-import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import org.lwjglb.engine.Utils;
@@ -103,9 +102,7 @@ public class Hud {
         nvgEndFrame(vg);
 
         // Restore state
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_STENCIL_TEST);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        window.restoreState();
     }
 
     public void incCounter() {
