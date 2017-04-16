@@ -108,13 +108,13 @@ public class Renderer {
             window.setResized(false);
         }
 
-        // Update projection and view atrices once per render cycle
+        // Update projection and view matrices once per render cycle
         transformation.updateProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
         transformation.updateViewMatrix(camera);
 
-        renderScene(window, camera, scene);
-
         renderSkyBox(window, camera, scene);
+
+        renderScene(window, camera, scene);
 
         renderHud(window, hud);
     }
@@ -128,8 +128,11 @@ public class Renderer {
         skyBoxShaderProgram.setUniform("projectionMatrix", projectionMatrix);
         SkyBox skyBox = scene.getSkyBox();
         Matrix4f viewMatrix = transformation.getViewMatrix();
+        float m30 = viewMatrix.m30();
         viewMatrix.m30(0);
+        float m31 = viewMatrix.m31();
         viewMatrix.m31(0);
+        float m32 = viewMatrix.m32();
         viewMatrix.m32(0);
         Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
         skyBoxShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
@@ -137,6 +140,9 @@ public class Renderer {
 
         scene.getSkyBox().getMesh().render();
 
+        viewMatrix.m30(m30);
+        viewMatrix.m31(m31);
+        viewMatrix.m32(m32);
         skyBoxShaderProgram.unbind();
     }
 

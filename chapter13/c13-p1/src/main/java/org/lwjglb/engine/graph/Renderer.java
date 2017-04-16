@@ -106,10 +106,10 @@ public class Renderer {
             window.setResized(false);
         }
 
-        renderScene(window, camera, scene);
-        
         renderSkyBox(window, camera, scene);
 
+        renderScene(window, camera, scene);
+        
         renderHud(window, hud);
     }
 

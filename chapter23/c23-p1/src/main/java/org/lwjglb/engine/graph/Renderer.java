@@ -80,8 +80,8 @@ public class Renderer {
         // Update projection matrix once per render cycle
         transformation.updateProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
 
-        renderScene(window, camera, scene);
         renderSkyBox(window, camera, scene);
+        renderScene(window, camera, scene);
         renderParticles(window, camera, scene);
         renderHud(window, hud);
 
