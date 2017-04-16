@@ -132,7 +132,7 @@ vec4 calcFog(vec3 pos, vec4 colour, Fog fog, vec3 ambientLight, DirectionalLight
     fogFactor = clamp( fogFactor, 0.0, 1.0 );
 
     vec3 resultColour = mix(fogColor, colour.xyz, fogFactor);
-    return vec4(resultColour.xyz, 1);
+    return vec4(resultColour.xyz, colour.w);
 }
 
 vec4 calcBaseColour(Material material, vec2 text_coord)
