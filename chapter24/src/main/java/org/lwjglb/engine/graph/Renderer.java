@@ -67,8 +67,8 @@ public class Renderer {
         // Update projection matrix once per render cycle
         window.updateProjectionMatrix();
 
-        renderSkyBox(window, camera, scene);
         renderScene(window, camera, scene);
+        renderSkyBox(window, camera, scene);
         renderParticles(window, camera, scene);
 
         //renderAxes(camera);

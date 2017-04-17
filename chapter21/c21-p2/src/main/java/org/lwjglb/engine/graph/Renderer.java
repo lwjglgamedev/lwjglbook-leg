@@ -81,8 +81,8 @@ public class Renderer {
         transformation.updateProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
         transformation.updateViewMatrix(camera);
 
-        renderSkyBox(window, camera, scene);
         renderScene(window, camera, scene);
+        renderSkyBox(window, camera, scene);
         renderParticles(window, camera, scene);
         renderHud(window, hud);
 
