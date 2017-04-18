@@ -1,7 +1,7 @@
 package org.lwjglb.game;
 
 import java.awt.Font;
-import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.IHud;
 import org.lwjglb.engine.items.TextItem;
@@ -21,7 +21,7 @@ public class Hud implements IHud {
     public Hud(String statusText) throws Exception {
         FontTexture fontTexture = new FontTexture(FONT, CHARSET);
         this.statusTextItem = new TextItem(statusText, fontTexture);
-        this.statusTextItem.getMesh().getMaterial().setColour(new Vector3f(0.5f, 0.5f, 0.5f));
+        this.statusTextItem.getMesh().getMaterial().setAmbientColour(new Vector4f(0.5f, 0.5f, 0.5f, 10f));
 
         // Create list that holds the items that compose the HUD
         gameItems = new GameItem[]{statusTextItem};

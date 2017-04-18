@@ -2,6 +2,7 @@ package org.lwjglb.game;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjglb.engine.IGameLogic;
 import org.lwjglb.engine.MouseInput;
@@ -58,14 +59,14 @@ public class DummyGame implements IGameLogic {
         // Setup  GameItems
         float reflectance = 1f;
         Mesh cubeMesh = OBJLoader.loadMesh("/models/cube.obj");
-        Material cubeMaterial = new Material(new Vector3f(0, 1, 0), reflectance);
+        Material cubeMaterial = new Material(new Vector4f(0, 1, 0, 1), reflectance);
         cubeMesh.setMaterial(cubeMaterial);
         cubeGameItem = new GameItem(cubeMesh);
         cubeGameItem.setPosition(0, 0, 0);
         cubeGameItem.setScale(0.5f);
 
         Mesh quadMesh = OBJLoader.loadMesh("/models/plane.obj");
-        Material quadMaterial = new Material(new Vector3f(0.0f, 0.0f, 1.0f), reflectance);
+        Material quadMaterial = new Material(new Vector4f(0.0f, 0.0f, 1.0f, 10.0f), reflectance);
         quadMesh.setMaterial(quadMaterial);
         GameItem quadGameItem = new GameItem(quadMesh);
         quadGameItem.setPosition(0, -1, 0);

@@ -7,6 +7,7 @@ import java.util.List;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjglb.engine.Utils;
 import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
@@ -25,7 +26,7 @@ public class MD5Loader {
      * @return
      * @throws Exception
      */
-    public static AnimGameItem process(MD5Model md5Model, MD5AnimModel animModel, Vector3f defaultColour) throws Exception {
+    public static AnimGameItem process(MD5Model md5Model, MD5AnimModel animModel, Vector4f defaultColour) throws Exception {
         List<Matrix4f> invJointMatrices = calcInJointMatrices(md5Model);
         List<AnimatedFrame> animatedFrames = processAnimationFrames(md5Model, animModel, invJointMatrices);
 
@@ -234,7 +235,7 @@ public class MD5Loader {
         return result;
     }
 
-    private static void handleTexture(Mesh mesh, MD5Mesh md5Mesh, Vector3f defaultColour) throws Exception {
+    private static void handleTexture(Mesh mesh, MD5Mesh md5Mesh, Vector4f defaultColour) throws Exception {
         String texturePath = md5Mesh.getTexture();
         if (texturePath != null && texturePath.length() > 0) {
             Texture texture = new Texture(texturePath);

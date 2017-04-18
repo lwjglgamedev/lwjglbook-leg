@@ -1,7 +1,6 @@
 package org.lwjglb.engine.items;
 
-import org.joml.Vector3f;
-import org.lwjglb.engine.items.GameItem;
+import org.joml.Vector4f;
 import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.loaders.obj.OBJLoader;
@@ -18,7 +17,7 @@ public class SkyBox extends GameItem {
         setPosition(0, 0, 0);
     }
 
-    public SkyBox(String objModel, Vector3f colour) throws Exception {
+    public SkyBox(String objModel, Vector4f colour) throws Exception {
         super();
         Mesh skyBoxMesh = OBJLoader.loadMesh(objModel);
         Material material = new Material(colour, 0);

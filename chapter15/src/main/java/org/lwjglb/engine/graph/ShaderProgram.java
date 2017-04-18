@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.system.MemoryStack;
 
@@ -71,7 +72,9 @@ public class ShaderProgram {
     }
 
     public void createMaterialUniform(String uniformName) throws Exception {
-        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".ambient");
+        createUniform(uniformName + ".diffuse");
+        createUniform(uniformName + ".specular");
         createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".reflectance");
     }
@@ -95,6 +98,10 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, Vector3f value) {
         glUniform3f(uniforms.get(uniformName), value.x, value.y, value.z);
+    }
+
+    public void setUniform(String uniformName, Vector4f value) {
+        glUniform4f(uniforms.get(uniformName), value.x, value.y, value.z, value.w);
     }
 
     public void setUniform(String uniformName, PointLight[] pointLights) {
@@ -142,7 +149,9 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Material material) {
-        setUniform(uniformName + ".colour", material.getColour());
+        setUniform(uniformName + ".ambient", material.getAmbientColour());
+        setUniform(uniformName + ".diffuse", material.getDiffuseColour());
+        setUniform(uniformName + ".specular", material.getSpecularColour());
         setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }

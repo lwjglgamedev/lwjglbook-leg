@@ -5,7 +5,7 @@ in vec3 mvPos;
 out vec4 fragColor;
 
 uniform sampler2D texture_sampler;
-uniform vec3 colour;
+uniform vec4 colour;
 uniform vec3 ambientLight;
 uniform int hasTexture;
 
@@ -17,6 +17,6 @@ void main()
     }
     else
     {
-        fragColor = vec4(colour, 1);
+        fragColor = colour;
     }
 }

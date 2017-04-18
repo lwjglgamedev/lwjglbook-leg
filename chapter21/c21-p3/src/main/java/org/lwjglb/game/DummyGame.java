@@ -4,6 +4,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import java.nio.ByteBuffer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjglb.engine.IGameLogic;
 import org.lwjglb.engine.MouseInput;
@@ -138,7 +139,7 @@ public class DummyGame implements IGameLogic {
         scene.setFog(new Fog(true, fogColour, 0.02f));
 
         // Setup  SkyBox
-        SkyBox skyBox = new SkyBox("/models/skybox.obj", new Vector3f(0.65f, 0.65f, 0.65f));
+        SkyBox skyBox = new SkyBox("/models/skybox.obj", new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
 

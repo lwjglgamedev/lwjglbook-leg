@@ -31,8 +31,10 @@ struct DirectionalLight
 
 struct Material
 {
-    vec3 colour;
-    int useColour;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
+    int hasTexture;
     float reflectance;
 };
 
@@ -43,6 +45,26 @@ uniform Material material;
 uniform PointLight pointLight;
 uniform DirectionalLight directionalLight;
 
+vec4 ambientC;
+vec4 diffuseC;
+vec4 speculrC;
+
+void setupColours(Material material, vec2 textCoord)
+{
+    if (material.hasTexture == 1)
+    {
+        ambientC = texture(texture_sampler, textCoord);
+        diffuseC = ambientC;
+        speculrC = ambientC;
+    }
+    else
+    {
+        ambientC = material.ambient;
+        diffuseC = material.diffuse;
+        speculrC = material.specular;
+    }
+}
+
 vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, vec3 to_light_dir, vec3 normal)
 {
     vec4 diffuseColour = vec4(0, 0, 0, 0);
@@ -50,7 +72,7 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
 
     // Diffuse Light
     float diffuseFactor = max(dot(normal, to_light_dir), 0.0);
-    diffuseColour = vec4(light_colour, 1.0) * light_intensity * diffuseFactor;
+    diffuseColour = diffuseC * vec4(light_colour, 1.0) * light_intensity * diffuseFactor;
 
     // Specular Light
     vec3 camera_direction = normalize(-position);
@@ -58,7 +80,7 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
     vec3 reflected_light = normalize(reflect(from_light_dir , normal));
     float specularFactor = max( dot(camera_direction, reflected_light), 0.0);
     specularFactor = pow(specularFactor, specularPower);
-    specColour = light_intensity  * specularFactor * material.reflectance * vec4(light_colour, 1.0);
+    specColour = speculrC * light_intensity  * specularFactor * material.reflectance * vec4(light_colour, 1.0);
 
     return (diffuseColour + specColour);
 }
@@ -83,18 +105,10 @@ vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal)
 
 void main()
 {
-    vec4 baseColour; 
-    if ( material.useColour == 1 )
-    {
-        baseColour = vec4(material.colour, 1);
-    }
-    else
-    {
-        baseColour = texture(texture_sampler, outTexCoord);
-    }
-    vec4 totalLight = vec4(ambientLight, 1.0);
-    totalLight += calcDirectionalLight(directionalLight, mvVertexPos, mvVertexNormal);
-    totalLight += calcPointLight(pointLight, mvVertexPos, mvVertexNormal); 
+    setupColours(material, outTexCoord);
+
+    vec4 diffuseSpecularComp = calcDirectionalLight(directionalLight, mvVertexPos, mvVertexNormal);
+    diffuseSpecularComp += calcPointLight(pointLight, mvVertexPos, mvVertexNormal); 
     
-    fragColor = baseColour * totalLight;
+    fragColor = ambientC * vec4(ambientLight, 1) + diffuseSpecularComp;
 }

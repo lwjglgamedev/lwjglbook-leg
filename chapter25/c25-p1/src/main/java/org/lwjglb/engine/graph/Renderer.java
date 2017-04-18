@@ -252,7 +252,7 @@ public class Renderer {
             Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
             skyBoxShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
             skyBoxShaderProgram.setUniform("ambientLight", scene.getSceneLight().getSkyBoxLight());
-            skyBoxShaderProgram.setUniform("colour", mesh.getMaterial().getColour());
+            skyBoxShaderProgram.setUniform("colour", mesh.getMaterial().getAmbientColour());
             skyBoxShaderProgram.setUniform("hasTexture", mesh.getMaterial().isTextured() ? 1 : 0);
 
             mesh.render();

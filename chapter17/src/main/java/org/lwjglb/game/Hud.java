@@ -1,7 +1,7 @@
 package org.lwjglb.game;
 
 import java.awt.Font;
-import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.IHud;
 import org.lwjglb.engine.items.TextItem;
@@ -26,12 +26,12 @@ public class Hud implements IHud {
     public Hud(String statusText) throws Exception {
         FontTexture fontTexture = new FontTexture(FONT, CHARSET);
         this.statusTextItem = new TextItem(statusText, fontTexture);
-        this.statusTextItem.getMesh().getMaterial().setColour(new Vector3f(1, 1, 1));
+        this.statusTextItem.getMesh().getMaterial().setAmbientColour(new Vector4f(1, 1, 1, 1));
 
         // Create compass
         Mesh mesh = OBJLoader.loadMesh("/models/compass.obj");
         Material material = new Material();
-        material.setColour(new Vector3f(1, 0, 0));
+        material.setAmbientColour(new Vector4f(1, 0, 0, 1));
         mesh.setMaterial(material);
         compassItem = new GameItem(mesh);
         compassItem.setScale(40.0f);

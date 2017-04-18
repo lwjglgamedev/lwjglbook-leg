@@ -1,6 +1,6 @@
 package org.lwjglb.game;
 
-import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjglb.engine.GameItem;
 import org.lwjglb.engine.IHud;
 import org.lwjglb.engine.TextItem;
@@ -25,12 +25,12 @@ public class Hud implements IHud {
 
     public Hud(String statusText) throws Exception {
         this.statusTextItem = new TextItem(statusText, FONT_TEXTURE, FONT_COLS, FONT_ROWS);
-        this.statusTextItem.getMesh().getMaterial().setColour(new Vector3f(1, 1, 1));
+        this.statusTextItem.getMesh().getMaterial().setAmbientColour(new Vector4f(1, 1, 1, 1));
 
         // Create compass
         Mesh mesh = OBJLoader.loadMesh("/models/compass.obj");
         Material material = new Material();
-        material.setColour(new Vector3f(1, 0, 0));
+        material.setAmbientColour(new Vector4f(1, 0, 0, 1));
         mesh.setMaterial(material);
         compassItem = new GameItem(mesh);
         compassItem.setScale(40.0f);

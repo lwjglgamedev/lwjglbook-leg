@@ -180,7 +180,7 @@ public class Renderer {
             // Set ortohtaphic and model matrix for this HUD item
             Matrix4f projModelMatrix = transformation.getOrtoProjModelMatrix(gameItem, ortho);
             hudShaderProgram.setUniform("projModelMatrix", projModelMatrix);
-            hudShaderProgram.setUniform("colour", gameItem.getMesh().getMaterial().getColour());
+            hudShaderProgram.setUniform("colour", gameItem.getMesh().getMaterial().getAmbientColour());
 
             // Render the mesh for this HUD item
             mesh.render();

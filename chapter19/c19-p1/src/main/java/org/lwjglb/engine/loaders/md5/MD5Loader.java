@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjglb.engine.Utils;
 import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
@@ -14,7 +15,7 @@ public class MD5Loader {
 
     private static final String NORMAL_FILE_SUFFIX = "_normal";
 
-    public static GameItem process(MD5Model md5Model, Vector3f defaultColour) throws Exception {
+    public static GameItem process(MD5Model md5Model, Vector4f defaultColour) throws Exception {
         List<MD5Mesh> md5MeshList = md5Model.getMeshes();
 
         List<Mesh> list = new ArrayList<>();
@@ -30,7 +31,7 @@ public class MD5Loader {
         return gameItem;
     }
 
-    private static Mesh generateMesh(MD5Model md5Model, MD5Mesh md5Mesh, Vector3f defaultColour) throws Exception {
+    private static Mesh generateMesh(MD5Model md5Model, MD5Mesh md5Mesh, Vector4f defaultColour) throws Exception {
         List<VertexInfo> vertexInfoList = new ArrayList<>();
         List<Float> textCoords = new ArrayList<>();
         List<Integer> indices = new ArrayList<>();
@@ -94,7 +95,7 @@ public class MD5Loader {
         return mesh;
     }
 
-    private static void handleTexture(Mesh mesh, MD5Mesh md5Mesh, Vector3f defaultColour) throws Exception {
+    private static void handleTexture(Mesh mesh, MD5Mesh md5Mesh, Vector4f defaultColour) throws Exception {
         String texturePath = md5Mesh.getTexture();
         if (texturePath != null && texturePath.length() > 0) {
             Texture texture = new Texture(texturePath);

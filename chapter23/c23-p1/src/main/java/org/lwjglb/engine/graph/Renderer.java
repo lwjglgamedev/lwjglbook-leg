@@ -267,7 +267,7 @@ public class Renderer {
             Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
             skyBoxShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
             skyBoxShaderProgram.setUniform("ambientLight", scene.getSceneLight().getSkyBoxLight());
-            skyBoxShaderProgram.setUniform("colour", mesh.getMaterial().getColour());
+            skyBoxShaderProgram.setUniform("colour", mesh.getMaterial().getAmbientColour());
             skyBoxShaderProgram.setUniform("hasTexture", mesh.getMaterial().isTextured() ? 1 : 0);
 
             mesh.render();
@@ -422,7 +422,7 @@ public class Renderer {
                 // Set ortohtaphic and model matrix for this HUD item
                 Matrix4f projModelMatrix = transformation.buildOrthoProjModelMatrix(gameItem, ortho);
                 hudShaderProgram.setUniform("projModelMatrix", projModelMatrix);
-                hudShaderProgram.setUniform("colour", gameItem.getMesh().getMaterial().getColour());
+                hudShaderProgram.setUniform("colour", gameItem.getMesh().getMaterial().getAmbientColour());
                 hudShaderProgram.setUniform("hasTexture", gameItem.getMesh().getMaterial().isTextured() ? 1 : 0);
 
                 // Render the mesh for this HUD item
