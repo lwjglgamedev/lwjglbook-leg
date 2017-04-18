@@ -261,6 +261,7 @@ public class DummyGame implements IGameLogic {
             // Update camera based on mouse            
             Vector2f rotVec = mouseInput.getDisplVec();
             camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+            sceneChanged = true;
         }
 
         // Update camera position
@@ -304,7 +305,7 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void render(Window window) {
-        if ( firstTime ) {
+        if (firstTime) {
             sceneChanged = true;
             firstTime = false;
         }
