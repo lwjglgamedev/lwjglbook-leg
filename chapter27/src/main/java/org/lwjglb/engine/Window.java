@@ -37,9 +37,9 @@ public class Window {
 
     private boolean vSync;
 
-    private WindowOptions opts;
+    private final WindowOptions opts;
 
-    private Matrix4f projectionMatrix;
+    private final Matrix4f projectionMatrix;
 
     public Window(String title, int width, int height, boolean vSync, WindowOptions opts) {
         this.title = title;
@@ -89,8 +89,7 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        // Setup resize callback
-        glfwSetWindowSizeCallback(windowHandle, (window, width, height) -> {
+        glfwSetFramebufferSizeCallback(windowHandle, (window, width, height) -> {
             this.width = width;
             this.height = height;
             this.setResized(true);
