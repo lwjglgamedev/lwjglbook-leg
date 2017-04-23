@@ -99,6 +99,7 @@
         <module>chapter25/c25-p1</module>
         <module>chapter25/c25-p2</module>
         <module>chapter26</module>
+        <module>chapter27</module>
     </modules>
 
     <properties>
