@@ -57,7 +57,7 @@ public class Window {
         }
 
         // Setup resize callback
-        glfwSetWindowSizeCallback(windowHandle, (window, width, height) -> {
+        glfwSetFramebufferSizeCallback(windowHandle, (window, width, height) -> {
             this.width = width;
             this.height = height;
             this.setResized(true);
