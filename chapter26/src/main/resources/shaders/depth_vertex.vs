@@ -23,6 +23,11 @@ void main()
     if ( isInstanced > 0 )
     {
         modelMatrix = modelInstancedMatrix;
+        initPos = vec4(position, 1.0);
+    }
+    else
+    {
+        modelMatrix = modelNonInstancedMatrix;
 
         int count = 0;
         for(int i = 0; i < MAX_WEIGHTS; i++)
@@ -39,11 +44,6 @@ void main()
         {
             initPos = vec4(position, 1.0);
         }
-    }
-    else
-    {
-        modelMatrix = modelNonInstancedMatrix;
-        initPos = vec4(position, 1.0);
     }
     gl_Position = orthoProjectionMatrix * lightViewMatrix * modelMatrix * initPos;
 }

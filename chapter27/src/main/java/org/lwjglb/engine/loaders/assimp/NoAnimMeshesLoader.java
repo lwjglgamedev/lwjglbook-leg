@@ -98,6 +98,7 @@ public class NoAnimMeshesLoader {
         processTextCoords(aiMesh, textures);
         processIndices(aiMesh, indices);
 
+        System.err.println("##### VERTICES: "  + vertices.size() / 3);
         Mesh mesh = new Mesh(Utils.listToArray(vertices),
                 Utils.listToArray(textures),
                 Utils.listToArray(normals),

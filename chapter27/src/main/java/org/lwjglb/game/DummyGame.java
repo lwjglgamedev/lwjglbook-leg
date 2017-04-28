@@ -17,7 +17,6 @@ import org.lwjglb.engine.graph.lights.DirectionalLight;
 import org.lwjglb.engine.graph.weather.Fog;
 import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.items.SkyBox;
-import org.lwjglb.engine.items.Terrain;
 import org.lwjglb.engine.loaders.assimp.NoAnimMeshesLoader;
 
 public class DummyGame implements IGameLogic {
@@ -33,8 +32,6 @@ public class DummyGame implements IGameLogic {
     private Scene scene;
 
     private static final float CAMERA_POS_STEP = 0.40f;
-
-    private Terrain terrain;
 
     private float angleInc;
 
@@ -118,8 +115,6 @@ public class DummyGame implements IGameLogic {
         float lightIntensity = 1.0f;
         Vector3f lightDirection = new Vector3f(0, 1, 1);
         DirectionalLight directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), lightDirection, lightIntensity);
-        directionalLight.setShadowPosMult(10);
-        directionalLight.setOrthoCords(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 20.0f);
         sceneLight.setDirectionalLight(directionalLight);
     }
 
@@ -169,14 +164,7 @@ public class DummyGame implements IGameLogic {
         }
 
         // Update camera position
-        Vector3f prevPos = new Vector3f(camera.getPosition());
         camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
-        // Check if there has been a collision. If true, set the y position to
-        // the maximum height
-        float height = terrain != null ? terrain.getHeight(camera.getPosition()) : -Float.MAX_VALUE;
-        if (camera.getPosition().y <= height) {
-            camera.setPosition(prevPos.x, prevPos.y, prevPos.z);
-        }
 
         lightAngle += angleInc;
         if (lightAngle < 0) {
