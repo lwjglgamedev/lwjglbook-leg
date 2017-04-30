@@ -17,7 +17,7 @@ import org.lwjglb.engine.graph.lights.DirectionalLight;
 import org.lwjglb.engine.graph.weather.Fog;
 import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.items.SkyBox;
-import org.lwjglb.engine.loaders.assimp.NoAnimMeshesLoader;
+import org.lwjglb.engine.loaders.assimp.StaticMeshesLoader;
 
 public class DummyGame implements IGameLogic {
 
@@ -65,13 +65,13 @@ public class DummyGame implements IGameLogic {
         String fileName = Thread.currentThread().getContextClassLoader()
                 .getResource("models/house/house.obj").getFile();
         File file = new File(fileName);
-        Mesh[] houseMesh = NoAnimMeshesLoader.load(file.getAbsolutePath(), "/models/house");
+        Mesh[] houseMesh = StaticMeshesLoader.load(file.getAbsolutePath(), "/models/house");
         GameItem house = new GameItem(houseMesh);
 
         fileName = Thread.currentThread().getContextClassLoader()
                 .getResource("models/terrain/terrain.obj").getFile();
         file = new File(fileName);
-        Mesh[] terrainMesh = NoAnimMeshesLoader.load(file.getAbsolutePath(), "/models/terrain");
+        Mesh[] terrainMesh = StaticMeshesLoader.load(file.getAbsolutePath(), "/models/terrain");
         GameItem terrain = new GameItem(terrainMesh);
         terrain.setScale(100.0f);
 

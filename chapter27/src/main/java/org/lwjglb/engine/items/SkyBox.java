@@ -7,13 +7,13 @@ import static org.lwjgl.assimp.Assimp.aiProcess_ValidateDataStructure;
 import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.Texture;
-import org.lwjglb.engine.loaders.assimp.NoAnimMeshesLoader;
+import org.lwjglb.engine.loaders.assimp.StaticMeshesLoader;
 
 public class SkyBox extends GameItem {
 
     public SkyBox(String objModel, String textureFile) throws Exception {
         super();
-        Mesh skyBoxMesh = NoAnimMeshesLoader.load(objModel, "")[0];
+        Mesh skyBoxMesh = StaticMeshesLoader.load(objModel, "")[0];
         Texture skyBoxtexture = new Texture(textureFile);
         skyBoxMesh.setMaterial(new Material(skyBoxtexture, 0.0f));
         setMesh(skyBoxMesh);
@@ -22,7 +22,7 @@ public class SkyBox extends GameItem {
 
     public SkyBox(String objModel, Vector4f colour) throws Exception {
         super();
-        Mesh skyBoxMesh = NoAnimMeshesLoader.load(objModel, "", 0)[0];
+        Mesh skyBoxMesh = StaticMeshesLoader.load(objModel, "", 0)[0];
         Material material = new Material(colour, 0);
         skyBoxMesh.setMaterial(material);
         setMesh(skyBoxMesh);

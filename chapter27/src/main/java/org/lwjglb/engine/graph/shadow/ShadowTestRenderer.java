@@ -6,7 +6,7 @@ import org.lwjglb.engine.Utils;
 import org.lwjglb.engine.Window;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.ShaderProgram;
-import org.lwjglb.engine.loaders.assimp.NoAnimMeshesLoader;
+import org.lwjglb.engine.loaders.assimp.StaticMeshesLoader;
 
 public class ShadowTestRenderer {
 
@@ -28,7 +28,7 @@ public class ShadowTestRenderer {
             testShaderProgram.createUniform("texture_sampler[" + i + "]");
         }
 
-        quadMesh = NoAnimMeshesLoader.load("/models/quad.obj", "")[0];
+        quadMesh = StaticMeshesLoader.load("/models/quad.obj", "")[0];
     }
 
     public void renderTest(ShadowBuffer shadowMap) {

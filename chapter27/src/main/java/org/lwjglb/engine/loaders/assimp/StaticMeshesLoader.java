@@ -19,15 +19,14 @@ import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.Texture;
 
-public class NoAnimMeshesLoader {
+public class StaticMeshesLoader {
 
     public static Mesh[] load(String resourcePath, String texturesDir) throws Exception {
-        return load(resourcePath, texturesDir, aiProcess_FindInvalidData | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals);
+        return load(resourcePath, texturesDir, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals);
     }
     
     public static Mesh[] load(String resourcePath, String texturesDir, int flags) throws Exception {
         AIScene aiScene = aiImportFile(resourcePath, flags);
-
         if (aiScene == null) {
             throw new Exception("Error loading model");
         }
@@ -98,7 +97,6 @@ public class NoAnimMeshesLoader {
         processTextCoords(aiMesh, textures);
         processIndices(aiMesh, indices);
 
-        System.err.println("##### VERTICES: "  + vertices.size() / 3);
         Mesh mesh = new Mesh(Utils.listToArray(vertices),
                 Utils.listToArray(textures),
                 Utils.listToArray(normals),
