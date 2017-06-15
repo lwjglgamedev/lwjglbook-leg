@@ -99,7 +99,8 @@
         <module>chapter25/c25-p1</module>
         <module>chapter25/c25-p2</module>
         <module>chapter26</module>
-        <module>chapter27</module>
+        <module>chapter27/c27-p1</module>
+        <module>chapter27/c27-p2</module>
     </modules>
 
     <properties>
@@ -110,8 +111,8 @@
         <java.version>1.8</java.version>
         <mvn.complilerplug.version>3.6.1</mvn.complilerplug.version>
 		<mvn.jarplug.version>3.0.2</mvn.jarplug.version>
-        <lwjgl.version>3.1.1</lwjgl.version>
-        <joml.version>1.9.2</joml.version>
+        <lwjgl.version>3.1.2</lwjgl.version>
+        <joml.version>1.9.3</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 
