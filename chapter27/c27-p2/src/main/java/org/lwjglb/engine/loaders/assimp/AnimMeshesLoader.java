@@ -60,8 +60,7 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
                 transfMat.scale(vec.x(), vec.y(), vec.z());
             }
 
-            Node.FrameData frameData = new Node.FrameData(transfMat);
-            node.addFramedata(frameData);
+            node.addTransformation(transfMat);
         }
     }
 
@@ -97,14 +96,17 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
             meshes[i] = mesh;
         }
 
-        Map<String, Animation> animations = processAnimations(aiScene, boneList);
+        AINode aiRootNode = aiScene.mRootNode();
+        Matrix4f rootTransfromation = AnimMeshesLoader.toMatrix(aiRootNode.mTransformation());
+        Node rootNode = processNodesHierarchy(aiRootNode, null);
+        Map<String, Animation> animations = processAnimations(aiScene, boneList, rootNode, rootTransfromation);
         AnimGameItem item = new AnimGameItem(meshes, animations);
 
         return item;
     }
 
-    private static List<AnimatedFrame> processAnimationFrames(List<Bone> boneList, Node rootNode,
-            Matrix4f rootInvMatrix) {
+    private static List<AnimatedFrame> buildAnimationFrames(List<Bone> boneList, Node rootNode,
+            Matrix4f rootTransformation) {
 
         int numFrames = rootNode.getAnimationFrames();
         List<AnimatedFrame> frameList = new ArrayList<>();
@@ -116,9 +118,9 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
             for (int j = 0; j < numBones; j++) {
                 Bone bone = boneList.get(j);
                 Node node = rootNode.findByName(bone.getBoneName());
-                Matrix4f boneMatrix = Node.getParentTransform(node, i);
+                Matrix4f boneMatrix = Node.getParentTransforms(node, i);
                 boneMatrix.mul(bone.getOffsetMatrix());
-                boneMatrix = new Matrix4f(rootInvMatrix).mul(boneMatrix);
+                boneMatrix = new Matrix4f(rootTransformation).mul(boneMatrix);
                 frame.setMatrix(j, boneMatrix);
             }
         }
@@ -126,11 +128,9 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
         return frameList;
     }
 
-    private static Map<String, Animation> processAnimations(AIScene aiScene, List<Bone> boneList) {
+    private static Map<String, Animation> processAnimations(AIScene aiScene, List<Bone> boneList,
+            Node rootNode, Matrix4f rootTransformation) {
         Map<String, Animation> animations = new HashMap<>();
-        AINode aiRootNode = aiScene.mRootNode();
-        Matrix4f rootInvMatrix = AnimMeshesLoader.toMatrix(aiRootNode.mTransformation());
-        Node rootNode = processNodesHierarchy(aiRootNode, null);
 
         // Process all animations
         int numAnimations = aiScene.mNumAnimations();
@@ -148,7 +148,7 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
                 buildTransFormationMatrices(aiNodeAnim, node);
             }
 
-            List<AnimatedFrame> frames = processAnimationFrames(boneList, rootNode, rootInvMatrix);
+            List<AnimatedFrame> frames = buildAnimationFrames(boneList, rootNode, rootTransformation);
             Animation animation = new Animation(aiAnimation.mName().dataString(), frames, aiAnimation.mDuration());
             animations.put(animation.getName(), animation);
         }
