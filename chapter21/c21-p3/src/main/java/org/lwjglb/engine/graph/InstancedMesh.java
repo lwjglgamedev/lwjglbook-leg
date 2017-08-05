@@ -131,6 +131,9 @@ public class InstancedMesh extends Mesh {
                     viewMatrix.transpose3x3(modelMatrix);
                 }
                 Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(modelMatrix, viewMatrix);
+                if (billBoard) {
+                    modelViewMatrix.scale(gameItem.getScale());
+                }
                 modelViewMatrix.get(INSTANCE_SIZE_FLOATS * i, instanceDataBuffer);
             }
             if (lightViewMatrix != null) {

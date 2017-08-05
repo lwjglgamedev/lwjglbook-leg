@@ -59,7 +59,7 @@ public class InstancedMesh extends Mesh {
         strideStart += FLOAT_SIZE_BYTES * 2;
         start++;
 
-        // Selected
+        // Selected or Scaling (for particles)
         glVertexAttribPointer(start, 1, GL_FLOAT, false, INSTANCE_SIZE_BYTES, strideStart);
         glVertexAttribDivisor(start, 1);
         start++;
@@ -139,9 +139,9 @@ public class InstancedMesh extends Mesh {
                 this.instanceDataBuffer.put(buffPos + 1, textYOffset);
             }
 
-            // Selected data
+            // Selected data or scaling for billboard
             int buffPos = INSTANCE_SIZE_FLOATS * i + MATRIX_SIZE_FLOATS + 2;
-            this.instanceDataBuffer.put(buffPos, gameItem.isSelected() ? 1 : 0);
+            this.instanceDataBuffer.put(buffPos, billBoard ? gameItem.getScale() : gameItem.isSelected() ? 1 : 0);
 
             i++;
         }

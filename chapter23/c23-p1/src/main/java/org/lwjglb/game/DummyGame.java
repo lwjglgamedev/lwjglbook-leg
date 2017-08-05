@@ -136,7 +136,7 @@ public class DummyGame implements IGameLogic {
         long ttl = 4000;
         long creationPeriodMillis = 300;
         float range = 0.2f;
-        float scale = 0.2f;
+        float scale = 1.0f;
         Mesh partMesh = OBJLoader.loadMesh("/models/particle.obj", maxParticles);
         Texture particleTexture = new Texture("/textures/particle_anim.png", 4, 4);
         Material partMaterial = new Material(particleTexture, reflectance);

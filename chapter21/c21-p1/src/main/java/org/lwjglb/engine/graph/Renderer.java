@@ -5,7 +5,6 @@ import org.lwjglb.engine.graph.lights.PointLight;
 import org.lwjglb.engine.graph.lights.DirectionalLight;
 import java.util.List;
 import java.util.Map;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -196,7 +195,6 @@ public class Renderer {
         glDepthMask(false);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-        Matrix3f aux = new Matrix3f();
         for (int i = 0; i < numEmitters; i++) {
             IParticleEmitter emitter = emitters[i];
             Mesh mesh = emitter.getBaseParticle().getMesh();
@@ -218,6 +216,7 @@ public class Renderer {
                 viewMatrix.transpose3x3(modelMatrix);
 
                 Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(modelMatrix, viewMatrix);
+                modelViewMatrix.scale(gameItem.getScale());
                 particlesShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
             }
             );

@@ -24,7 +24,6 @@ import org.lwjglb.engine.graph.particles.Particle;
 import org.lwjglb.engine.graph.weather.Fog;
 import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.items.SkyBox;
-import org.lwjglb.engine.items.Terrain;
 import org.lwjglb.engine.loaders.obj.OBJLoader;
 import org.lwjglb.engine.sound.SoundBuffer;
 import org.lwjglb.engine.sound.SoundListener;
@@ -146,7 +145,7 @@ public class DummyGame implements IGameLogic {
         long ttl = 4000;
         long creationPeriodMillis = 300;
         float range = 0.2f;
-        float scale = 0.2f;
+        float scale = 1.0f;
         Mesh partMesh = OBJLoader.loadMesh("/models/particle.obj", maxParticles);
         Texture particleTexture = new Texture("/textures/particle_anim.png", 4, 4);
         Material partMaterial = new Material(particleTexture, reflectance);
