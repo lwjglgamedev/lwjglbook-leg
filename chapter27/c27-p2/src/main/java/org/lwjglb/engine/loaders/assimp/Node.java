@@ -7,13 +7,13 @@ import org.joml.Matrix4f;
 
 public class Node {
 
-    private List<Node> children;
+    private final List<Node> children;
 
-    private List<Matrix4f> transformations;
+    private final List<Matrix4f> transformations;
 
-    private String name;
+    private final String name;
 
-    private Node parent;
+    private final Node parent;
 
     public Node(String name, Node parent) {
         this.name = name;
@@ -29,8 +29,11 @@ public class Node {
             Matrix4f parentTransform = new Matrix4f(getParentTransforms(node.getParent(), framePos));
             List<Matrix4f> transformations = node.getTransformations();
             Matrix4f nodeTransform;
-            if (framePos < transformations.size()) {
+            int transfSize = transformations.size();
+            if (framePos < transfSize) {
                 nodeTransform = transformations.get(framePos);
+            } else if ( transfSize > 0 ) {
+                nodeTransform = transformations.get(transfSize - 1);
             } else {
                 nodeTransform = new Matrix4f();
             }

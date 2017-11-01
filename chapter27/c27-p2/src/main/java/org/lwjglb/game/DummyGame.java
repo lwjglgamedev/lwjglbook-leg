@@ -1,7 +1,6 @@
 package org.lwjglb.game;
 
 import java.io.File;
-import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
