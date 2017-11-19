@@ -1,6 +1,5 @@
 package org.lwjglb.game;
 
-import java.io.File;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -48,8 +47,6 @@ public class DummyGame implements IGameLogic {
 
     private AnimGameItem animItem;
 
-    private GameItem[] gameItems;
-
     public DummyGame() {
         renderer = new Renderer();
         camera = new Camera();
@@ -65,17 +62,11 @@ public class DummyGame implements IGameLogic {
 
         scene = new Scene();
 
-        String fileName = Thread.currentThread().getContextClassLoader()
-                .getResource("models/terrain/terrain.obj").getFile();
-        File file = new File(fileName);
-        Mesh[] terrainMesh = StaticMeshesLoader.load(file.getAbsolutePath(), "/models/terrain");
+        Mesh[] terrainMesh = StaticMeshesLoader.load("src/main/resources/models/terrain/terrain.obj", "src/main/resources/models/terrain");
         GameItem terrain = new GameItem(terrainMesh);
         terrain.setScale(100.0f);
 
-        fileName = Thread.currentThread().getContextClassLoader()
-                .getResource("models/bob/boblamp.md5mesh").getFile();
-        file = new File(fileName);
-        animItem = AnimMeshesLoader.loadAnimGameItem(file.getAbsolutePath(), "");
+        animItem = AnimMeshesLoader.loadAnimGameItem("src/main/resources/models/bob/boblamp.md5mesh", "");
         animItem.setScale(0.05f);
         animation = animItem.getCurrentAnimation();
         
@@ -90,10 +81,7 @@ public class DummyGame implements IGameLogic {
 
         // Setup  SkyBox
         float skyBoxScale = 100.0f;
-        fileName = Thread.currentThread().getContextClassLoader()
-                .getResource("models/skybox.obj").getFile();
-        file = new File(fileName);
-        SkyBox skyBox = new SkyBox(file.getAbsolutePath(), new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
+        SkyBox skyBox = new SkyBox("src/main/resources/models/skybox.obj", new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
 
