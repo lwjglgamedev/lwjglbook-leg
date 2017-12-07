@@ -7,7 +7,7 @@ public class Utils {
 
     public static String loadResource(String fileName) throws Exception {
         String result;
-        try (InputStream in = Utils.class.getClass().getResourceAsStream(fileName);
+        try (InputStream in = Class.forName(Utils.class.getName()).getResourceAsStream(fileName);
                 Scanner scanner = new Scanner(in, "UTF-8")) {
             result = scanner.useDelimiter("\\A").next();
         }
