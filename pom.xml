@@ -101,6 +101,7 @@
         <module>chapter26</module>
         <module>chapter27/c27-p1</module>
         <module>chapter27/c27-p2</module>
+        <module>chapter28</module>
     </modules>
 
     <properties>
@@ -112,7 +113,7 @@
         <mvn.complilerplug.version>3.7.0</mvn.complilerplug.version>
 		<mvn.jarplug.version>3.0.2</mvn.jarplug.version>
         <lwjgl.version>3.1.5</lwjgl.version>
-        <joml.version>1.9.6</joml.version>
+        <joml.version>1.9.7</joml.version>
         <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
 
