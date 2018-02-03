@@ -16,6 +16,8 @@ layout (location = 2) out vec3 fs_specular;
 layout (location = 3) out vec3 fs_normal;
 layout (location = 4) out vec2 fs_shadow;
 
+uniform mat4 viewMatrix;
+
 struct Material
 {
     vec4 diffuse;
@@ -60,7 +62,7 @@ vec3 calcNormal(Material material, vec3 normal, vec2 text_coord, mat4 modelMatri
     {
         newNormal = texture(normalMap, text_coord).rgb;
         newNormal = normalize(newNormal * 2 - 1);
-        newNormal = normalize(modelMatrix * vec4(newNormal, 0.0)).xyz;
+        newNormal = normalize(viewMatrix * modelMatrix * vec4(newNormal, 0.0)).xyz;
     }
     return newNormal;
 }

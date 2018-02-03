@@ -27,7 +27,6 @@ uniform sampler2D depthText;
 
 uniform vec2 screenSize;
 
-uniform mat4 viewMatrix;
 uniform float specularPower;
 uniform PointLight pointLight;
 
@@ -73,9 +72,6 @@ void main()
 {
     vec2 textCoord = getTextCoord();
     float depth = texture(depthText, textCoord).r;
-    if ( depth == 1 ) {
-        discard;
-    }
     vec3 worldPos = texture(positionsText, textCoord).xyz;
     vec4 diffuseC = texture(diffuseText, textCoord);
     vec4 speculrC = texture(specularText, textCoord);
@@ -83,8 +79,5 @@ void main()
 	float shadowFactor = texture(shadowText, textCoord).r;
 	float reflectance = texture(shadowText, textCoord).g;
 
-    vec4 mvVertexPos = viewMatrix * vec4(worldPos, 1);
-    vec4 mvNormal = viewMatrix * vec4(normal, 0);
-
-	fragColor = calcPointLight(diffuseC, speculrC, reflectance, pointLight, mvVertexPos.xyz, mvNormal.xyz) * shadowFactor; 
+	fragColor = calcPointLight(diffuseC, speculrC, reflectance, pointLight, worldPos.xyz, normal.xyz) * shadowFactor;
 }

@@ -151,8 +151,8 @@ public class Renderer {
         gBufferShaderProgram.createFragmentShader(Utils.loadResource("/shaders/gbuffer_fragment.fs"));
         gBufferShaderProgram.link();
 
-        gBufferShaderProgram.createUniform("viewMatrix");
         gBufferShaderProgram.createUniform("projectionMatrix");
+        gBufferShaderProgram.createUniform("viewMatrix");
         gBufferShaderProgram.createUniform("texture_sampler");
         gBufferShaderProgram.createUniform("normalMap");
         gBufferShaderProgram.createMaterialUniform("material");
@@ -180,7 +180,6 @@ public class Renderer {
         dirLightShaderProgram.link();
 
         dirLightShaderProgram.createUniform("modelMatrix");
-        dirLightShaderProgram.createUniform("viewMatrix");
         dirLightShaderProgram.createUniform("projectionMatrix");
 
         dirLightShaderProgram.createUniform("screenSize");
@@ -202,7 +201,6 @@ public class Renderer {
         pointLightShaderProgram.link();
 
         pointLightShaderProgram.createUniform("modelMatrix");
-        pointLightShaderProgram.createUniform("viewMatrix");
         pointLightShaderProgram.createUniform("projectionMatrix");
 
         pointLightShaderProgram.createUniform("screenSize");
@@ -313,7 +311,6 @@ public class Renderer {
         Matrix4f viewMatrix = camera.getViewMatrix();
         Matrix4f projectionMatrix = window.getProjectionMatrix();
         pointLightShaderProgram.setUniform("modelMatrix", bufferPassModelMatrix);
-        pointLightShaderProgram.setUniform("viewMatrix", viewMatrix);
         pointLightShaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
         // Specular factor
@@ -361,7 +358,6 @@ public class Renderer {
         Matrix4f viewMatrix = camera.getViewMatrix();
         Matrix4f projectionMatrix = window.getProjectionMatrix();
         dirLightShaderProgram.setUniform("modelMatrix", bufferPassModelMatrix);
-        dirLightShaderProgram.setUniform("viewMatrix", viewMatrix);
         dirLightShaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
         // Specular factor

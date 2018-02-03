@@ -78,8 +78,8 @@ void main()
     float y = (texCoord.y / numRows + texOffset.y);
 
     vs_textcoord = vec2(x, y);
-    vs_worldpos = (modelMatrix * initPos).xyz;
-    vs_normal = normalize(modelMatrix * initNormal).xyz;
+    vs_worldpos = (viewMatrix * modelMatrix * initPos).xyz;
+    vs_normal = normalize(viewMatrix * modelMatrix * initNormal).xyz;
 
     for (int i = 0 ; i < NUM_CASCADES ; i++) {
         vs_mlightviewVertexPos[i] = orthoProjectionMatrix[i] * lightViewMatrix[i] * modelMatrix * initPos;
