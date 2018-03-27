@@ -25,12 +25,11 @@ uniform int numRows;
 uniform float selectedNonInstanced;
 
 out vec2  vs_textcoord;
-out vec3  vs_worldpos;
 out vec3  vs_normal;
-out float vs_selected;
+out vec4  vs_mvVertexPos;
 out vec4  vs_mlightviewVertexPos[NUM_CASCADES];
 out mat4  vs_modelMatrix;
-out vec4  vs_mvVertexPos;
+out float vs_selected;
 
 void main()
 {
@@ -70,7 +69,8 @@ void main()
             initNormal = vec4(vertexNormal, 0.0);
         }
     }
-	vs_mvVertexPos = viewMatrix * modelMatrix * initPos;
+	mat4 modelViewMatrix = viewMatrix * modelMatrix;
+	vs_mvVertexPos = modelViewMatrix * initPos;
     gl_Position = projectionMatrix * vs_mvVertexPos;
 
     // Support for texture atlas, update texture coordinates
@@ -78,8 +78,7 @@ void main()
     float y = (texCoord.y / numRows + texOffset.y);
 
     vs_textcoord = vec2(x, y);
-    vs_worldpos = (viewMatrix * modelMatrix * initPos).xyz;
-    vs_normal = normalize(viewMatrix * modelMatrix * initNormal).xyz;
+    vs_normal = normalize(modelViewMatrix * initNormal).xyz;
 
     for (int i = 0 ; i < NUM_CASCADES ; i++) {
         vs_mlightviewVertexPos[i] = orthoProjectionMatrix[i] * lightViewMatrix[i] * modelMatrix * initPos;

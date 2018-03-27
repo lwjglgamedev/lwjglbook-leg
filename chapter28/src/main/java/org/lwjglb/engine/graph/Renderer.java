@@ -59,12 +59,15 @@ public class Renderer {
 
     private Matrix4f bufferPassModelMatrix;
 
+    private Vector4f tmpVec;
+
     public Renderer() {
         transformation = new Transformation();
         specularPower = 10f;
         shadowRenderer = new ShadowRenderer();
         frustumFilter = new FrustumCullingFilter();
         filteredItems = new ArrayList<>();
+        tmpVec = new Vector4f();
     }
 
     public void init(Window window) throws Exception {
@@ -73,7 +76,7 @@ public class Renderer {
         sceneBuffer = new SceneBuffer(window);
         setupSkyBoxShader();
         setupParticlesShader();
-        setupGBufferShader();
+        setupGeometryShader();
         setupDirLightShader();
         setupPointLightShader();
         setupFogShader();
@@ -101,7 +104,7 @@ public class Renderer {
         // Update projection matrix once per render cycle
         window.updateProjectionMatrix();
 
-        renderGBuffer(window, camera, scene);
+        renderGeometry(window, camera, scene);
 
         initLightRendering();
         renderPointLights(window, camera, scene);
@@ -145,7 +148,7 @@ public class Renderer {
         skyBoxShaderProgram.createUniform("screenSize");
     }
 
-    private void setupGBufferShader() throws Exception {
+    private void setupGeometryShader() throws Exception {
         gBufferShaderProgram = new ShaderProgram();
         gBufferShaderProgram.createVertexShader(Utils.loadResource("/shaders/gbuffer_vertex.vs"));
         gBufferShaderProgram.createFragmentShader(Utils.loadResource("/shaders/gbuffer_fragment.fs"));
@@ -239,7 +242,7 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
-    private void renderGBuffer(Window window, Camera camera, Scene scene) {
+    private void renderGeometry(Window window, Camera camera, Scene scene) {
         // Render G-Buffer for writing
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, gBuffer.getGBufferId());
 
@@ -339,11 +342,11 @@ public class Renderer {
             // Get a copy of the point light object and transform its position to view coordinates
             PointLight currPointLight = new PointLight(pointLights[i]);
             Vector3f lightPos = currPointLight.getPosition();
-            Vector4f aux = new Vector4f(lightPos, 1);
-            aux.mul(viewMatrix);
-            lightPos.x = aux.x;
-            lightPos.y = aux.y;
-            lightPos.z = aux.z;
+            tmpVec.set(lightPos, 1);
+            tmpVec.mul(viewMatrix);
+            lightPos.x = tmpVec.x;
+            lightPos.y = tmpVec.y;
+            lightPos.z = tmpVec.z;
             pointLightShaderProgram.setUniform("pointLight", currPointLight);
 
             bufferPassMesh.render();
@@ -386,9 +389,9 @@ public class Renderer {
         // Directional light
         // Get a copy of the directional light object and transform its position to view coordinates
         DirectionalLight currDirLight = new DirectionalLight(sceneLight.getDirectionalLight());
-        Vector4f dir = new Vector4f(currDirLight.getDirection(), 0);
-        dir.mul(viewMatrix);
-        currDirLight.setDirection(new Vector3f(dir.x, dir.y, dir.z));
+        tmpVec.set(currDirLight.getDirection(), 0);
+        tmpVec.mul(viewMatrix);
+        currDirLight.setDirection(new Vector3f(tmpVec.x, tmpVec.y, tmpVec.z));
         dirLightShaderProgram.setUniform("directionalLight", currDirLight);
 
         bufferPassMesh.render();

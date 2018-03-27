@@ -2,13 +2,12 @@
 
 const int NUM_CASCADES = 3;
 
-in vec3  vs_worldpos;
 in vec2  vs_textcoord;
 in vec3  vs_normal;
-in float vs_selected;
+in vec4  vs_mvVertexPos;
 in vec4  vs_mlightviewVertexPos[NUM_CASCADES];
 in mat4  vs_modelMatrix;
-in vec4  vs_mvVertexPos;
+in float vs_selected;
 
 layout (location = 0) out vec3 fs_worldpos;
 layout (location = 1) out vec3 fs_diffuse;
@@ -127,7 +126,7 @@ void main()
 {
     getColour(material, vs_textcoord);
 
-    fs_worldpos   = vs_worldpos;
+    fs_worldpos   = vs_mvVertexPos.xyz;
     fs_diffuse    = diffuseC.xyz;
     fs_specular   = speculrC.xyz;
     fs_normal     = normalize(calcNormal(material, vs_normal, vs_textcoord, vs_modelMatrix));

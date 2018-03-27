@@ -39,11 +39,6 @@ public class GBuffer {
             glBindTexture(GL_TEXTURE_2D, textureIds[i]);
             int attachmentType;
             switch(i) {
-                case TOTAL_TEXTURES - 2:
-                    // Shadow texture and reflectance
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG32F, width, height, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null);
-                    attachmentType = GL_COLOR_ATTACHMENT0 + i;
-                    break;
                 case TOTAL_TEXTURES - 1:
                     // Depth component
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT,

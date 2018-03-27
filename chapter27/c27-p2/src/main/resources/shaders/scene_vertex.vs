@@ -13,13 +13,6 @@ layout (location=5) in mat4 modelInstancedMatrix;
 layout (location=9) in vec2 texOffset;
 layout (location=10) in float selectedInstanced;
 
-out vec2 outTexCoord;
-out vec3 mvVertexNormal;
-out vec3 mvVertexPos;
-out vec4 mlightviewVertexPos[NUM_CASCADES];
-out mat4 outModelViewMatrix;
-out float outSelected;
-
 uniform int isInstanced;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
@@ -30,6 +23,13 @@ uniform mat4 orthoProjectionMatrix[NUM_CASCADES];
 uniform int numCols;
 uniform int numRows;
 uniform float selectedNonInstanced;
+
+out vec2 outTexCoord;
+out vec3 mvVertexNormal;
+out vec3 mvVertexPos;
+out vec4 mlightviewVertexPos[NUM_CASCADES];
+out mat4 outModelViewMatrix;
+out float outSelected;
 
 void main()
 {
