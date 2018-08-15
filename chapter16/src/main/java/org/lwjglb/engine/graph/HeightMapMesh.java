@@ -57,13 +57,13 @@ public class HeightMapMesh {
                     int rightBottom = (row + 1) * width + col + 1;
                     int rightTop = row * width + col + 1;
 
-                    indices.add(leftTop);
-                    indices.add(leftBottom);
-                    indices.add(rightTop);
-
                     indices.add(rightTop);
                     indices.add(leftBottom);
                     indices.add(rightBottom);
+
+                    indices.add(leftTop);
+                    indices.add(leftBottom);
+                    indices.add(rightTop);
                 }
             }
         }
