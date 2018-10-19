@@ -91,7 +91,8 @@ public class GameEngine implements Runnable {
     }
 
     protected void render() {
+        glfwPollEvents();
         gameLogic.render(window);
-        window.update();
+        glfwSwapBuffers(window);
     }
 }
