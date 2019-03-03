@@ -1,12 +1,16 @@
 package org.lwjglb.engine.graph;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import java.io.InputStream;
+import java.io.File;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Paths;
+import org.lwjgl.system.MemoryStack;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.stb.STBImage.*;
 
 public class Texture {
 
@@ -21,7 +25,7 @@ public class Texture {
      *
      * @param width Width of the texture
      * @param height Height of the texture
-     * @param pixelFormat Specifies the format of the pixel data (GL_RGBA, etc.) 
+     * @param pixelFormat Specifies the format of the pixel data (GL_RGBA, etc.)
      * @throws Exception
      */
     public Texture(int width, int height, int pixelFormat) throws Exception {
@@ -37,36 +41,71 @@ public class Texture {
     }
 
     public Texture(String fileName) throws Exception {
-        this(Texture.class.getResourceAsStream(fileName));
+        ByteBuffer buf;
+        // Load Texture file
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
+
+            URL url = Texture.class.getResource(fileName);
+            File file = Paths.get(url.toURI()).toFile();
+            String filePath = file.getAbsolutePath();
+            buf = stbi_load(filePath, w, h, channels, 4);
+            if (buf == null) {
+                throw new Exception("Image file [" + filePath  + "] not loaded: " + stbi_failure_reason());
+            }
+
+            width = w.get();
+            height = h.get();
+        }
+
+        this.id = createTexture(buf);
+
+        stbi_image_free(buf);
     }
 
-    public Texture(InputStream is) throws Exception {
+    public Texture(ByteBuffer imageBuffer) throws Exception {
+        ByteBuffer buf;
         // Load Texture file
-        PNGDecoder decoder = new PNGDecoder(is);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
 
-        this.width = decoder.getWidth();
-        this.height = decoder.getHeight();
+            buf = stbi_load_from_memory(imageBuffer, w, h, channels, 4);
+            if (buf == null) {
+                throw new Exception("Image file not loaded: " + stbi_failure_reason());
+            }
 
-        // Load texture contents into a byte buffer
-        ByteBuffer buf = ByteBuffer.allocateDirect(
-                4 * decoder.getWidth() * decoder.getHeight());
-        decoder.decode(buf, decoder.getWidth() * 4, Format.RGBA);
-        buf.flip();
+            width = w.get();
+            height = h.get();
+        }
 
-        // Create a new OpenGL texture 
-        this.id = glGenTextures();
+        this.id = createTexture(buf);
+
+        stbi_image_free(buf);
+    }
+
+    private int createTexture(ByteBuffer buf) {
+        // Create a new OpenGL texture
+        int textureId = glGenTextures();
         // Bind the texture
-        glBindTexture(GL_TEXTURE_2D, this.id);
+        glBindTexture(GL_TEXTURE_2D, textureId);
 
         // Tell OpenGL how to unpack the RGBA bytes. Each component is 1 byte size
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
         // Upload the texture data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+            GL_RGBA, GL_UNSIGNED_BYTE, buf);
         // Generate Mip Map
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        return textureId;
     }
 
     public int getWidth() {

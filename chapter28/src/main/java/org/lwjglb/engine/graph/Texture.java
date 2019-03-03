@@ -79,6 +79,8 @@ public class Texture {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, decodedImage);
             // Generate Mip Map
             glGenerateMipmap(GL_TEXTURE_2D);
+
+            stbi_image_free(imageData);
         }
     }
 

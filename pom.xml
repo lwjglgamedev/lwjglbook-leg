@@ -106,50 +106,49 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<built.by>lwjglgamedev</built.by>
-		<main.class>org.lwjglb.game.Main</main.class>
-		<!-- Versions -->
-        <java.version>9</java.version>
+		    <built.by>lwjglgamedev</built.by>
+		    <main.class>org.lwjglb.game.Main</main.class>
+		    <!-- Versions -->
+        <java.version>11</java.version>
         <mvn.complilerplug.version>3.7.0</mvn.complilerplug.version>
-		<mvn.jarplug.version>3.0.2</mvn.jarplug.version>
-        <lwjgl.version>3.1.6</lwjgl.version>
-        <joml.version>1.9.9</joml.version>
-        <pngdecoder.version>1.0</pngdecoder.version>
+		    <mvn.jarplug.version>3.0.2</mvn.jarplug.version>
+        <lwjgl.version>3.2.0</lwjgl.version>
+        <joml.version>1.9.10</joml.version>
     </properties>
 
-	<profiles>
-		<profile>
-			<id>windows-profile</id>
-			<activation>
-				<os>
-					<family>Windows</family>
-				</os>
-			</activation>
-			<properties>
-				<native.target>natives-windows</native.target>
-			</properties>
-		</profile>
-		<profile>
-			<id>linux-profile</id>
-			<activation>
-				<os>
-					<family>Linux</family>
-				</os>
-			</activation>
-			<properties>
-				<native.target>natives-linux</native.target>
-			</properties>
-		</profile>
-		<profile>
-			<id>OSX-profile</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<native.target>natives-macos</native.target>
-			</properties>
-		</profile>
-	</profiles>
+    <profiles>
+		    <profile>
+            <id>windows-profile</id>
+			      <activation>
+				        <os>
+					          <family>Windows</family>
+				        </os>
+			      </activation>
+			      <properties>
+				        <native.target>natives-windows</native.target>
+			      </properties>
+		    </profile>
+		    <profile>
+            <id>linux-profile</id>
+			      <activation>
+				        <os>
+					          <family>Linux</family>
+				        </os>
+			      </activation>
+			      <properties>
+				        <native.target>natives-linux</native.target>
+			     </properties>
+		    </profile>
+		    <profile>
+            <id>OSX-profile</id>
+			      <activation>
+                <os>
+					          <family>mac</family>
+				        </os>
+			      </activation>
+			      <properties>
+				        <native.target>natives-macos</native.target>
+			      </properties>
+		    </profile>
+	  </profiles>
 </project>

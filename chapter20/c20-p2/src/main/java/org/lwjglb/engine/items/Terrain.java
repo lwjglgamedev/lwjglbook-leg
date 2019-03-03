@@ -1,9 +1,16 @@
 package org.lwjglb.engine.items;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
+import static org.lwjgl.stb.STBImage.*;
+
+import java.io.File;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Paths;
 import org.joml.Vector3f;
+import org.lwjgl.system.MemoryStack;
 import org.lwjglb.engine.graph.HeightMapMesh;
+import org.lwjglb.engine.graph.Texture;
 
 public class Terrain {
 
@@ -39,13 +46,25 @@ public class Terrain {
         this.terrainSize = terrainSize;
         gameItems = new GameItem[terrainSize * terrainSize];
 
-        PNGDecoder decoder = new PNGDecoder(getClass().getResourceAsStream(heightMapFile));
-        int height = decoder.getHeight();
-        int width = decoder.getWidth();
-        ByteBuffer buf = ByteBuffer.allocateDirect(
-                4 * decoder.getWidth() * decoder.getHeight());
-        decoder.decode(buf, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
-        buf.flip();
+        ByteBuffer buf = null;
+        int width;
+        int height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
+
+            URL url = Texture.class.getResource(heightMapFile);
+            File file = Paths.get(url.toURI()).toFile();
+            String filePath = file.getAbsolutePath();
+            buf = stbi_load(filePath, w, h, channels, 4);
+            if (buf == null) {
+                throw new Exception("Image file [" + filePath  + "] not loaded: " + stbi_failure_reason());
+            }
+
+            width = w.get();
+            height = h.get();
+        }
 
         // The number of vertices per column and row
         verticesPerCol = width - 1;
@@ -66,6 +85,8 @@ public class Terrain {
                 boundingBoxes[row][col] = getBoundingBox(terrainBlock);
             }
         }
+
+        stbi_image_free(buf);
     }
 
     public float getHeight(Vector3f position) {

@@ -19,15 +19,15 @@ public class HeightMapMesh {
     private final float maxY;
 
     private final Mesh mesh;
-    
+
     private final float[][] heightArray;
-    
+
     public HeightMapMesh(float minY, float maxY, ByteBuffer heightMapImage, int width, int height, String textureFile, int textInc) throws Exception {
         this.minY = minY;
         this.maxY = maxY;
-        
+
         heightArray = new float[height][width];
-        
+
         Texture texture = new Texture(textureFile);
 
         float incx = getXLength() / (width - 1);
@@ -79,7 +79,7 @@ public class HeightMapMesh {
     public Mesh getMesh() {
         return mesh;
     }
-    
+
     public float getHeight(int row, int col) {
         float result = 0;
         if ( row >= 0 && row < heightArray.length ) {
@@ -89,11 +89,11 @@ public class HeightMapMesh {
         }
         return result;
     }
-    
+
     public static float getXLength() {
         return Math.abs(-STARTX*2);
     }
-    
+
     public static float getZLength() {
         return Math.abs(-STARTZ*2);
     }
@@ -121,7 +121,7 @@ public class HeightMapMesh {
                     int i1 = row*width*3 + (col-1)*3;
                     v1.x = posArr[i1];
                     v1.y = posArr[i1 + 1];
-                    v1.z = posArr[i1 + 2];                    
+                    v1.z = posArr[i1 + 2];
                     v1 = v1.sub(v0);
 
                     int i2 = (row+1)*width*3 + col*3;
@@ -141,19 +141,19 @@ public class HeightMapMesh {
                     v4.y = posArr[i4 + 1];
                     v4.z = posArr[i4 + 2];
                     v4 = v4.sub(v0);
-                    
+
                     v1.cross(v2, v12);
                     v12.normalize();
 
                     v2.cross(v3, v23);
                     v23.normalize();
-                    
+
                     v3.cross(v4, v34);
                     v34.normalize();
-                    
+
                     v4.cross(v1, v41);
                     v41.normalize();
-                    
+
                     normal = v12.add(v23).add(v34).add(v41);
                     normal.normalize();
                 } else {
@@ -176,7 +176,7 @@ public class HeightMapMesh {
         byte b = buffer.get(x * 4 + 2 + z * 4 * width);
         byte a = buffer.get(x * 4 + 3 + z * 4 * width);
         int argb = ((0xFF & a) << 24) | ((0xFF & r) << 16)
-                | ((0xFF & g) << 8) | (0xFF & b);
+            | ((0xFF & g) << 8) | (0xFF & b);
         return this.minY + Math.abs(this.maxY - this.minY) * ((float) argb / (float) MAX_COLOUR);
     }
 

@@ -48,11 +48,6 @@
             <artifactId>joml</artifactId>
             <version>${joml.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.l33tlabs.twl</groupId>
-            <artifactId>pngdecoder</artifactId>
-            <version>${pngdecoder.version}</version>
-        </dependency>
 		
 		<!-- Natives -->
         <dependency>

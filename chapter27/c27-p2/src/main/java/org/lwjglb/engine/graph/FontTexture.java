@@ -95,12 +95,16 @@ public class FontTexture {
         g2D.dispose();
 
         // Dump image to a byte buffer
-        try (
-            ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        ByteBuffer buf = null;
+        try ( ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             ImageIO.write(img, IMAGE_FORMAT, out);
             out.flush();
-            texture = new Texture(ByteBuffer.wrap(out.toByteArray()));
+            byte[] data = out.toByteArray();
+            buf = ByteBuffer.allocateDirect(data.length);
+            buf.put(data, 0, data.length);
+            buf.flip();
         }
+        texture = new Texture(buf);
     }
 
     public static class CharInfo {

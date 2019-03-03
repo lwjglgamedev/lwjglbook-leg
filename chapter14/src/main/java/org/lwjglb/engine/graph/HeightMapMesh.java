@@ -1,10 +1,18 @@
 package org.lwjglb.engine.graph;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
+import static org.lwjgl.stb.STBImage.stbi_failure_reason;
+import static org.lwjgl.stb.STBImage.stbi_image_free;
+import static org.lwjgl.stb.STBImage.stbi_load;
+
+import java.io.File;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector3f;
+import org.lwjgl.system.MemoryStack;
 import org.lwjglb.engine.Utils;
 
 public class HeightMapMesh {
@@ -25,13 +33,25 @@ public class HeightMapMesh {
         this.minY = minY;
         this.maxY = maxY;
 
-        PNGDecoder decoder = new PNGDecoder(getClass().getResourceAsStream(heightMapFile));
-        int height = decoder.getHeight();
-        int width = decoder.getWidth();
-        ByteBuffer buf = ByteBuffer.allocateDirect(
-                4 * decoder.getWidth() * decoder.getHeight());
-        decoder.decode(buf, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
-        buf.flip();
+        ByteBuffer buf = null;
+        int width;
+        int height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
+
+            URL url = Texture.class.getResource(heightMapFile);
+            File file = Paths.get(url.toURI()).toFile();
+            String filePath = file.getAbsolutePath();
+            buf = stbi_load(filePath, w, h, channels, 4);
+            if (buf == null) {
+                throw new Exception("Image file [" + filePath  + "] not loaded: " + stbi_failure_reason());
+            }
+
+            width = w.get();
+            height = h.get();
+        }
 
         Texture texture = new Texture(textureFile);
 
@@ -77,6 +97,8 @@ public class HeightMapMesh {
         this.mesh = new Mesh(posArr, textCoordsArr, normalsArr, indicesArr);
         Material material = new Material(texture, 0.0f);
         mesh.setMaterial(material);
+
+        stbi_image_free(buf);
     }
 
     public Mesh getMesh() {

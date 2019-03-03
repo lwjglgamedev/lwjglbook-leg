@@ -1,12 +1,18 @@
 package org.lwjglb.game;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
+import java.io.File;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Paths;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.stb.STBImage.*;
+
 import org.lwjgl.openal.AL11;
+import org.lwjgl.system.MemoryStack;
 import org.lwjglb.engine.IGameLogic;
 import org.lwjglb.engine.MouseInput;
 import org.lwjglb.engine.Scene;
@@ -98,12 +104,25 @@ public class DummyGame implements IGameLogic {
 
         selectDetector = new CameraBoxSelectionDetector();
 
-        PNGDecoder decoder = new PNGDecoder(getClass().getResourceAsStream("/textures/heightmap.png"));
-        int height = decoder.getHeight();
-        int width = decoder.getWidth();
-        ByteBuffer buf = ByteBuffer.allocateDirect(4 * width * height);
-        decoder.decode(buf, width * 4, PNGDecoder.Format.RGBA);
-        buf.flip();
+        ByteBuffer buf;
+        int width;
+        int height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
+
+            URL url = Texture.class.getResource("/textures/heightmap.png");
+            File file = Paths.get(url.toURI()).toFile();
+            String filePath = file.getAbsolutePath();
+            buf = stbi_load(filePath, w, h, channels, 4);
+            if (buf == null) {
+                throw new Exception("Image file not loaded: " + stbi_failure_reason());
+            }
+
+            width = w.get();
+            height = h.get();
+        }
 
         int instances = height * width;
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj", instances);
@@ -172,7 +191,9 @@ public class DummyGame implements IGameLogic {
         camera.getRotation().y = -1;
 
         hud = new Hud("DEMO");
-
+        
+        stbi_image_free(buf);
+        
         // Sounds
         this.soundMgr.init();
         this.soundMgr.setAttenuationModel(AL11.AL_EXPONENT_DISTANCE);

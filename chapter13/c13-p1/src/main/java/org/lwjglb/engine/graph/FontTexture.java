@@ -6,9 +6,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
@@ -95,16 +94,16 @@ public class FontTexture {
         g2D.drawString(allChars, 0, fontMetrics.getAscent());
         g2D.dispose();
 
-        // Dump image to a byte buffer
-        InputStream is;
-        try (
-                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        ByteBuffer buf = null;
+        try ( ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             ImageIO.write(img, IMAGE_FORMAT, out);
             out.flush();
-            is = new ByteArrayInputStream(out.toByteArray());
+            byte[] data = out.toByteArray();
+            buf = ByteBuffer.allocateDirect(data.length);
+            buf.put(data, 0, data.length);
+            buf.flip();
         }
-
-        texture = new Texture(is);
+        texture = new Texture(buf);
     }
 
     public static class CharInfo {
