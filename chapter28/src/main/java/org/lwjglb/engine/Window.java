@@ -102,7 +102,9 @@ public class Window {
             }
         });
 
-        if (!maximized) {
+        if (maximized) {
+            glfwMaximizeWindow(windowHandle);
+        } else {
             // Get the resolution of the primary monitor
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             // Center our window
