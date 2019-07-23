@@ -69,6 +69,7 @@ public class FontTexture {
         // Get the font metrics for each character for the selected font by using image
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2D = img.createGraphics();
+        g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2D.setFont(font);
         FontMetrics fontMetrics = g2D.getFontMetrics();
 
