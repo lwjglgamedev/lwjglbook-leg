@@ -38,12 +38,8 @@ public class GameEngine implements Runnable {
     }
 
     public void start() {
-        String osName = System.getProperty("os.name");
-        if ( osName.contains("Mac") ) {
-            gameLoopThread.run();
-        } else {
-            gameLoopThread.start();
-        }
+		// GLFW should be started in main thread. Do not create another Thread
+        gameLoopThread.run();
     }
 
     @Override
