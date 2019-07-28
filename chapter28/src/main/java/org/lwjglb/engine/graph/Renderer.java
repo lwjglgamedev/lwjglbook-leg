@@ -82,7 +82,7 @@ public class Renderer {
         setupFogShader();
 
         bufferPassModelMatrix =  new Matrix4f();
-        bufferPassMesh = StaticMeshesLoader.load("src/main/resources/models/buffer_pass_mess.obj", "src/main/resources/models")[0];
+        bufferPassMesh = StaticMeshesLoader.load("models/buffer_pass_mess.obj", "models")[0];
     }
 
     public void render(Window window, Camera camera, Scene scene, boolean sceneChanged) {

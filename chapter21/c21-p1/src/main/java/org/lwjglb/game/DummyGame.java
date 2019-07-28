@@ -77,7 +77,7 @@ public class DummyGame implements IGameLogic {
         float reflectance = 1f;
         int instances = NUM_ROWS * NUM_COLS;
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj", instances);
-        Texture texture = new Texture("/textures/grassblock.png");
+        Texture texture = new Texture("textures/grassblock.png");
         Material material = new Material(texture, reflectance);
         mesh.setMaterial(material);
 

@@ -56,11 +56,11 @@ public class DummyGame implements IGameLogic {
         float minY = -0.1f;
         float maxY = 0.1f;
         int textInc = 40;
-        Terrain terrain = new Terrain(terrainSize, terrainScale, minY, maxY, "/textures/heightmap.png", "/textures/terrain.png", textInc);
+        Terrain terrain = new Terrain(terrainSize, terrainScale, minY, maxY, "textures/heightmap.png", "textures/terrain.png", textInc);
         scene.setGameItems(terrain.getGameItems());
 
         // Setup  SkyBox
-        SkyBox skyBox = new SkyBox("/models/skybox.obj", "/textures/skybox.png");
+        SkyBox skyBox = new SkyBox("/models/skybox.obj", "textures/skybox.png");
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
 

@@ -2,11 +2,8 @@ package org.lwjglb.engine.items;
 
 import static org.lwjgl.stb.STBImage.*;
 
-import java.io.File;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.file.Paths;
 import org.joml.Vector3f;
 import org.lwjgl.system.MemoryStack;
 import org.lwjglb.engine.graph.HeightMapMesh;
@@ -54,12 +51,9 @@ public class Terrain {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
 
-            URL url = Texture.class.getResource(heightMapFile);
-            File file = Paths.get(url.toURI()).toFile();
-            String filePath = file.getAbsolutePath();
-            buf = stbi_load(filePath, w, h, channels, 4);
+            buf = stbi_load(heightMapFile, w, h, channels, 4);
             if (buf == null) {
-                throw new Exception("Image file [" + filePath  + "] not loaded: " + stbi_failure_reason());
+                throw new Exception("Image file [" + heightMapFile  + "] not loaded: " + stbi_failure_reason());
             }
 
             width = w.get();

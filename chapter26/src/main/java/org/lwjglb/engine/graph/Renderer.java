@@ -372,7 +372,7 @@ public class Renderer {
             glLoadIdentity();
 
             float inc = 0.05f;
-            glLineWidth(2.0f);
+            glLineWidth(1.0f);
 
             glBegin(GL_LINES);
 

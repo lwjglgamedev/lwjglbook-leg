@@ -53,10 +53,10 @@ public class DummyGame implements IGameLogic {
 
         // Setup  GameItems
         float reflectance = 0.65f;
-        Texture normalMap = new Texture("/textures/rock_normals.png");
+        Texture normalMap = new Texture("textures/rock_normals.png");
 
         Mesh quadMesh1 = OBJLoader.loadMesh("/models/quad.obj");
-        Texture texture = new Texture("/textures/rock.png");
+        Texture texture = new Texture("textures/rock.png");
         Material quadMaterial1 = new Material(texture, reflectance);
         quadMesh1.setMaterial(quadMaterial1);
         GameItem quadGameItem1 = new GameItem(quadMesh1);

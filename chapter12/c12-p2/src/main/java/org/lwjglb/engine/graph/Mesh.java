@@ -55,7 +55,12 @@ public class Mesh {
             vboId = glGenBuffers();
             vboIdList.add(vboId);
             vecNormalsBuffer = MemoryUtil.memAllocFloat(normals.length);
-            vecNormalsBuffer.put(normals).flip();
+			if ( vecNormalsBuffer.capacity() > 0 ) {
+                vecNormalsBuffer.put(normals).flip();
+			} else {
+				// Create empty structure
+                vecNormalsBuffer = MemoryUtil.memAllocFloat(positions.length);
+			}
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, vecNormalsBuffer, GL_STATIC_DRAW);
             glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);

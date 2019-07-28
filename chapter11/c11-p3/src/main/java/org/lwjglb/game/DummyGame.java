@@ -60,7 +60,7 @@ public class DummyGame implements IGameLogic {
         //Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
 
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
-        Texture texture = new Texture("/textures/grassblock.png");
+        Texture texture = new Texture("textures/grassblock.png");
         Material material = new Material(texture, reflectance);
 
         mesh.setMaterial(material);

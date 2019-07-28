@@ -38,7 +38,7 @@ public class DummyGame implements IGameLogic {
 
         //Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
-        Texture texture = new Texture("/textures/grassblock.png");
+        Texture texture = new Texture("textures/grassblock.png");
         mesh.setTexture(texture);
         GameItem gameItem = new GameItem(mesh);
         gameItem.setScale(0.5f);

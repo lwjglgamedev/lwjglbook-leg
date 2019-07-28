@@ -8,8 +8,6 @@ public class GameEngine implements Runnable {
 
     private final Window window;
 
-    private final Thread gameLoopThread;
-
     private final Timer timer;
 
     private final IGameLogic gameLogic;
@@ -21,20 +19,10 @@ public class GameEngine implements Runnable {
     }
 
     public GameEngine(String windowTitle, int width, int height, boolean vSync, IGameLogic gameLogic) throws Exception {
-        gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
         window = new Window(windowTitle, width, height, vSync);
         mouseInput = new MouseInput();
         this.gameLogic = gameLogic;
         timer = new Timer();
-    }
-
-    public void start() {
-        String osName = System.getProperty("os.name");
-        if ( osName.contains("Mac") ) {
-            gameLoopThread.run();
-        } else {
-            gameLoopThread.start();
-        }
     }
 
     @Override

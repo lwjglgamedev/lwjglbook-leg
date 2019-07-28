@@ -17,7 +17,7 @@ public class Main {
             opts.antialiasing = true;
             opts.frustumCulling = false;
             GameEngine gameEng = new GameEngine("GAME", vSync, opts, gameLogic);
-            gameEng.start();
+            gameEng.run();
         } catch (Exception excp) {
             excp.printStackTrace();
             System.exit(-1);

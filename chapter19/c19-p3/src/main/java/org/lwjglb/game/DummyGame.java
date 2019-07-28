@@ -90,7 +90,6 @@ public class DummyGame implements IGameLogic {
         camera.getPosition().z = 6.5f;
         camera.getRotation().x = 25;
         camera.getRotation().y = -1;
-        hud = new Hud("");
     }
 
     private void setupLights() {

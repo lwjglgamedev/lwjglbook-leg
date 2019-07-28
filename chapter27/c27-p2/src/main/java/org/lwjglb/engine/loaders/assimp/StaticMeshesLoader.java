@@ -88,7 +88,11 @@ public class StaticMeshesLoader {
         Texture texture = null;
         if (textPath != null && textPath.length() > 0) {
             TextureCache textCache = TextureCache.getInstance();
-            String textureFile = texturesDir + "/" + textPath;
+            String textureFile = "";
+			if ( texturesDir != null && texturesDir.length() > 0 ) {
+				textureFile += texturesDir + "/";
+			}
+			textureFile += textPath;
             textureFile = textureFile.replace("//", "/");
             texture = textCache.getTexture(textureFile);
         }

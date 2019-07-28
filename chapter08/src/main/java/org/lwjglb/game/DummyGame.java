@@ -118,7 +118,7 @@ public class DummyGame implements IGameLogic {
             16, 18, 19, 17, 16, 19,
             // Back face
             4, 6, 7, 5, 4, 7,};
-        Texture texture = new Texture("/textures/grassblock.png");
+        Texture texture = new Texture("textures/grassblock.png");
         Mesh mesh = new Mesh(positions, textCoords, indices, texture);
         GameItem gameItem1 = new GameItem(mesh);
         gameItem1.setScale(0.5f);

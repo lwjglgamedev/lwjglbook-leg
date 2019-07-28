@@ -78,7 +78,7 @@ public class DummyGame implements IGameLogic {
         setupLights();
 
         camera.getPosition().z = 2;
-        hud = new Hud("");
+        hud = new Hud("Light Angle:");
     }
 
     private void setupLights() {

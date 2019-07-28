@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import org.lwjgl.BufferUtils;
-import static org.lwjgl.BufferUtils.*;
 import org.lwjgl.system.MemoryUtil;
 
 public class Utils {
@@ -75,8 +74,8 @@ public class Utils {
             }
         } else {
             try (
-                    InputStream source = Utils.class.getResourceAsStream(resource);
-                    ReadableByteChannel rbc = Channels.newChannel(source)) {
+                InputStream source = Utils.class.getResourceAsStream(resource);
+                ReadableByteChannel rbc = Channels.newChannel(source)) {
                 buffer = MemoryUtil.memAlloc(bufferSize);
 
                 while (true) {

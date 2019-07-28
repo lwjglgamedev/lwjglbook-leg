@@ -41,7 +41,7 @@ public class StaticMeshesLoader {
     public static Mesh[] load(String resourcePath, String texturesDir, int flags) throws Exception {
         AIScene aiScene = aiImportFile(resourcePath, flags);
         if (aiScene == null) {
-            throw new Exception("Error loading model");
+            throw new Exception("Error loading model [resourcePath: "  + resourcePath + ", texturesDir:" + texturesDir + "]");
         }
 
         int numMaterials = aiScene.mNumMaterials();
@@ -87,7 +87,11 @@ public class StaticMeshesLoader {
         Texture texture = null;
         if (textPath != null && textPath.length() > 0) {
             TextureCache textCache = TextureCache.getInstance();
-            String textureFile = texturesDir + "/" + textPath;
+            String textureFile = "";
+			if ( texturesDir != null && texturesDir.length() > 0 ) {
+				textureFile += texturesDir + "/";
+			}
+			textureFile += textPath;
             textureFile = textureFile.replace("//", "/");
             texture = textCache.getTexture(textureFile);
         }

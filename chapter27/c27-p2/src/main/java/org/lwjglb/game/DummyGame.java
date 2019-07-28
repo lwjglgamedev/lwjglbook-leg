@@ -62,11 +62,11 @@ public class DummyGame implements IGameLogic {
 
         scene = new Scene();
 
-        Mesh[] terrainMesh = StaticMeshesLoader.load("src/main/resources/models/terrain/terrain.obj", "src/main/resources/models/terrain");
+        Mesh[] terrainMesh = StaticMeshesLoader.load("models/terrain/terrain.obj", "models/terrain");
         GameItem terrain = new GameItem(terrainMesh);
         terrain.setScale(100.0f);
 
-        animItem = AnimMeshesLoader.loadAnimGameItem("src/main/resources/models/bob/boblamp.md5mesh", "");
+        animItem = AnimMeshesLoader.loadAnimGameItem("models/bob/boblamp.md5mesh", "");
         animItem.setScale(0.05f);
         animation = animItem.getCurrentAnimation();
         
@@ -81,7 +81,7 @@ public class DummyGame implements IGameLogic {
 
         // Setup  SkyBox
         float skyBoxScale = 100.0f;
-        SkyBox skyBox = new SkyBox("src/main/resources/models/skybox.obj", new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
+        SkyBox skyBox = new SkyBox("models/skybox.obj", new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
 

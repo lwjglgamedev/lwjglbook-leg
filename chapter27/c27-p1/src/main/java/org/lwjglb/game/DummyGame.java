@@ -59,10 +59,10 @@ public class DummyGame implements IGameLogic {
 
         scene = new Scene();
 
-        Mesh[] houseMesh = StaticMeshesLoader.load("src/main/resources/models/house/house.obj", "src/main/resources/models/house");
+        Mesh[] houseMesh = StaticMeshesLoader.load("models/house/house.obj", "models/house");
         GameItem house = new GameItem(houseMesh);
 
-        Mesh[] terrainMesh = StaticMeshesLoader.load("src/main/resources/models/terrain/terrain.obj", "src/main/resources/models/terrain");
+        Mesh[] terrainMesh = StaticMeshesLoader.load("models/terrain/terrain.obj", "models/terrain");
         GameItem terrain = new GameItem(terrainMesh);
         terrain.setScale(100.0f);
 
@@ -77,7 +77,7 @@ public class DummyGame implements IGameLogic {
 
         // Setup  SkyBox
         float skyBoxScale = 100.0f;
-        SkyBox skyBox = new SkyBox("src/main/resources/models/skybox.obj", new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
+        SkyBox skyBox = new SkyBox("models/skybox.obj", new Vector4f(0.65f, 0.65f, 0.65f, 1.0f));
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
 

@@ -3,20 +3,13 @@ package org.lwjglb.game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import static org.lwjgl.glfw.GLFW.*;
-import org.lwjglb.engine.IGameLogic;
-import org.lwjglb.engine.MouseInput;
-import org.lwjglb.engine.Scene;
-import org.lwjglb.engine.SceneLight;
-import org.lwjglb.engine.Window;
-import org.lwjglb.engine.graph.Camera;
-import org.lwjglb.engine.graph.Material;
-import org.lwjglb.engine.graph.Mesh;
-import org.lwjglb.engine.graph.OBJLoader;
-import org.lwjglb.engine.graph.Renderer;
+import org.lwjglb.engine.*;
+import org.lwjglb.engine.graph.*;
 import org.lwjglb.engine.graph.lights.DirectionalLight;
 import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.items.Terrain;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class DummyGame implements IGameLogic {
 
@@ -37,9 +30,9 @@ public class DummyGame implements IGameLogic {
     private Terrain terrain;
 
     private GameItem cubeGameItem;
-    
+
     private float angleInc;
-            
+
     private float lightAngle;
 
     public DummyGame() {
@@ -78,7 +71,7 @@ public class DummyGame implements IGameLogic {
         setupLights();
 
         camera.getPosition().z = 2;
-        hud = new Hud("");
+        hud = new Hud("LightAngle:");
     }
 
     private void setupLights() {
@@ -95,7 +88,7 @@ public class DummyGame implements IGameLogic {
         DirectionalLight directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), lightDirection, lightIntensity);
         directionalLight.setShadowPosMult(5);
         directionalLight.setOrthoCords(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 20.0f);
-        sceneLight.setDirectionalLight(directionalLight);     
+        sceneLight.setDirectionalLight(directionalLight);
     }
 
     @Override
@@ -130,12 +123,12 @@ public class DummyGame implements IGameLogic {
         // Update camera based on mouse            
         if (mouseInput.isRightButtonPressed()) {
             Vector2f rotVec = mouseInput.getDisplVec();
-            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+            camera.moveRotation(rotVec.x * DummyGame.MOUSE_SENSITIVITY, rotVec.y * DummyGame.MOUSE_SENSITIVITY, 0);
         }
 
         // Update camera position
         Vector3f prevPos = new Vector3f(camera.getPosition());
-        camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
+        camera.movePosition(cameraInc.x * DummyGame.CAMERA_POS_STEP, cameraInc.y * DummyGame.CAMERA_POS_STEP, cameraInc.z * DummyGame.CAMERA_POS_STEP);
         // Check if there has been a collision. If true, set the y position to
         // the maximum height
         float height = terrain != null ? terrain.getHeight(camera.getPosition()) : -Float.MAX_VALUE;
@@ -145,26 +138,26 @@ public class DummyGame implements IGameLogic {
 
         float rotY = cubeGameItem.getRotation().y;
         rotY += 0.5f;
-        if ( rotY >= 360 ) {
+        if (rotY >= 360) {
             rotY -= 360;
         }
         cubeGameItem.getRotation().y = rotY;
-        
+
         lightAngle += angleInc;
-        if ( lightAngle < 0 ) {
+        if (lightAngle < 0) {
             lightAngle = 0;
-        } else if (lightAngle > 180 ) {
+        } else if (lightAngle > 180) {
             lightAngle = 180;
         }
-        float zValue = (float)Math.cos(Math.toRadians(lightAngle));
-        float yValue = (float)Math.sin(Math.toRadians(lightAngle));
+        float zValue = (float) Math.cos(Math.toRadians(lightAngle));
+        float yValue = (float) Math.sin(Math.toRadians(lightAngle));
         Vector3f lightDirection = this.scene.getSceneLight().getDirectionalLight().getDirection();
         lightDirection.x = 0;
         lightDirection.y = yValue;
         lightDirection.z = zValue;
         lightDirection.normalize();
-        float lightAngle = (float)Math.toDegrees(Math.acos(lightDirection.z));
-        hud.setStatusText("LightAngle: " + lightAngle);        
+        float lightAngle = (float) Math.toDegrees(Math.acos(lightDirection.z));
+        hud.setStatusText("LightAngle: " + lightAngle);
     }
 
     @Override

@@ -119,7 +119,7 @@ joints {
 
 mesh {
 	// meshes: hellknightmesh
-	shader "/textures/monster/hellknight.png"
+	shader "textures/monster/hellknight.png"
 
 	numverts 1656
 	vert 0 ( 0.0306090005 0.6130819917 ) 0 2
@@ -7618,7 +7618,7 @@ mesh {
 
 mesh {
 	// meshes: salivamesh
-	shader "/textures/monster/gob2.png"
+	shader "textures/monster/gob2.png"
 
 	numverts 14
 	vert 0 ( 0.6911731958 0.0044568777 ) 5 1
@@ -7677,7 +7677,7 @@ mesh {
 
 mesh {
 	// meshes: droolmesh
-	shader "/textures/monster/gob.png"
+	shader "textures/monster/gob.png"
 
 	numverts 33
 	vert 0 ( 0.715780139 0.2972531319 ) 4 1
@@ -7842,7 +7842,7 @@ mesh {
 
 mesh {
 	// meshes: tonguemesh
-	shader "/textures/monster/tongue.png"
+	shader "textures/monster/tongue.png"
 
 	numverts 34
 	vert 0 ( 0.1569895446 0.8344357014 ) 2 3

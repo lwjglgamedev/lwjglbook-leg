@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import org.lwjgl.BufferUtils;
-import static org.lwjgl.BufferUtils.*;
+import org.lwjgl.system.MemoryUtil;
 
 public class Utils {
 
@@ -69,14 +69,14 @@ public class Utils {
         Path path = Paths.get(resource);
         if (Files.isReadable(path)) {
             try (SeekableByteChannel fc = Files.newByteChannel(path)) {
-                buffer = BufferUtils.createByteBuffer((int) fc.size() + 1);
+                buffer = MemoryUtil.memAlloc((int) fc.size() + 1);
                 while (fc.read(buffer) != -1) ;
             }
         } else {
             try (
                 InputStream source = Utils.class.getResourceAsStream(resource);
                 ReadableByteChannel rbc = Channels.newChannel(source)) {
-                buffer = createByteBuffer(bufferSize);
+                buffer = MemoryUtil.memAlloc(bufferSize);
 
                 while (true) {
                     int bytes = rbc.read(buffer);

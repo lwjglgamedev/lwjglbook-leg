@@ -16,7 +16,7 @@ public class Main {
             opts.compatibleProfile = true;
             opts.antialiasing = true;
             GameEngine gameEng = new GameEngine("GAME", vSync, opts, gameLogic);
-            gameEng.start();
+            gameEng.run();
         } catch (Exception excp) {
             excp.printStackTrace();
             System.exit(-1);

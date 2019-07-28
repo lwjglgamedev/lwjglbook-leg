@@ -1,10 +1,7 @@
 package org.lwjglb.game;
 
-import java.io.File;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.file.Paths;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -118,10 +115,7 @@ public class DummyGame implements IGameLogic {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
 
-            URL url = Texture.class.getResource("/textures/heightmap.png");
-            File file = Paths.get(url.toURI()).toFile();
-            String filePath = file.getAbsolutePath();
-            buf = stbi_load(filePath, w, h, channels, 4);
+            buf = stbi_load("textures/heightmap.png", w, h, channels, 4);
             if (buf == null) {
                 throw new Exception("Image file not loaded: " + stbi_failure_reason());
             }
@@ -132,7 +126,7 @@ public class DummyGame implements IGameLogic {
 
         int instances = height * width;
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj", instances);
-        Texture texture = new Texture("/textures/terrain_textures.png", 2, 1);
+        Texture texture = new Texture("textures/terrain_textures.png", 2, 1);
         Material material = new Material(texture, reflectance);
         mesh.setMaterial(material);
         gameItems = new GameItem[instances];
@@ -163,7 +157,7 @@ public class DummyGame implements IGameLogic {
         float range = 0.2f;
         float scale = 1.0f;
         Mesh partMesh = OBJLoader.loadMesh("/models/particle.obj", maxParticles);
-        Texture particleTexture = new Texture("/textures/particle_anim.png", 4, 4);
+        Texture particleTexture = new Texture("textures/particle_anim.png", 4, 4);
         Material partMaterial = new Material(particleTexture, reflectance);
         partMesh.setMaterial(partMaterial);
         Particle particle = new Particle(partMesh, particleSpeed, ttl, 100);

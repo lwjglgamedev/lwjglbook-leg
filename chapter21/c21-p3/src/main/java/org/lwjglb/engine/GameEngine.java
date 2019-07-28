@@ -8,8 +8,6 @@ public class GameEngine implements Runnable {
 
     private final Window window;
 
-    private final Thread gameLoopThread;
-
     private final Timer timer;
 
     private final IGameLogic gameLogic;
@@ -28,20 +26,10 @@ public class GameEngine implements Runnable {
 
     public GameEngine(String windowTitle, int width, int height, boolean vSync, Window.WindowOptions opts, IGameLogic gameLogic) throws Exception {
         this.windowTitle = windowTitle;
-        gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
         window = new Window(windowTitle, width, height, vSync, opts);
         mouseInput = new MouseInput();
         this.gameLogic = gameLogic;
         timer = new Timer();
-    }
-
-    public void start() {
-        String osName = System.getProperty("os.name");
-        if ( osName.contains("Mac") ) {
-            gameLoopThread.run();
-        } else {
-            gameLoopThread.start();
-        }
     }
 
     @Override
@@ -127,7 +115,6 @@ public class GameEngine implements Runnable {
 
     public GameEngine() {
         this.window = null;
-        this.gameLoopThread = null;
         this.timer = null;
         this.gameLogic = null;
         this.mouseInput = null;

@@ -15,7 +15,7 @@ public class Main {
             opts.showFps = true;
             opts.compatibleProfile = true;
             GameEngine gameEng = new GameEngine("GAME", vSync, opts, gameLogic);
-            gameEng.start();
+            gameEng.run();
         } catch (Exception excp) {
             excp.printStackTrace();
             System.exit(-1);
