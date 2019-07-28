@@ -21,7 +21,7 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         try {
-            init();
+			init();
             gameLoop();
         } catch (Exception excp) {
             excp.printStackTrace();
