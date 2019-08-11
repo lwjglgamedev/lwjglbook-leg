@@ -37,6 +37,45 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+				<version>${mvn.resplug.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources-models</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/models</outputDirectory>
+							<resources>
+								<resource>
+									<directory>models</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-resources-textures</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/textures</outputDirectory>
+							<resources>
+								<resource>
+									<directory>textures</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -112,6 +151,7 @@
         <java.version>11</java.version>
         <mvn.complilerplug.version>3.8.1</mvn.complilerplug.version>
         <mvn.jarplug.version>3.1.2</mvn.jarplug.version>
+		<mvn.resplug.version>3.1.0</mvn.resplug.version>
         <lwjgl.version>3.2.2</lwjgl.version>
         <joml.version>1.9.16</joml.version>
     </properties>
