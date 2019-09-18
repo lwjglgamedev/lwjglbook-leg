@@ -152,8 +152,8 @@
         <mvn.complilerplug.version>3.8.1</mvn.complilerplug.version>
         <mvn.jarplug.version>3.1.2</mvn.jarplug.version>
 		<mvn.resplug.version>3.1.0</mvn.resplug.version>
-        <lwjgl.version>3.2.2</lwjgl.version>
-        <joml.version>1.9.16</joml.version>
+        <lwjgl.version>3.2.3</lwjgl.version>
+        <joml.version>1.9.17</joml.version>
     </properties>
 
     <profiles>
