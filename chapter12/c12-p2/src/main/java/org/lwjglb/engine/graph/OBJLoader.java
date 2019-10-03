@@ -57,7 +57,7 @@ public class OBJLoader {
     private static Mesh reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
             List<Vector3f> normList, List<Face> facesList) {
 
-        List<Integer> indices = new ArrayList();
+        List<Integer> indices = new ArrayList<>();
         // Create position array in the order it has been declared
         float[] posArr = new float[posList.size() * 3];
         int i = 0;

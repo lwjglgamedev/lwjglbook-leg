@@ -32,10 +32,10 @@ public class TextItem extends GameItem {
         byte[] chars = text.getBytes(Charset.forName("ISO-8859-1"));
         int numChars = chars.length;
 
-        List<Float> positions = new ArrayList();
-        List<Float> textCoords = new ArrayList();
+        List<Float> positions = new ArrayList<>();
+        List<Float> textCoords = new ArrayList<>();
         float[] normals   = new float[0];
-        List<Integer> indices   = new ArrayList();
+        List<Integer> indices   = new ArrayList<>();
         
         float tileWidth = (float)texture.getWidth() / (float)numCols;
         float tileHeight = (float)texture.getHeight() / (float)numRows;
