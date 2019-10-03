@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.stb.STBImage.*;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.system.MemoryStack.*;
 import org.lwjglb.engine.Utils;
 
@@ -81,8 +80,7 @@ public class Texture {
             // Generate Mip Map
             glGenerateMipmap(GL_TEXTURE_2D);
             
-            stbi_image_free(imageData);
-            MemoryUtil.memFree(decodedImage);
+            stbi_image_free(decodedImage);
         }
     }
 
