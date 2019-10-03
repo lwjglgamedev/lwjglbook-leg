@@ -25,10 +25,10 @@ public class TextItem extends GameItem {
     }
     
     private Mesh buildMesh() {
-        List<Float> positions = new ArrayList();
-        List<Float> textCoords = new ArrayList();
+        List<Float> positions = new ArrayList<>();
+        List<Float> textCoords = new ArrayList<>();
         float[] normals   = new float[0];
-        List<Integer> indices   = new ArrayList();
+        List<Integer> indices   = new ArrayList<>();
         char[] characters = text.toCharArray();
         int numChars = characters.length;
 
