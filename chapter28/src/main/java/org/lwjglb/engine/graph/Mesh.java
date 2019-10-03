@@ -43,7 +43,7 @@ public class Mesh {
             calculateBoundingRadius(positions);
             
             vertexCount = indices.length;
-            vboIdList = new ArrayList();
+            vboIdList = new ArrayList<>();
 
             vaoId = glGenVertexArrays();
             glBindVertexArray(vaoId);

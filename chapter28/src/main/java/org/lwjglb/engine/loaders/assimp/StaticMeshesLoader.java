@@ -119,7 +119,7 @@ public class StaticMeshesLoader {
         List<Float> vertices = new ArrayList<>();
         List<Float> textures = new ArrayList<>();
         List<Float> normals = new ArrayList<>();
-        List<Integer> indices = new ArrayList();
+        List<Integer> indices = new ArrayList<>();
 
         processVertices(aiMesh, vertices);
         processNormals(aiMesh, normals);
