@@ -1,12 +1,18 @@
 package org.lwjglb.game;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
 import org.lwjglb.engine.Utils;
 import org.lwjglb.engine.Window;
 import org.lwjglb.engine.graph.Mesh;
 import org.lwjglb.engine.graph.ShaderProgram;
+
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class Renderer {
 
@@ -29,7 +35,7 @@ public class Renderer {
     public void render(Window window, Mesh mesh) {
         clear();
 
-        if ( window.isResized() ) {
+        if (window.isResized()) {
             glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResized(false);
         }
@@ -38,13 +44,9 @@ public class Renderer {
 
         // Draw the mesh
         glBindVertexArray(mesh.getVaoId());
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
         glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
 
         // Restore state
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
         glBindVertexArray(0);
 
         shaderProgram.unbind();

@@ -1,30 +1,39 @@
 package org.lwjglb.engine.graph;
 
-import java.nio.FloatBuffer;
-import java.util.List;
 import org.joml.Matrix4f;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL33.*;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjglb.engine.items.GameItem;
+
+import java.nio.FloatBuffer;
+import java.util.List;
+
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_READ;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL31.glDrawElementsInstanced;
+import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 public class InstancedMesh extends Mesh {
 
     private static final int FLOAT_SIZE_BYTES = 4;
 
-    private static final int VECTOR4F_SIZE_BYTES = 4 * FLOAT_SIZE_BYTES;
+    private static final int VECTOR4F_SIZE_BYTES = 4 * InstancedMesh.FLOAT_SIZE_BYTES;
 
     private static final int MATRIX_SIZE_FLOATS = 4 * 4;
 
-    private static final int MATRIX_SIZE_BYTES = MATRIX_SIZE_FLOATS * FLOAT_SIZE_BYTES;
+    private static final int MATRIX_SIZE_BYTES = InstancedMesh.MATRIX_SIZE_FLOATS * InstancedMesh.FLOAT_SIZE_BYTES;
 
-    private static final int INSTANCE_SIZE_BYTES = MATRIX_SIZE_BYTES + FLOAT_SIZE_BYTES * 2 + FLOAT_SIZE_BYTES;
+    private static final int INSTANCE_SIZE_BYTES = InstancedMesh.MATRIX_SIZE_BYTES + InstancedMesh.FLOAT_SIZE_BYTES * 2 + InstancedMesh.FLOAT_SIZE_BYTES;
 
-    private static final int INSTANCE_SIZE_FLOATS = MATRIX_SIZE_FLOATS + 3;
+    private static final int INSTANCE_SIZE_FLOATS = InstancedMesh.MATRIX_SIZE_FLOATS + 3;
 
     private final int numInstances;
 
@@ -33,7 +42,7 @@ public class InstancedMesh extends Mesh {
     private FloatBuffer instanceDataBuffer;
 
     public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int numInstances) {
-        super(positions, textCoords, normals, indices, createEmptyIntArray(MAX_WEIGHTS * positions.length / 3, 0), createEmptyFloatArray(MAX_WEIGHTS * positions.length / 3, 0));
+        super(positions, textCoords, normals, indices, Mesh.createEmptyIntArray(Mesh.MAX_WEIGHTS * positions.length / 3, 0), Mesh.createEmptyFloatArray(Mesh.MAX_WEIGHTS * positions.length / 3, 0));
 
         this.numInstances = numInstances;
 
@@ -41,27 +50,30 @@ public class InstancedMesh extends Mesh {
 
         instanceDataVBO = glGenBuffers();
         vboIdList.add(instanceDataVBO);
-        instanceDataBuffer = MemoryUtil.memAllocFloat(numInstances * INSTANCE_SIZE_FLOATS);
+        instanceDataBuffer = MemoryUtil.memAllocFloat(numInstances * InstancedMesh.INSTANCE_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, instanceDataVBO);
         int start = 5;
         int strideStart = 0;
         // Model matrix
         for (int i = 0; i < 4; i++) {
-            glVertexAttribPointer(start, 4, GL_FLOAT, false, INSTANCE_SIZE_BYTES, strideStart);
+            glVertexAttribPointer(start, 4, GL_FLOAT, false, InstancedMesh.INSTANCE_SIZE_BYTES, strideStart);
             glVertexAttribDivisor(start, 1);
+            glEnableVertexAttribArray(start);
             start++;
-            strideStart += VECTOR4F_SIZE_BYTES;
+            strideStart += InstancedMesh.VECTOR4F_SIZE_BYTES;
         }
 
         // Texture offsets
-        glVertexAttribPointer(start, 2, GL_FLOAT, false, INSTANCE_SIZE_BYTES, strideStart);
+        glVertexAttribPointer(start, 2, GL_FLOAT, false, InstancedMesh.INSTANCE_SIZE_BYTES, strideStart);
         glVertexAttribDivisor(start, 1);
-        strideStart += FLOAT_SIZE_BYTES * 2;
+        glEnableVertexAttribArray(start);
+        strideStart += InstancedMesh.FLOAT_SIZE_BYTES * 2;
         start++;
 
         // Selected or Scaling (for particles)
-        glVertexAttribPointer(start, 1, GL_FLOAT, false, INSTANCE_SIZE_BYTES, strideStart);
+        glVertexAttribPointer(start, 1, GL_FLOAT, false, InstancedMesh.INSTANCE_SIZE_BYTES, strideStart);
         glVertexAttribDivisor(start, 1);
+        glEnableVertexAttribArray(start);
         start++;
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -77,29 +89,7 @@ public class InstancedMesh extends Mesh {
         }
     }
 
-    @Override
-    protected void initRender() {
-        super.initRender();
-
-        int start = 5;
-        int numElements = 4 * 2 + 2;
-        for (int i = 0; i < numElements; i++) {
-            glEnableVertexAttribArray(start + i);
-        }
-    }
-
-    @Override
-    protected void endRender() {
-        int start = 5;
-        int numElements = 4 * 2 + 2;
-        for (int i = 0; i < numElements; i++) {
-            glDisableVertexAttribArray(start + i);
-        }
-
-        super.endRender();
-    }
-
-    public void renderListInstanced( List<GameItem> gameItems, Transformation transformation, Matrix4f viewMatrix) {
+    public void renderListInstanced(List<GameItem> gameItems, Transformation transformation, Matrix4f viewMatrix) {
         renderListInstanced(gameItems, false, transformation, viewMatrix);
     }
 
@@ -128,19 +118,19 @@ public class InstancedMesh extends Mesh {
             if (viewMatrix != null && billBoard) {
                 viewMatrix.transpose3x3(modelMatrix);
             }
-            modelMatrix.get(INSTANCE_SIZE_FLOATS * i, instanceDataBuffer);
+            modelMatrix.get(InstancedMesh.INSTANCE_SIZE_FLOATS * i, instanceDataBuffer);
             if (text != null) {
                 int col = gameItem.getTextPos() % text.getNumCols();
                 int row = gameItem.getTextPos() / text.getNumCols();
                 float textXOffset = (float) col / text.getNumCols();
                 float textYOffset = (float) row / text.getNumRows();
-                int buffPos = INSTANCE_SIZE_FLOATS * i + MATRIX_SIZE_FLOATS;
+                int buffPos = InstancedMesh.INSTANCE_SIZE_FLOATS * i + InstancedMesh.MATRIX_SIZE_FLOATS;
                 this.instanceDataBuffer.put(buffPos, textXOffset);
                 this.instanceDataBuffer.put(buffPos + 1, textYOffset);
             }
 
             // Selected data or scaling for billboard
-            int buffPos = INSTANCE_SIZE_FLOATS * i + MATRIX_SIZE_FLOATS + 2;
+            int buffPos = InstancedMesh.INSTANCE_SIZE_FLOATS * i + InstancedMesh.MATRIX_SIZE_FLOATS + 2;
             this.instanceDataBuffer.put(buffPos, billBoard ? gameItem.getScale() : gameItem.isSelected() ? 1 : 0);
 
             i++;

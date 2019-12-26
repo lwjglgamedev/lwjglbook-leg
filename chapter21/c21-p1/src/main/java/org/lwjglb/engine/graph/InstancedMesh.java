@@ -1,22 +1,31 @@
 package org.lwjglb.engine.graph;
 
-import java.nio.FloatBuffer;
-import java.util.List;
 import org.joml.Matrix4f;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL33.*;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjglb.engine.items.GameItem;
+
+import java.nio.FloatBuffer;
+import java.util.List;
+
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL31.glDrawElementsInstanced;
+import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 public class InstancedMesh extends Mesh {
 
     private static final int VECTOR4F_SIZE_BYTES = 4 * 4;
 
-    private static final int MATRIX_SIZE_BYTES = 4 * VECTOR4F_SIZE_BYTES;
+    private static final int MATRIX_SIZE_BYTES = 4 * InstancedMesh.VECTOR4F_SIZE_BYTES;
 
     private static final int MATRIX_SIZE_FLOATS = 4 * 4;
 
@@ -31,7 +40,7 @@ public class InstancedMesh extends Mesh {
     private FloatBuffer modelLightViewBuffer;
 
     public InstancedMesh(float[] positions, float[] textCoords, float[] normals, int[] indices, int numInstances) {
-        super(positions, textCoords, normals, indices, createEmptyIntArray(MAX_WEIGHTS * positions.length / 3, 0), createEmptyFloatArray(MAX_WEIGHTS * positions.length / 3, 0));
+        super(positions, textCoords, normals, indices, Mesh.createEmptyIntArray(Mesh.MAX_WEIGHTS * positions.length / 3, 0), Mesh.createEmptyFloatArray(Mesh.MAX_WEIGHTS * positions.length / 3, 0));
 
         this.numInstances = numInstances;
 
@@ -40,23 +49,25 @@ public class InstancedMesh extends Mesh {
         // Model View Matrix
         modelViewVBO = glGenBuffers();
         vboIdList.add(modelViewVBO);
-        this.modelViewBuffer = MemoryUtil.memAllocFloat(numInstances * MATRIX_SIZE_FLOATS);
+        this.modelViewBuffer = MemoryUtil.memAllocFloat(numInstances * InstancedMesh.MATRIX_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, modelViewVBO);
         int start = 5;
         for (int i = 0; i < 4; i++) {
-            glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE_BYTES, i * VECTOR4F_SIZE_BYTES);
+            glVertexAttribPointer(start, 4, GL_FLOAT, false, InstancedMesh.MATRIX_SIZE_BYTES, i * InstancedMesh.VECTOR4F_SIZE_BYTES);
             glVertexAttribDivisor(start, 1);
+            glEnableVertexAttribArray(start);
             start++;
         }
 
         // Light view matrix
         modelLightViewVBO = glGenBuffers();
         vboIdList.add(modelLightViewVBO);
-        this.modelLightViewBuffer = MemoryUtil.memAllocFloat(numInstances * MATRIX_SIZE_FLOATS);
+        this.modelLightViewBuffer = MemoryUtil.memAllocFloat(numInstances * InstancedMesh.MATRIX_SIZE_FLOATS);
         glBindBuffer(GL_ARRAY_BUFFER, modelLightViewVBO);
         for (int i = 0; i < 4; i++) {
-            glVertexAttribPointer(start, 4, GL_FLOAT, false, MATRIX_SIZE_BYTES, i * VECTOR4F_SIZE_BYTES);
+            glVertexAttribPointer(start, 4, GL_FLOAT, false, InstancedMesh.MATRIX_SIZE_BYTES, i * InstancedMesh.VECTOR4F_SIZE_BYTES);
             glVertexAttribDivisor(start, 1);
+            glEnableVertexAttribArray(start);
             start++;
         }
 
@@ -75,28 +86,6 @@ public class InstancedMesh extends Mesh {
             MemoryUtil.memFree(this.modelLightViewBuffer);
             this.modelLightViewBuffer = null;
         }
-    }
-
-    @Override
-    protected void initRender() {
-        super.initRender();
-
-        int start = 5;
-        int numElements = 4 * 2;
-        for (int i = 0; i < numElements; i++) {
-            glEnableVertexAttribArray(start + i);
-        }
-    }
-
-    @Override
-    protected void endRender() {
-        int start = 5;
-        int numElements = 4 * 2;
-        for (int i = 0; i < numElements; i++) {
-            glDisableVertexAttribArray(start + i);
-        }
-
-        super.endRender();
     }
 
     public void renderListInstanced(List<GameItem> gameItems, boolean depthMap, Transformation transformation, Matrix4f viewMatrix, Matrix4f lightViewMatrix) {
@@ -123,10 +112,10 @@ public class InstancedMesh extends Mesh {
             Matrix4f modelMatrix = transformation.buildModelMatrix(gameItem);
             if (!depthMap) {
                 Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(modelMatrix, viewMatrix);
-                modelViewMatrix.get(MATRIX_SIZE_FLOATS * i, modelViewBuffer);
+                modelViewMatrix.get(InstancedMesh.MATRIX_SIZE_FLOATS * i, modelViewBuffer);
             }
             Matrix4f modelLightViewMatrix = transformation.buildModelLightViewMatrix(modelMatrix, lightViewMatrix);
-            modelLightViewMatrix.get(MATRIX_SIZE_FLOATS * i, this.modelLightViewBuffer);
+            modelLightViewMatrix.get(InstancedMesh.MATRIX_SIZE_FLOATS * i, this.modelLightViewBuffer);
             i++;
         }
 
