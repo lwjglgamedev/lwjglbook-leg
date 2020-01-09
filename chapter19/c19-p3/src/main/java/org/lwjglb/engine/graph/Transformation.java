@@ -48,10 +48,8 @@ public class Transformation {
     }
     
     public Matrix4f updateProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
-        float aspectRatio = width / height;        
         projectionMatrix.identity();
-        projectionMatrix.perspective(fov, aspectRatio, zNear, zFar);
-        return projectionMatrix;
+        return projectionMatrix.setPerspective(fov, width / height, zNear, zFar);
     }
 
     public final Matrix4f getOrthoProjectionMatrix() {

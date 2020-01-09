@@ -17,7 +17,7 @@ public class GameItem {
     private int textPos;
             
     public GameItem() {
-        position = new Vector3f(0, 0, 0);
+        position = new Vector3f();
         scale = 1;
         rotation = new Quaternionf();
         textPos = 0;

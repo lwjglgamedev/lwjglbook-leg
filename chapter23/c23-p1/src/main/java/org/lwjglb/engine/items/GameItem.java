@@ -20,7 +20,7 @@ public class GameItem {
 
     public GameItem() {
         selected = false;
-        position = new Vector3f(0, 0, 0);
+        position = new Vector3f();
         scale = 1;
         rotation = new Quaternionf();
         textPos = 0;

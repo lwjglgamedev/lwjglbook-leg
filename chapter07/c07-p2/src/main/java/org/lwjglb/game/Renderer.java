@@ -47,7 +47,7 @@ public class Renderer {
     public void render(Window window, GameItem[] gameItems) {
         clear();
 
-        if ( window.isResized() ) {
+        if (window.isResized()) {
             glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResized(false);
         }
@@ -60,7 +60,7 @@ public class Renderer {
         
         shaderProgram.setUniform("texture_sampler", 0);
         // Render each gameItem
-        for(GameItem gameItem : gameItems) {
+        for (GameItem gameItem : gameItems) {
             // Set world matrix for this item
             Matrix4f worldMatrix = transformation.getWorldMatrix(
                     gameItem.getPosition(),

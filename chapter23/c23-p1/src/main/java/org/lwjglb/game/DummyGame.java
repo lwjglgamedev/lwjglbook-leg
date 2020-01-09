@@ -216,7 +216,7 @@ public class DummyGame implements IGameLogic {
         soundMgr.addSoundSource(Sounds.FIRE.toString(), sourceFire);
         sourceFire.play();
 
-        soundMgr.setListener(new SoundListener(new Vector3f(0, 0, 0)));
+        soundMgr.setListener(new SoundListener(new Vector3f()));
 
         sourceBack.play();
     }

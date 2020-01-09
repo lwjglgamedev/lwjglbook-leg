@@ -50,7 +50,7 @@ public class Transformation {
     public Matrix4f updateProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
         float aspectRatio = width / height;        
         projectionMatrix.identity();
-        projectionMatrix.perspective(fov, aspectRatio, zNear, zFar);
+        projectionMatrix.setPerspective(fov, aspectRatio, zNear, zFar);
         return projectionMatrix;
     }
 

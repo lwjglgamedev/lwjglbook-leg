@@ -29,7 +29,7 @@ public class DummyGame implements IGameLogic {
     public DummyGame() {
         renderer = new Renderer();
         camera = new Camera();
-        cameraInc = new Vector3f(0, 0, 0);
+        cameraInc = new Vector3f();
     }
 
     @Override

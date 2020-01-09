@@ -42,7 +42,7 @@ public class Renderer {
 
         // Create projection matrix
         float aspectRatio = (float) window.getWidth() / window.getHeight();
-        projectionMatrix = new Matrix4f().perspective(Renderer.FOV, aspectRatio, Renderer.Z_NEAR, Renderer.Z_FAR);
+        projectionMatrix = new Matrix4f().setPerspective(Renderer.FOV, aspectRatio, Renderer.Z_NEAR, Renderer.Z_FAR);
         shaderProgram.createUniform("projectionMatrix");
     }
 

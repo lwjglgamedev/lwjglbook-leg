@@ -59,14 +59,13 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Matrix4f value) {
+        // Dump the matrix into a float buffer
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            // Dump the matrix into a float buffer
-            FloatBuffer fb = stack.mallocFloat(16);
-            value.get(fb);
-            glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+            glUniformMatrix4fv(uniforms.get(uniformName), false,
+                               value.get(stack.mallocFloat(16)));
         }
     }
-
+	
     public void setUniform(String uniformName, int value) {
         glUniform1i(uniforms.get(uniformName), value);
     }

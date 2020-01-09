@@ -46,7 +46,7 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void render(Window window) {
-        if ( window.isResized() ) {
+        if (window.isResized()) {
             glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResized(false);
         }

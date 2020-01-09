@@ -6,7 +6,7 @@ import static org.lwjgl.openal.AL10.*;
 public class SoundListener {
 
     public SoundListener() {
-        this(new Vector3f(0, 0, 0));
+        this(new Vector3f());
     }
 
     public SoundListener(Vector3f position) {

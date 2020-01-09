@@ -17,6 +17,6 @@ public class AnimVertex {
 
     public AnimVertex() {
         super();
-        normal = new Vector3f(0, 0, 0);
+        normal = new Vector3f();
     }
 }

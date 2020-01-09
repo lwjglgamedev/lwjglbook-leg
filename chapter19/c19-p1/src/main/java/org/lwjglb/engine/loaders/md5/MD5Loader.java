@@ -126,7 +126,7 @@ public class MD5Loader {
 
         public VertexInfo(Vector3f position) {
             this.position = position;
-            normal = new Vector3f(0, 0, 0);
+            normal = new Vector3f();
         }
 
         public VertexInfo() {
