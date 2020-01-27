@@ -7,8 +7,8 @@ public class Utils {
 
     public static String loadResource(String fileName) throws Exception {
         String result;
-        try (InputStream in = Class.forName(Utils.class.getName()).getResourceAsStream(fileName);
-                Scanner scanner = new Scanner(in, "UTF-8")) {
+        try (InputStream in = Utils.class.getResourceAsStream(fileName);
+                Scanner scanner = new Scanner(in, java.nio.charset.StandardCharsets.UTF_8)) {
             result = scanner.useDelimiter("\\A").next();
         }
         return result;
