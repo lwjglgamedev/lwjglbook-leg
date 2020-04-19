@@ -126,6 +126,14 @@ public class StaticMeshesLoader {
         processTextCoords(aiMesh, textures);
         processIndices(aiMesh, indices);
 
+        // Texture coordinates may not have been populated. We need at least the empty slots
+        if ( textures.size() == 0) {
+            int numElements = (vertices.size() / 3) * 2;
+            for (int i=0; i<numElements; i++) {
+                textures.add(0.0f);
+            }
+        }
+
         Mesh mesh = new Mesh(Utils.listToArray(vertices), Utils.listToArray(textures),
                 Utils.listToArray(normals), Utils.listIntToArray(indices));
         Material material;
