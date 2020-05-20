@@ -77,6 +77,14 @@
                 </executions>
             </plugin>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${mvn.execplug.version}</version>
+				<configuration>
+					<mainClass>${main.class}</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>${mvn.jarplug.version}</version>
@@ -150,6 +158,7 @@
         <!-- Versions -->
         <java.version>11</java.version>
         <mvn.complilerplug.version>3.8.1</mvn.complilerplug.version>
+        <mvn.execplug.version>1.6.0</mvn.execplug.version>
         <mvn.jarplug.version>3.1.2</mvn.jarplug.version>
 		<mvn.resplug.version>3.1.0</mvn.resplug.version>
         <lwjgl.version>3.2.3</lwjgl.version>
