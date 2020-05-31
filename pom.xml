@@ -162,7 +162,7 @@
         <mvn.jarplug.version>3.1.2</mvn.jarplug.version>
 		<mvn.resplug.version>3.1.0</mvn.resplug.version>
         <lwjgl.version>3.2.3</lwjgl.version>
-        <joml.version>1.9.24</joml.version>
+        <joml.version>1.9.25</joml.version>
     </properties>
 
     <profiles>
