@@ -122,7 +122,7 @@ public class Transformation {
         return modelLightViewMatrix.mul(modelLightMatrix);
     }
 
-    public Matrix4f buildOrtoProjModelMatrix(GameItem gameItem, Matrix4f orthoMatrix) {
+    public Matrix4f buildOrthoProjModelMatrix(GameItem gameItem, Matrix4f orthoMatrix) {
         Vector3f rotation = gameItem.getRotation();
         modelMatrix.identity().translate(gameItem.getPosition()).
                 rotateX((float) Math.toRadians(-rotation.x)).
