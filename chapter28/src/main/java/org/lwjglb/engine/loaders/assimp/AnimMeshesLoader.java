@@ -1,74 +1,24 @@
 package org.lwjglb.engine.loaders.assimp;
 
-import static org.lwjgl.assimp.Assimp.aiImportFile;
-import static org.lwjgl.assimp.Assimp.aiProcess_FixInfacingNormals;
-import static org.lwjgl.assimp.Assimp.aiProcess_GenSmoothNormals;
-import static org.lwjgl.assimp.Assimp.aiProcess_JoinIdenticalVertices;
-import static org.lwjgl.assimp.Assimp.aiProcess_LimitBoneWeights;
-import static org.lwjgl.assimp.Assimp.aiProcess_Triangulate;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
+import org.joml.*;
 import org.lwjgl.PointerBuffer;
-import org.lwjgl.assimp.AIAnimation;
-import org.lwjgl.assimp.AIBone;
-import org.lwjgl.assimp.AIMaterial;
-import org.lwjgl.assimp.AIMatrix4x4;
-import org.lwjgl.assimp.AIMesh;
-import org.lwjgl.assimp.AINode;
-import org.lwjgl.assimp.AINodeAnim;
-import org.lwjgl.assimp.AIQuatKey;
-import org.lwjgl.assimp.AIQuaternion;
-import org.lwjgl.assimp.AIScene;
-import org.lwjgl.assimp.AIVector3D;
-import org.lwjgl.assimp.AIVectorKey;
-import org.lwjgl.assimp.AIVertexWeight;
+import org.lwjgl.assimp.*;
 import org.lwjglb.engine.Utils;
-import org.lwjglb.engine.graph.Material;
-import org.lwjglb.engine.graph.Mesh;
-import org.lwjglb.engine.graph.anim.AnimGameItem;
-import org.lwjglb.engine.graph.anim.AnimatedFrame;
-import org.lwjglb.engine.graph.anim.Animation;
+import org.lwjglb.engine.graph.*;
+import org.lwjglb.engine.graph.anim.*;
+
+import java.lang.Math;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.lwjgl.assimp.Assimp.*;
 
 public class AnimMeshesLoader extends StaticMeshesLoader {
 
-    private static void buildTransFormationMatrices(AINodeAnim aiNodeAnim, Node node) {
-        int numFrames = aiNodeAnim.mNumPositionKeys();
-        AIVectorKey.Buffer positionKeys = aiNodeAnim.mPositionKeys();
-        AIVectorKey.Buffer scalingKeys = aiNodeAnim.mScalingKeys();
-        AIQuatKey.Buffer rotationKeys = aiNodeAnim.mRotationKeys();
-
-        for (int i = 0; i < numFrames; i++) {
-            AIVectorKey aiVecKey = positionKeys.get(i);
-            AIVector3D vec = aiVecKey.mValue();
-
-            Matrix4f transfMat = new Matrix4f().translate(vec.x(), vec.y(), vec.z());
-
-            AIQuatKey quatKey = rotationKeys.get(i);
-            AIQuaternion aiQuat = quatKey.mValue();
-            Quaternionf quat = new Quaternionf(aiQuat.x(), aiQuat.y(), aiQuat.z(), aiQuat.w());
-            transfMat.rotate(quat);
-
-            if (i < aiNodeAnim.mNumScalingKeys()) {
-                aiVecKey = scalingKeys.get(i);
-                vec = aiVecKey.mValue();
-                transfMat.scale(vec.x(), vec.y(), vec.z());
-            }
-
-            node.addTransformation(transfMat);
-        }
-    }
-
-    public static AnimGameItem loadAnimGameItem(String resourcePath, String texturesDir)
-            throws Exception {
+    public static AnimGameItem loadAnimGameItem(String resourcePath, String texturesDir) throws Exception {
         return loadAnimGameItem(resourcePath, texturesDir,
                 aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
-                | aiProcess_FixInfacingNormals | aiProcess_LimitBoneWeights);
+                        | aiProcess_FixInfacingNormals | aiProcess_LimitBoneWeights);
     }
 
     public static AnimGameItem loadAnimGameItem(String resourcePath, String texturesDir, int flags)
@@ -96,40 +46,31 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
             meshes[i] = mesh;
         }
 
-        AINode aiRootNode = aiScene.mRootNode();
-        Matrix4f rootTransfromation = AnimMeshesLoader.toMatrix(aiRootNode.mTransformation());
-        Node rootNode = processNodesHierarchy(aiRootNode, null);
-        Map<String, Animation> animations = processAnimations(aiScene, boneList, rootNode, rootTransfromation);
+        Node rootNode = buildNodesTree(aiScene.mRootNode(), null);
+        Matrix4f globalInverseTransformation = toMatrix(aiScene.mRootNode().mTransformation()).invert();
+        Map<String, Animation> animations = processAnimations(aiScene, boneList, rootNode,
+                globalInverseTransformation);
         AnimGameItem item = new AnimGameItem(meshes, animations);
 
         return item;
     }
 
-    private static List<AnimatedFrame> buildAnimationFrames(List<Bone> boneList, Node rootNode,
-            Matrix4f rootTransformation) {
+    private static Node buildNodesTree(AINode aiNode, Node parentNode) {
+        String nodeName = aiNode.mName().dataString();
+        Node node = new Node(nodeName, parentNode, toMatrix(aiNode.mTransformation()));
 
-        int numFrames = rootNode.getAnimationFrames();
-        List<AnimatedFrame> frameList = new ArrayList<>();
-        for (int i = 0; i < numFrames; i++) {
-            AnimatedFrame frame = new AnimatedFrame();
-            frameList.add(frame);
-
-            int numBones = boneList.size();
-            for (int j = 0; j < numBones; j++) {
-                Bone bone = boneList.get(j);
-                Node node = rootNode.findByName(bone.getBoneName());
-                Matrix4f boneMatrix = Node.getParentTransforms(node, i);
-                boneMatrix.mul(bone.getOffsetMatrix());
-                boneMatrix = new Matrix4f(rootTransformation).mul(boneMatrix);
-                frame.setMatrix(j, boneMatrix);
-            }
+        int numChildren = aiNode.mNumChildren();
+        PointerBuffer aiChildren = aiNode.mChildren();
+        for (int i = 0; i < numChildren; i++) {
+            AINode aiChildNode = AINode.create(aiChildren.get(i));
+            Node childNode = buildNodesTree(aiChildNode, node);
+            node.addChild(childNode);
         }
-
-        return frameList;
+        return node;
     }
 
     private static Map<String, Animation> processAnimations(AIScene aiScene, List<Bone> boneList,
-            Node rootNode, Matrix4f rootTransformation) {
+                                                            Node rootNode, Matrix4f globalInverseTransformation) {
         Map<String, Animation> animations = new HashMap<>();
 
         // Process all animations
@@ -137,26 +78,107 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
         PointerBuffer aiAnimations = aiScene.mAnimations();
         for (int i = 0; i < numAnimations; i++) {
             AIAnimation aiAnimation = AIAnimation.create(aiAnimations.get(i));
+            int maxFrames = calcAnimationMaxFrames(aiAnimation);
 
-            // Calculate transformation matrices for each node
-            int numChanels = aiAnimation.mNumChannels();
-            PointerBuffer aiChannels = aiAnimation.mChannels();
-            for (int j = 0; j < numChanels; j++) {
-                AINodeAnim aiNodeAnim = AINodeAnim.create(aiChannels.get(j));
-                String nodeName = aiNodeAnim.mNodeName().dataString();
-                Node node = rootNode.findByName(nodeName);
-                buildTransFormationMatrices(aiNodeAnim, node);
-            }
-
-            List<AnimatedFrame> frames = buildAnimationFrames(boneList, rootNode, rootTransformation);
+            List<AnimatedFrame> frames = new ArrayList<>();
             Animation animation = new Animation(aiAnimation.mName().dataString(), frames, aiAnimation.mDuration());
             animations.put(animation.getName(), animation);
+
+            for (int j = 0; j < maxFrames; j++) {
+                AnimatedFrame animatedFrame = new AnimatedFrame();
+                buildFrameMatrices(aiAnimation, boneList, animatedFrame, j, rootNode,
+                        rootNode.getNodeTransformation(), globalInverseTransformation);
+                frames.add(animatedFrame);
+            }
         }
         return animations;
     }
 
+    private static void buildFrameMatrices(AIAnimation aiAnimation, List<Bone> boneList, AnimatedFrame animatedFrame, int frame,
+                                           Node node, Matrix4f parentTransformation, Matrix4f globalInverseTransform) {
+        String nodeName = node.getName();
+        AINodeAnim aiNodeAnim = findAIAnimNode(aiAnimation, nodeName);
+        Matrix4f nodeTransform = node.getNodeTransformation();
+        if (aiNodeAnim != null) {
+            nodeTransform = buildNodeTransformationMatrix(aiNodeAnim, frame);
+        }
+        Matrix4f nodeGlobalTransform = new Matrix4f(parentTransformation).mul(nodeTransform);
+
+        List<Bone> affectedBones = boneList.stream().filter( b -> b.getBoneName().equals(nodeName)).collect(Collectors.toList());
+        for (Bone bone: affectedBones) {
+            Matrix4f boneTransform = new Matrix4f(globalInverseTransform).mul(nodeGlobalTransform).
+                    mul(bone.getOffsetMatrix());
+            animatedFrame.setMatrix(bone.getBoneId(), boneTransform);
+        }
+
+        for (Node childNode : node.getChildren()) {
+            buildFrameMatrices(aiAnimation, boneList, animatedFrame, frame, childNode, nodeGlobalTransform,
+                    globalInverseTransform);
+        }
+    }
+
+    private static Matrix4f buildNodeTransformationMatrix(AINodeAnim aiNodeAnim, int frame) {
+        AIVectorKey.Buffer positionKeys = aiNodeAnim.mPositionKeys();
+        AIVectorKey.Buffer scalingKeys = aiNodeAnim.mScalingKeys();
+        AIQuatKey.Buffer rotationKeys = aiNodeAnim.mRotationKeys();
+
+        AIVectorKey aiVecKey;
+        AIVector3D vec;
+
+        Matrix4f nodeTransform = new Matrix4f();
+        int numPositions = aiNodeAnim.mNumPositionKeys();
+        if (numPositions > 0) {
+            aiVecKey = positionKeys.get(Math.min(numPositions - 1, frame));
+            vec = aiVecKey.mValue();
+            nodeTransform.translate(vec.x(), vec.y(), vec.z());
+        }
+        int numRotations = aiNodeAnim.mNumRotationKeys();
+        if (numRotations > 0) {
+            AIQuatKey quatKey = rotationKeys.get(Math.min(numRotations - 1, frame));
+            AIQuaternion aiQuat = quatKey.mValue();
+            Quaternionf quat = new Quaternionf(aiQuat.x(), aiQuat.y(), aiQuat.z(), aiQuat.w());
+            nodeTransform.rotate(quat);
+        }
+        int numScalingKeys = aiNodeAnim.mNumScalingKeys();
+        if (numScalingKeys > 0) {
+            aiVecKey = scalingKeys.get(Math.min(numScalingKeys - 1, frame));
+            vec = aiVecKey.mValue();
+            nodeTransform.scale(vec.x(), vec.y(), vec.z());
+        }
+
+        return nodeTransform;
+    }
+
+    private static AINodeAnim findAIAnimNode(AIAnimation aiAnimation, String nodeName) {
+        AINodeAnim result = null;
+        int numAnimNodes = aiAnimation.mNumChannels();
+        PointerBuffer aiChannels = aiAnimation.mChannels();
+        for (int i=0; i<numAnimNodes; i++) {
+            AINodeAnim aiNodeAnim = AINodeAnim.create(aiChannels.get(i));
+            if ( nodeName.equals(aiNodeAnim.mNodeName().dataString())) {
+                result = aiNodeAnim;
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static int calcAnimationMaxFrames(AIAnimation aiAnimation) {
+        int maxFrames = 0;
+        int numNodeAnims = aiAnimation.mNumChannels();
+        PointerBuffer aiChannels = aiAnimation.mChannels();
+        for (int i=0; i<numNodeAnims; i++) {
+            AINodeAnim aiNodeAnim = AINodeAnim.create(aiChannels.get(i));
+            int numFrames = Math.max(Math.max(aiNodeAnim.mNumPositionKeys(), aiNodeAnim.mNumScalingKeys()),
+                    aiNodeAnim.mNumRotationKeys());
+            maxFrames = Math.max(maxFrames, numFrames);
+        }
+
+        return maxFrames;
+    }
+
     private static void processBones(AIMesh aiMesh, List<Bone> boneList, List<Integer> boneIds,
-            List<Float> weights) {
+                                     List<Float> weights) {
         Map<Integer, List<VertexWeight>> weightSet = new HashMap<>();
         int numBones = aiMesh.mNumBones();
         PointerBuffer aiBones = aiMesh.mBones();
@@ -232,21 +254,6 @@ public class AnimMeshesLoader extends StaticMeshesLoader {
         mesh.setMaterial(material);
 
         return mesh;
-    }
-
-    private static Node processNodesHierarchy(AINode aiNode, Node parentNode) {
-        String nodeName = aiNode.mName().dataString();
-        Node node = new Node(nodeName, parentNode);
-
-        int numChildren = aiNode.mNumChildren();
-        PointerBuffer aiChildren = aiNode.mChildren();
-        for (int i = 0; i < numChildren; i++) {
-            AINode aiChildNode = AINode.create(aiChildren.get(i));
-            Node childNode = processNodesHierarchy(aiChildNode, node);
-            node.addChild(childNode);
-        }
-
-        return node;
     }
 
     private static Matrix4f toMatrix(AIMatrix4x4 aiMatrix4x4) {

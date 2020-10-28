@@ -1,16 +1,5 @@
 package org.lwjglb.engine.loaders.assimp;
 
-import static org.lwjgl.assimp.Assimp.AI_MATKEY_COLOR_DIFFUSE;
-import static org.lwjgl.assimp.Assimp.AI_MATKEY_COLOR_SPECULAR;
-import static org.lwjgl.assimp.Assimp.aiGetMaterialColor;
-import static org.lwjgl.assimp.Assimp.aiImportFile;
-import static org.lwjgl.assimp.Assimp.aiProcess_FixInfacingNormals;
-import static org.lwjgl.assimp.Assimp.aiProcess_GenSmoothNormals;
-import static org.lwjgl.assimp.Assimp.aiProcess_JoinIdenticalVertices;
-import static org.lwjgl.assimp.Assimp.aiProcess_Triangulate;
-import static org.lwjgl.assimp.Assimp.aiTextureType_DIFFUSE;
-import static org.lwjgl.assimp.Assimp.aiTextureType_NONE;
-
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +14,7 @@ import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
+import static org.lwjgl.assimp.Assimp.*;
 import org.lwjglb.engine.Utils;
 import org.lwjglb.engine.graph.Material;
 import org.lwjglb.engine.graph.Mesh;
@@ -35,13 +25,13 @@ public class StaticMeshesLoader {
     public static Mesh[] load(String resourcePath, String texturesDir) throws Exception {
         return load(resourcePath, texturesDir,
                 aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
-                        | aiProcess_FixInfacingNormals);
+                        | aiProcess_FixInfacingNormals | aiProcess_PreTransformVertices);
     }
 
     public static Mesh[] load(String resourcePath, String texturesDir, int flags) throws Exception {
         AIScene aiScene = aiImportFile(resourcePath, flags);
         if (aiScene == null) {
-            throw new Exception("Error loading model [resourcePath: "  + resourcePath + ", texturesDir:" + texturesDir + "]");
+            throw new Exception("Error loading model");
         }
 
         int numMaterials = aiScene.mNumMaterials();
@@ -96,8 +86,15 @@ public class StaticMeshesLoader {
             texture = textCache.getTexture(textureFile);
         }
 
+        Vector4f ambient = Material.DEFAULT_COLOUR;
+        int result = aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_AMBIENT, aiTextureType_NONE, 0,
+                colour);
+        if (result == 0) {
+            ambient = new Vector4f(colour.r(), colour.g(), colour.b(), colour.a());
+        }
+
         Vector4f diffuse = Material.DEFAULT_COLOUR;
-        int result = aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, aiTextureType_NONE, 0,
+        result = aiGetMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE, aiTextureType_NONE, 0,
                 colour);
         if (result == 0) {
             diffuse = new Vector4f(colour.r(), colour.g(), colour.b(), colour.a());
@@ -110,7 +107,7 @@ public class StaticMeshesLoader {
             specular = new Vector4f(colour.r(), colour.g(), colour.b(), colour.a());
         }
 
-        Material material = new Material(diffuse, specular, 1.0f);
+        Material material = new Material(ambient, diffuse, specular, 1.0f);
         material.setTexture(texture);
         materials.add(material);
     }

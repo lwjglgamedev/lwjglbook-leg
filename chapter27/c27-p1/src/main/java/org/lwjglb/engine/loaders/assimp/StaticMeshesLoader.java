@@ -22,7 +22,9 @@ import org.lwjglb.engine.graph.Texture;
 public class StaticMeshesLoader {
 
     public static Mesh[] load(String resourcePath, String texturesDir) throws Exception {
-        return load(resourcePath, texturesDir, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals);
+        return load(resourcePath, texturesDir,
+                aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
+                        | aiProcess_FixInfacingNormals | aiProcess_PreTransformVertices);
     }
     
     public static Mesh[] load(String resourcePath, String texturesDir, int flags) throws Exception {

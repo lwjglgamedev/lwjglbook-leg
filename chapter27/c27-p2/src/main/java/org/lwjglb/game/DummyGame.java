@@ -1,8 +1,7 @@
 package org.lwjglb.game;
 
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
+
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjglb.engine.IGameLogic;
 import org.lwjglb.engine.MouseInput;
@@ -20,6 +19,8 @@ import org.lwjglb.engine.items.GameItem;
 import org.lwjglb.engine.items.SkyBox;
 import org.lwjglb.engine.loaders.assimp.AnimMeshesLoader;
 import org.lwjglb.engine.loaders.assimp.StaticMeshesLoader;
+
+import java.lang.Math;
 
 public class DummyGame implements IGameLogic {
 
@@ -146,7 +147,9 @@ public class DummyGame implements IGameLogic {
         }
         if (window.isKeyPressed(GLFW_KEY_SPACE)) {
             sceneChanged = true;
-            animation.nextFrame();
+            if (animation != null) {
+                animation.nextFrame();
+            }
         }
     }
 
