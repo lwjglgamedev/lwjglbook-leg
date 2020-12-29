@@ -43,6 +43,11 @@
             <artifactId>joml</artifactId>
             <version>${joml.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.joml</groupId>
+            <artifactId>joml-primitives</artifactId>
+            <version>${joml.version}</version>
+        </dependency>
 
         <!-- Natives -->
         <dependency>
