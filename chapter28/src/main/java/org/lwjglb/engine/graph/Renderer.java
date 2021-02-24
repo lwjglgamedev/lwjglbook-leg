@@ -420,7 +420,7 @@ public class Renderer {
         fogShaderProgram.setUniform("depthText", 1);
         fogShaderProgram.setUniform("sceneText", 2);
 
-        fogShaderProgram.setUniform("screenSize", (float) gBuffer.getWidth(), (float)gBuffer.getHeight());
+        fogShaderProgram.setUniform("screenSize", (float) window.getWidth(), (float)window.getHeight());
 
         fogShaderProgram.setUniform("fog", scene.getFog());
         SceneLight sceneLight = scene.getSceneLight();
