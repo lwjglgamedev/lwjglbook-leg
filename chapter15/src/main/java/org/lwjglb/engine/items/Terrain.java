@@ -151,12 +151,12 @@ public class Terrain {
 
     protected float interpolateHeight(Vector3f pA, Vector3f pB, Vector3f pC, float x, float z) {
         // Plane equation ax+by+cz+d=0
-        float a = (pB.y - pA.y) * (pC.z - pA.z) - (pC.y - pA.y) * (pB.z - pA.z);
-        float b = (pB.z - pA.z) * (pC.x - pA.x) - (pC.z - pA.z) * (pB.x - pA.x);
-        float c = (pB.x - pA.x) * (pC.y - pA.y) - (pC.x - pA.x) * (pB.y - pA.y);
-        float d = -(a * pA.x + b * pA.y + c * pA.z);
+        Vector3f v1 = pB.sub(pA);
+    	Vector3f v2 = pC.sub(pA);
+    	Vector3f v12 = v1.cross(v2, new Vector3f()).normalize();
+        float d = -(v12.x * pA.x + v12.y * pA.y + v12.z * pA.z);
         // y = (-d -ax -cz) / b
-        float y = (-d - a * x - c * z) / b;
+        float y = (-d - v12.x * x - v12.z * z) / v12.y;
         return y;
     }
 
