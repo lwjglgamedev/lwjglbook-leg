@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.joml</groupId>
             <artifactId>joml-primitives</artifactId>
-            <version>${joml.version}</version>
+            <version>${joml-primitives.version}</version>
         </dependency>
 		
 		<!-- Natives -->

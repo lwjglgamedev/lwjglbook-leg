@@ -163,6 +163,7 @@
 		<mvn.resplug.version>3.1.0</mvn.resplug.version>
         <lwjgl.version>3.2.3</lwjgl.version>
         <joml.version>1.10.1</joml.version>
+        <joml-primitives.version>1.10.0</joml-primitives.version>
     </properties>
 
     <profiles>
