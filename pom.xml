@@ -161,7 +161,7 @@
         <mvn.execplug.version>1.6.0</mvn.execplug.version>
         <mvn.jarplug.version>3.1.2</mvn.jarplug.version>
 		<mvn.resplug.version>3.1.0</mvn.resplug.version>
-        <lwjgl.version>3.2.3</lwjgl.version>
+        <lwjgl.version>3.3.0</lwjgl.version>
         <joml.version>1.10.2</joml.version>
         <joml-primitives.version>1.10.0</joml-primitives.version>
     </properties>
