@@ -91,7 +91,7 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
     vec3 reflected_light = normalize(reflect(from_light_dir , normal));
     float specularFactor = max( dot(camera_direction, reflected_light), 0.0);
     specularFactor = pow(specularFactor, specularPower);
-    specColour = speculrC * light_intensity  * specularFactor * material.reflectance * vec4(light_colour, 1.0);
+    specColour = speculrC * light_intensity * specularFactor * material.reflectance * vec4(light_colour, 1.0);
 
     return (diffuseColour + specColour);
 }
@@ -99,7 +99,7 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
 vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
 {
     vec3 light_direction = light.position - position;
-    vec3 to_light_dir  = normalize(light_direction);
+    vec3 to_light_dir = normalize(light_direction);
     vec4 light_colour = calcLightColour(light.colour, light.intensity, position, to_light_dir, normal);
 
     // Apply Attenuation
