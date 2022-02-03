@@ -54,9 +54,9 @@ public class Window {
         boolean maximized = false;
         // If no size has been specified set it to maximized state
         if (width == 0 || height == 0) {
-            // Set up a fixed width and height so window initialization does not fail
-            width = 100;
-            height = 100;
+            GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            width = vidMode.width();
+            height = vidMode.height();
             glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
             maximized = true;
         }
