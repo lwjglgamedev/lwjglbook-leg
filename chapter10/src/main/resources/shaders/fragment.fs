@@ -74,7 +74,7 @@ vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
     vec3 reflected_light = normalize(reflect(from_light_source, normal));
     float specularFactor = max( dot(camera_direction, reflected_light), 0.0);
     specularFactor = pow(specularFactor, specularPower);
-    specColour = speculrC * light_intensity * specularFactor * material.reflectance * vec4(light_colour, 1.0);
+    specColour = speculrC * light.intensity * specularFactor * material.reflectance * vec4(light.colour, 1.0);
 
     // Attenuation
     float distance = length(light_direction);
