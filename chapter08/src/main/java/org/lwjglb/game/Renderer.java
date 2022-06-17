@@ -31,8 +31,8 @@ public class Renderer {
     public void init(Window window) throws Exception {
         // Create shader
         shaderProgram = new ShaderProgram();
-        shaderProgram.createVertexShader(Utils.loadResource("/shaders/vertex.vs"));
-        shaderProgram.createFragmentShader(Utils.loadResource("/shaders/fragment.fs"));
+        shaderProgram.createVertexShader(Utils.loadResource("/shaders/vertex.vert"));
+        shaderProgram.createFragmentShader(Utils.loadResource("/shaders/fragment.frag"));
         shaderProgram.link();
         
         // Create uniforms for modelView and projection matrices and texture

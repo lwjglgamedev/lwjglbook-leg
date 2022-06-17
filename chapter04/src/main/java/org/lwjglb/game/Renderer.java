@@ -40,8 +40,8 @@ public class Renderer {
 
     public void init() throws Exception {
         shaderProgram = new ShaderProgram();
-        shaderProgram.createVertexShader(Utils.loadResource("/vertex.vs"));
-        shaderProgram.createFragmentShader(Utils.loadResource("/fragment.fs"));
+        shaderProgram.createVertexShader(Utils.loadResource("/vertex.vert"));
+        shaderProgram.createFragmentShader(Utils.loadResource("/fragment.frag"));
         shaderProgram.link();
 
         float[] vertices = new float[]{

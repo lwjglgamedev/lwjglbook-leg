@@ -20,8 +20,8 @@ public class ShadowTestRenderer {
 
     private void setupTestShader() throws Exception {
         testShaderProgram = new ShaderProgram();
-        testShaderProgram.createVertexShader(Utils.loadResource("/shaders/test_vertex.vs"));
-        testShaderProgram.createFragmentShader(Utils.loadResource("/shaders/test_fragment.fs"));
+        testShaderProgram.createVertexShader(Utils.loadResource("/shaders/test_vertex.vert"));
+        testShaderProgram.createFragmentShader(Utils.loadResource("/shaders/test_fragment.frag"));
         testShaderProgram.link();
 
         for (int i = 0; i < ShadowRenderer.NUM_CASCADES; i++) {
