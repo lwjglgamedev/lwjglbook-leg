@@ -36,8 +36,8 @@ public class Renderer {
     public void init(Window window) throws Exception {
         // Create shader
         shaderProgram = new ShaderProgram();
-        shaderProgram.createVertexShader(Utils.loadResource("/vertex.vs"));
-        shaderProgram.createFragmentShader(Utils.loadResource("/fragment.fs"));
+        shaderProgram.createVertexShader(Utils.loadResource("/vertex.vert"));
+        shaderProgram.createFragmentShader(Utils.loadResource("/fragment.frag"));
         shaderProgram.link();
 
         // Create projection matrix
