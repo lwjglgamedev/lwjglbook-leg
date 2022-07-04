@@ -59,7 +59,7 @@ public class Renderer {
             vaoId = glGenVertexArrays();
             glBindVertexArray(vaoId);
 
-            // Create the VBO and bint to it
+            // Create the VBO and bind to it
             vboId = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
